@@ -11,6 +11,8 @@
 #define M_LB 2
 #define M_RB 3
 
+#define CLOCK_PIN 4
+
 
 
 class Motor_Shield
