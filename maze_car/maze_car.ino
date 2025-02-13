@@ -13,10 +13,13 @@
 #define DISTANCE_SENSOR_RIGHT_TRIG
 #define DISTANCE_SENSOR_FRONT_TRIG
 //tuning
-#define MAX_ULTRASONIC_WALL_DISTANCE 
+#define MAX_ULTRASONIC_WALL_DISTANCE_FRONT
+#define MAX_ULTRASONIC_WALL_DISTANCE_SIDES
 #define MAX_LIGHT_SENSOR_DISTANCE
 #define INPUT_AMOUTH
 #define OUTPUT_AMOUTH
+#define CAR_WIDTH
+#define PATH_WIDTH
 //sensor array
 const int8_t inputs[INPUT_AMOUTH] = (IR_SENSOR_LEFT, IR_SENSOR_RIGHT, DISTANCE_SENSOR_LEFT_ECHO, DISTANCE_SENSOR_RIGHT_ECHO, DISTANCE_SENSOR_FRONT_ECHO);
 const int8_t outputs[OUTPUT_AMOUTH] = (DISTANCE_SENSOR_LEFT_TRIG, DISTANCE_SENSOR_RIGHT_TRIG, DISTANCE_SENSOR_FRONT_TRIG);
@@ -42,6 +45,34 @@ void setup()
 void loop()
 {
   take_measurements();
+  if (measured_ultrasonic_distance_front < MAX_ULTRASONIC_WALL_DISTANCE_FRONT)
+  {
+    //stop moving
+    if((measured_ultrasonic_distance_left + measured_ultrasonic_distance_right + CAR_WIDTH) > PATH_WIDTH)
+    {
+      //there is a free space next to the car
+      if(measured_ultrasonic_distance_right > measured_ultrasonic_distance_left)
+      {
+        //rotate 90 degrees right and continue moving
+      }
+      else
+      {
+        //rotate 90 degrees left and continue moving
+      }
+    }
+    else
+    {
+      //rotate 180 degrees and continue moving
+    }
+  }
+  if (measured_ultrasonic_distance_left < MAX_ULTRASONIC_WALL_DISTANCE_SIDES)
+  {
+    //strafe right 
+  }
+  if (measured_ultrasonic_distance_right < MAX_ULTRASONIC_WALL_DISTANCE_SIDES)
+  {
+    //strafe left
+  }
 }
 
 take_measurements()
