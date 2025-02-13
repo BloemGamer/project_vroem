@@ -1,4 +1,18 @@
+#if defined(WIN32) || defined(_WIN32) 
 #include <stdint.h>
+#endif //windows
+
+#define PIN_LF 11
+#define PIN_RF 3
+#define PIN_LB 5
+#define PIN_RB 6
+
+#define M_LF 0
+#define M_RF 1
+#define M_LB 2
+#define M_RB 3
+
+
 
 class Motor_Shield
 {
