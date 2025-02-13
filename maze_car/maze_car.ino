@@ -38,7 +38,7 @@ void setup()
   }
   for(int8_t i = 0; i < OUTPUT_AMOUTH; i++)
   {
-    pinMode(outputs[i], INPUT);
+    pinMode(outputs[i], OUTPUT);
   }
 }
 
