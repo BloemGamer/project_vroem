@@ -11,5 +11,6 @@
 build
 txt
 test
+test*
 debug
 __pycache__
