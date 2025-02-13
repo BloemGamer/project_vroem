@@ -1,6 +1,5 @@
-#if defined(WIN32) || defined(_WIN32) 
 #include <stdint.h>
-#endif //windows
+
 
 #define PIN_LF 11
 #define PIN_RF 3

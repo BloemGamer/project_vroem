@@ -23,13 +23,13 @@ void Motor_Shield::update_speed()
 
 
 
-Motor_shield::Motor_Shield()
+Motor_Shield::Motor_Shield()
 {
 // zet de pinnen op input/output van wat ze moeten
-  pinMode(PIN_M1, OUTPUT);
-  pinMode(PIN_M2, OUTPUT);
-  pinMode(PIN_M3, OUTPUT);
-  pinMode(PIN_M4, OUTPUT);
+  pinMode(PIN_LF, OUTPUT);
+  pinMode(PIN_RF, OUTPUT);
+  pinMode(PIN_LB, OUTPUT);
+  pinMode(PIN_RB, OUTPUT);
 
 }
 
