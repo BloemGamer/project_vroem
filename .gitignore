@@ -1,0 +1,15 @@
+*
+!*.*
+!*/
+*.exe
+*.txt
+*.so
+*.o
+*.pyc
+.vscode
+.git
+build
+txt
+test
+debug
+__pycache__
