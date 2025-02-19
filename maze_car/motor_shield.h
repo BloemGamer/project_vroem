@@ -1,10 +1,14 @@
 #include <stdint.h>
 
 
-#define PIN_LF 11
-#define PIN_RF 3
-#define PIN_LB 5
-#define PIN_RB 6
+#define LF1 2
+#define LF2 3
+#define RF1 1
+#define RF2 4
+#define LB1 0
+#define LB2 6
+#define RB1 5
+#define RB2 7
 
 #define M_LF 0
 #define M_RF 1
@@ -19,11 +23,16 @@ class Motor_Shield
 {
 private:
   uint8_t speed_motors[4];
+  uint8_t motor_state = 0;
 
 public:
   void set_speed(uint8_t speed_m1, uint8_t speed_m2, uint8_t speed_m3, uint8_t speed_m4);
-  void set_speed(uint8_t motor, uint8_t speed_m); // overloaden voor 1 motor aanpassen, en ze alle 4 tergelijkertijd aanpassen
+  void set_speed(uint8_t motor, uint8_t speed_m);
+  void change_speed(uint8_t speed_m1, uint8_t speed_m2, uint8_t speed_m3, uint8_t speed_m4);
+  void change_speed(uint8_t motor, uint8_t speed_m);
   void update_speed();
+  void update_single_speed();
+  void motor_state_(uint8_t motor, uint8_t direction);
 
   Motor_Shield();
   ~Motor_Shield();
