@@ -1,7 +1,7 @@
 //libraries
 #include "motor_shield.h"
 #include "Servo.h"
-
+#include <NewPing.h>
 //constants -> inputs
 #define IR_SENSOR_LEFT NULL
 #define IR_SENSOR_RIGHT NULL
@@ -20,6 +20,8 @@
 #define OUTPUT_AMOUTH 3
 #define CAR_WIDTH NULL
 #define PATH_WIDTH NULL
+//library objects
+
 //sensor array
 const int8_t inputs[INPUT_AMOUTH] = {IR_SENSOR_LEFT, IR_SENSOR_RIGHT, DISTANCE_SENSOR_LEFT_ECHO, DISTANCE_SENSOR_RIGHT_ECHO, DISTANCE_SENSOR_FRONT_ECHO};
 const int8_t outputs[OUTPUT_AMOUTH] = {DISTANCE_SENSOR_LEFT_TRIG, DISTANCE_SENSOR_RIGHT_TRIG, DISTANCE_SENSOR_FRONT_TRIG};
@@ -28,10 +30,11 @@ const int8_t outputs[OUTPUT_AMOUTH] = {DISTANCE_SENSOR_LEFT_TRIG, DISTANCE_SENSO
 bool ir_right_trigged = false;
 bool ir_left_trigged = false;
 long duration1, duration2, duration3;
-int8_t measured_ultrasonic_distance_left, measured_ultrasonic_distance_right, measured_ultrasonic_distance_front;
+unsigned int measured_ultrasonic_distance_left, measured_ultrasonic_distance_right, measured_ultrasonic_distance_front;
 
 void setup()
 {
+  Serial.begin(9600);
   for(int8_t i = 0; i < INPUT_AMOUTH; i++)
   {
     pinMode(inputs[i], INPUT);
@@ -82,10 +85,10 @@ void take_measurements()
   measured_ultrasonic_distance_left = readDistance(DISTANCE_SENSOR_LEFT_TRIG, DISTANCE_SENSOR_LEFT_ECHO);
   measured_ultrasonic_distance_right = readDistance(DISTANCE_SENSOR_RIGHT_TRIG, DISTANCE_SENSOR_RIGHT_ECHO);
   measured_ultrasonic_distance_front = readDistance(DISTANCE_SENSOR_FRONT_TRIG, DISTANCE_SENSOR_FRONT_ECHO);
-  Serial.print(measured_ultrasonic_distance_front);
+  Serial.println(measured_ultrasonic_distance_front);
 }
 
-int8_t readDistance(int8_t triggerPin, int8_t echoPin)
+unsigned int readDistance(int8_t triggerPin, int8_t echoPin)
 {
   digitalWrite(triggerPin, LOW);
   delayMicroseconds(2);
@@ -93,6 +96,6 @@ int8_t readDistance(int8_t triggerPin, int8_t echoPin)
   delayMicroseconds(10);
   digitalWrite(triggerPin, LOW);
   long duration = pulseIn(echoPin, HIGH);
-  int distance = duration * 0.034 / 2;
+  unsigned int distance = (duration * 0.0343) / 2;
   return distance;
 }
