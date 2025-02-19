@@ -31,7 +31,6 @@ Motor_Shield::Motor_Shield()
   pinMode(PIN_LB, OUTPUT);
   pinMode(PIN_RB, OUTPUT);
   pinMode(CLOCK_PIN, OUTPUT);
-
 }
 
 Motor_Shield::~Motor_Shield()

@@ -7,11 +7,11 @@
 #define IR_SENSOR_RIGHT NULL
 #define DISTANCE_SENSOR_LEFT_ECHO NULL
 #define DISTANCE_SENSOR_RIGHT_ECHO NULL
-#define DISTANCE_SENSOR_FRONT_ECHO NULL
+#define DISTANCE_SENSOR_FRONT_ECHO A5
 //constants -> outputs
 #define DISTANCE_SENSOR_LEFT_TRIG NULL
 #define DISTANCE_SENSOR_RIGHT_TRIG NULL
-#define DISTANCE_SENSOR_FRONT_TRIG NULL
+#define DISTANCE_SENSOR_FRONT_TRIG A4
 //tuning
 #define MAX_ULTRASONIC_WALL_DISTANCE_FRONT NULL
 #define MAX_ULTRASONIC_WALL_DISTANCE_SIDES NULL
@@ -82,6 +82,7 @@ void take_measurements()
   measured_ultrasonic_distance_left = readDistance(DISTANCE_SENSOR_LEFT_TRIG, DISTANCE_SENSOR_LEFT_ECHO);
   measured_ultrasonic_distance_right = readDistance(DISTANCE_SENSOR_RIGHT_TRIG, DISTANCE_SENSOR_RIGHT_ECHO);
   measured_ultrasonic_distance_front = readDistance(DISTANCE_SENSOR_FRONT_TRIG, DISTANCE_SENSOR_FRONT_ECHO);
+  Serial.print(measured_ultrasonic_distance_front);
 }
 
 int8_t readDistance(int8_t triggerPin, int8_t echoPin)
