@@ -32,12 +32,9 @@ void Motor_Shield::update_speed()
   pinMode(7, OUTPUT);
   for(uint8_t m = 0; m < 4; m++)
   {
-    motor_state_(m, 1);
-    pinMode(CLOCK_PIN, OUTPUT);
-    pinMode(12, OUTPUT);
-    pinMode(CLOCK_PIN, OUTPUT);
-    pinMode(8, OUTPUT);
-    
+    // Only the first one does something, and it resets when another is written to
+    motor_state = motor_state_(m, 1);
+   
     
     digitalWrite(7, LOW);
     digitalWrite(12, LOW);
@@ -52,32 +49,32 @@ void Motor_Shield::update_single_speed()
   
 }
 
-void Motor_Shield::motor_state_(uint8_t motor, uint8_t direction)
+constexpr uint8_t Motor_Shield::motor_state_(uint8_t motor, uint8_t direction)
 {
-  motor_state = 0;
+  uint8_t state = 0;
   delay(250);
   switch(motor)
   {
     case M_LF:
-      motor_state &= ~(1 << LF1) & ~(1 << LF2);
-      motor_state |= 1 << LF1;
-      motor_state &= ~(1 << LF2);
-      return;
+      state &= ~(1 << LF1) & ~(1 << LF2);
+      state |= 1 << LF1;
+      state &= ~(1 << LF2);
+      return state;
     case M_RF:
-      motor_state &= ~(1 << RF1) & ~(1 << RF2);
-      motor_state |= 1 << RF1;
-      motor_state &= ~(1 << RF2);
-      return;
+      state &= ~(1 << RF1) & ~(1 << RF2);
+      state |= 1 << RF1;
+      state &= ~(1 << RF2);
+      return state;
     case M_LB:
-      motor_state &= ~(1 << LB1) & ~(1 << LB2);
-      motor_state |= 1 << LB1;
-      motor_state &= ~(1 << LB2);
-      return;
+      state &= ~(1 << LB1) & ~(1 << LB2);
+      state |= 1 << LB1;
+      state &= ~(1 << LB2);
+      return state;
     case M_RB:
-      motor_state &= ~(1 << RB1) & ~(1 << RB2);
-      motor_state |= 1 << RB1;
-      motor_state &= ~(1 << RB2);
-      return;
+      state &= ~(1 << RB1) & ~(1 << RB2);
+      state |= 1 << RB1;
+      state &= ~(1 << RB2);
+      return state;
   }
 }
 
@@ -95,7 +92,11 @@ Motor_Shield::Motor_Shield()
   pinMode(LB2, OUTPUT);
   pinMode(RB1, OUTPUT);
   pinMode(RB2, OUTPUT);
+  pinMode(CLOCK_PIN, OUTPUT); 
   pinMode(CLOCK_PIN, OUTPUT);
+  pinMode(12, OUTPUT);
+  pinMode(CLOCK_PIN, OUTPUT);
+  pinMode(8, OUTPUT);
 }
 
 Motor_Shield::~Motor_Shield()

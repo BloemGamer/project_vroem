@@ -32,7 +32,7 @@ public:
   void change_speed(uint8_t motor, uint8_t speed_m);
   void update_speed();
   void update_single_speed();
-  void motor_state_(uint8_t motor, uint8_t direction);
+  uint8_t motor_state_(uint8_t motor, uint8_t direction);
 
   Motor_Shield();
   ~Motor_Shield();
