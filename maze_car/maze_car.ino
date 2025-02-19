@@ -3,29 +3,29 @@
 #include "Servo.h"
 #include <NewPing.h>
 //constants -> inputs
-#define IR_SENSOR_LEFT NULL
-#define IR_SENSOR_RIGHT NULL
-#define DISTANCE_SENSOR_LEFT_ECHO NULL
-#define DISTANCE_SENSOR_RIGHT_ECHO NULL
-#define DISTANCE_SENSOR_FRONT_ECHO A5
+#define IR_SENSOR_LEFT 51
+#define IR_SENSOR_RIGHT 52
+#define DISTANCE_SENSOR_LEFT_ECHO A0
+#define DISTANCE_SENSOR_RIGHT_ECHO A2
+#define DISTANCE_SENSOR_FRONT_ECHO A4
 //constants -> outputs
-#define DISTANCE_SENSOR_LEFT_TRIG NULL
-#define DISTANCE_SENSOR_RIGHT_TRIG NULL
-#define DISTANCE_SENSOR_FRONT_TRIG A4
+#define DISTANCE_SENSOR_LEFT_TRIG A1
+#define DISTANCE_SENSOR_RIGHT_TRIG A3
+#define DISTANCE_SENSOR_FRONT_TRIG A5
 //tuning
-#define MAX_ULTRASONIC_WALL_DISTANCE_FRONT NULL
-#define MAX_ULTRASONIC_WALL_DISTANCE_SIDES NULL
-#define MAX_LIGHT_SENSOR_DISTANCE NULL
+#define MAX_ULTRASONIC_WALL_DISTANCE_FRONT 10
+#define MAX_ULTRASONIC_WALL_DISTANCE_SIDES 10
 #define INPUT_AMOUTH 5
 #define OUTPUT_AMOUTH 3
-#define CAR_WIDTH NULL
-#define PATH_WIDTH NULL
-//library objects
-
+#define CAR_WIDTH 20
+#define PATH_WIDTH 30
 //sensor array
 const int8_t inputs[INPUT_AMOUTH] = {IR_SENSOR_LEFT, IR_SENSOR_RIGHT, DISTANCE_SENSOR_LEFT_ECHO, DISTANCE_SENSOR_RIGHT_ECHO, DISTANCE_SENSOR_FRONT_ECHO};
 const int8_t outputs[OUTPUT_AMOUTH] = {DISTANCE_SENSOR_LEFT_TRIG, DISTANCE_SENSOR_RIGHT_TRIG, DISTANCE_SENSOR_FRONT_TRIG};
-
+//library objects
+NewPing sonarLeft(DISTANCE_SENSOR_LEFT_TRIG, DISTANCE_SENSOR_LEFT_ECHO, 300);
+NewPing sonarRight(DISTANCE_SENSOR_RIGHT_TRIG, DISTANCE_SENSOR_RIGHT_ECHO, 300);
+NewPing sonarFront(DISTANCE_SENSOR_FRONT_TRIG, DISTANCE_SENSOR_FRONT_ECHO, 300);
 //variables
 bool ir_right_trigged = false;
 bool ir_left_trigged = false;
@@ -82,20 +82,14 @@ void take_measurements()
 {
   ir_right_trigged = digitalRead(IR_SENSOR_RIGHT);
   ir_left_trigged = digitalRead(IR_SENSOR_LEFT);
-  measured_ultrasonic_distance_left = readDistance(DISTANCE_SENSOR_LEFT_TRIG, DISTANCE_SENSOR_LEFT_ECHO);
-  measured_ultrasonic_distance_right = readDistance(DISTANCE_SENSOR_RIGHT_TRIG, DISTANCE_SENSOR_RIGHT_ECHO);
-  measured_ultrasonic_distance_front = readDistance(DISTANCE_SENSOR_FRONT_TRIG, DISTANCE_SENSOR_FRONT_ECHO);
+  measured_ultrasonic_distance_left = sonarLeft.ping_cm();
+  measured_ultrasonic_distance_right = sonarRight.ping_cm();
+  measured_ultrasonic_distance_front = sonarFront.ping_cm();
+  Serial.print("Left: ");
+  Serial.println(measured_ultrasonic_distance_left);
+  Serial.print("Right: ");
+  Serial.println(measured_ultrasonic_distance_right);
+  Serial.print("Front: ");
   Serial.println(measured_ultrasonic_distance_front);
-}
-
-unsigned int readDistance(int8_t triggerPin, int8_t echoPin)
-{
-  digitalWrite(triggerPin, LOW);
-  delayMicroseconds(2);
-  digitalWrite(triggerPin, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(triggerPin, LOW);
-  long duration = pulseIn(echoPin, HIGH);
-  unsigned int distance = (duration * 0.0343) / 2;
-  return distance;
+  delay(100);
 }
