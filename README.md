@@ -47,35 +47,35 @@ This is a library we wrote to use with the `L293D Motor Shield Module`.
 
 ### Presentatie 1
 
-Robot mag niet de muren raken
-Presenteren
-App werkend
-Motoren kunnen 2 snelheden
-LED-matrix werkt, en kan alle sensoren laten zien
-- behaalde resulaten
-- een demonstratie
-- de uitdagingen en plannen
-Competentiegroei ontwerpen
+- Robot mag niet de muren raken
+- Presenteren
+- App werkend
+- Motoren kunnen 2 snelheden
+- LED-matrix werkt, en kan alle sensoren laten zien
+    - behaalde resulaten
+    - een demonstratie
+    - de uitdagingen en plannen
+- Competentiegroei ontwerpen
 
 ### Documentatie 1
 
-Voorlopig onderwerprapport
-Lees ff brightspace studiewijzer
+- Voorlopig onderwerprapport
+- Lees ff brightspace studiewijzer
 
 ## 2
 
 ### Presentatie 2
 
-Robot kan doolhof uit
-- behaalde resulaten
-- een demonstratie
-- de uitdagingen en plannen
-Competentiegroei ontwerpen
+- Robot kan doolhof uit
+    - behaalde resulaten
+    - een demonstratie
+    - de uitdagingen en plannen
+- Competentiegroei ontwerpen
 
 ### Documentatie 2
 
-Definitief ontwerprapport
-Lees ff brightspace studiewijzer
+- Definitief ontwerprapport
+- Lees ff brightspace studiewijzer
 
 ### ProcesFilmpje
 
@@ -86,23 +86,23 @@ Lees ff brightspace studiewijzer
 
 ### Presentatie 3
 
-Tikkertje
-- behaalde resulaten
-- een demonstratie
-- de uitdagingen en plannen
-Competentiegroei ontwerpen
+- Tikkertje
+    - behaalde resulaten
+    - een demonstratie
+    - de uitdagingen en plannen
+- Competentiegroei ontwerpen
 
 ### Eindassesment
 
-Vragenrondje
+- Vragenrondje
 
 ## 4
 
 ### Presentatie 4
 
-Tikkertje
-- behaalde resulaten
-- een demonstratie
-- de uitdagingen en plannen
-Competentiegroei ontwerpen
-Competentiegroei realiseren
+- Tikkertje
+    - behaalde resulaten
+    - een demonstratie
+    - de uitdagingen en plannen
+- Competentiegroei ontwerpen
+- Competentiegroei realiseren
