@@ -1,3 +1,7 @@
+<!-- markdownlint-disable MD032 -->
+<!-- markdownlint-disable MD007 -->
+<!-- markdownlint-disable MD029 -->
+
 # Project 2, maze solver
 
 A maze solver, and catch robot car
@@ -20,12 +24,21 @@ This is a library we wrote to use with the `L293D Motor Shield Module`.
 
 ## planning
 
-1. Componenten
-    1. Motor -> library schrijven
-    2. Sensoren -> ff uitzoeken hoe ze werken
-    3. Achterlicht -> library uitzoeken
-2. Algoritmes
-    1. Niet tegen muur aan rijden
-    2. Doolhof ding
-    3. Tikkertje vluchten
-    4. Tikkertje jagen
+1. Basic:
+ - Motor shield
+ - Ultrasoon-sensor
+ - IR-spensor
+ - 8x8 led ding
+ - Bluetooth chip
+ - App op telefoon
+
+2. Algoritmes:
+ - Automatisch rijden
+ - Niet tegen muur aan rijden
+ - Algoritme verzinnen hoe uit doolhof
+ - Uit doolhof algoritme programmeren
+
+3. Als tijd:
+ - Laser toren met servo
+ - Tikkertje vluchten
+ - Tikkertje jagen
