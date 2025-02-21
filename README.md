@@ -42,3 +42,67 @@ This is a library we wrote to use with the `L293D Motor Shield Module`.
  - Laser toren met servo
  - Tikkertje vluchten
  - Tikkertje jagen
+
+## 1
+
+### Presentatie 1
+
+Robot mag niet de muren raken
+Presenteren
+App werkend
+Motoren kunnen 2 snelheden
+LED-matrix werkt, en kan alle sensoren laten zien
+- behaalde resulaten
+- een demonstratie
+- de uitdagingen en plannen
+Competentiegroei ontwerpen
+
+### Documentatie 1
+
+Voorlopig onderwerprapport
+Lees ff brightspace studiewijzer
+
+## 2
+
+### Presentatie 2
+
+Robot kan doolhof uit
+- behaalde resulaten
+- een demonstratie
+- de uitdagingen en plannen
+Competentiegroei ontwerpen
+
+### Documentatie 2
+
+Definitief ontwerprapport
+Lees ff brightspace studiewijzer
+
+### ProcesFilmpje
+
+> [!IMPORTANT]
+> Maak video's
+
+## 3
+
+### Presentatie 3
+
+Tikkertje
+- behaalde resulaten
+- een demonstratie
+- de uitdagingen en plannen
+Competentiegroei ontwerpen
+
+### Eindassesment
+
+Vragenrondje
+
+## 4
+
+### Presentatie 4
+
+Tikkertje
+- behaalde resulaten
+- een demonstratie
+- de uitdagingen en plannen
+Competentiegroei ontwerpen
+Competentiegroei realiseren
