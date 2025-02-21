@@ -49,7 +49,7 @@ void Motor_Shield::update_single_speed()
   
 }
 
-constexpr uint8_t Motor_Shield::motor_state_(uint8_t motor, uint8_t direction)
+uint8_t Motor_Shield::motor_state_(uint8_t motor, uint8_t direction)
 {
   uint8_t state = 0;
   delay(250);
