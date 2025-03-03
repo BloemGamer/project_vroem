@@ -1,6 +1,7 @@
 //libraries
 #include "motor_shield.h"
 #include "Servo.h"
+// #include "test.h"
 #include <NewPing.h>
 //constants -> inputs
 #define IR_SENSOR_LEFT 51
@@ -32,6 +33,8 @@ bool ir_left_trigged = false;
 long duration1, duration2, duration3;
 unsigned int measured_ultrasonic_distance_left, measured_ultrasonic_distance_right, measured_ultrasonic_distance_front;
 
+Motor_Shield motor_shield;
+
 void setup()
 {
   Serial.begin(9600);
@@ -48,6 +51,7 @@ void setup()
 void loop()
 {
   take_measurements();
+  motor_shield.update_speed();
   if (measured_ultrasonic_distance_front < MAX_ULTRASONIC_WALL_DISTANCE_FRONT)
   {
     //stop moving
