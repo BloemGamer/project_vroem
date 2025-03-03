@@ -34,12 +34,13 @@ void Motor_Shield::change_speed(uint8_t motor, uint8_t speed_m)
 
 void Motor_Shield::update_speed()
 {
-  uint8_t m_data = 0;
-  for(uint8_t m = 0; m < 4; m++)
-  {
-   m_data |= md[m];
-   shift_out(m_data);
-   }
+  // uint8_t m_data = 0;
+  // for(uint8_t m = 0; m < 4; m++)
+  // {
+  //  m_data |= md[m];
+  //  shift_out(m_data);
+  // }
+  shift_out(motor_state);
 }
 
 inline void Motor_Shield::shift_out(uint8_t data)
