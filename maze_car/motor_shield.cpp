@@ -7,28 +7,28 @@ uint8_t motors_r[] = {0x08,0x02,0x40,0x80 };
 
 void Motor_Shield::set_speed(uint8_t speed_lf, uint8_t speed_rf, uint8_t speed_lb, uint8_t speed_rb)
 {
-  speed_motors[M_LF] = speed_lf;
-  speed_motors[M_RF] = speed_rf;
-  speed_motors[M_LB] = speed_lb;
-  speed_motors[M_RB] = speed_rb;
+  *speed_motors[M_LF] = speed_lf;
+  *speed_motors[M_RF] = speed_rf;
+  *speed_motors[M_LB] = speed_lb;
+  *speed_motors[M_RB] = speed_rb;
 }
 
 void Motor_Shield::set_speed(uint8_t motor, uint8_t speed_m)
 {
-  speed_motors[motor] = speed_m;
+  *speed_motors[motor] = speed_m;
 }
 
 void Motor_Shield::change_speed(uint8_t speed_lf, uint8_t speed_rf, uint8_t speed_lb, uint8_t speed_rb)
 {
-  speed_motors[M_LF] += speed_lf;
-  speed_motors[M_RF] += speed_rf;
-  speed_motors[M_LB] += speed_lb;
-  speed_motors[M_RB] += speed_rb;
+  *speed_motors[M_LF] += speed_lf;
+  *speed_motors[M_RF] += speed_rf;
+  *speed_motors[M_LB] += speed_lb;
+  *speed_motors[M_RB] += speed_rb;
 }
 
 void Motor_Shield::change_speed(uint8_t motor, uint8_t speed_m)
 {
-  speed_motors[motor] += speed_m;
+  *speed_motors[motor] += speed_m;
 }
 
 void Motor_Shield::update_speed()
@@ -76,6 +76,10 @@ Motor_Shield::Motor_Shield(void)
   OCR3C = 255;
   OCR4A = 255;
   OCR3A = 255;
+  speed_motors[0] = (uint16_t*)&OCR1A;
+  speed_motors[1] = (uint16_t*)&OCR3C;
+  speed_motors[2] = (uint16_t*)&OCR4A;
+  speed_motors[3] = (uint16_t*)&OCR3A;
 #endif
 }
 

@@ -26,7 +26,7 @@
 class Motor_Shield
 {
 private:
-  uint8_t speed_motors[4];
+  uint16_t *speed_motors[4];
   uint8_t motor_state = 0;
 
 public:
