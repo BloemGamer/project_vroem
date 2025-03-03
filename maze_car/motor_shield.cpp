@@ -1,6 +1,7 @@
 #include "Arduino.h"
 #include "motor_shield.h"
 
+// these ones aren't correct and will NOT be used in the final version of the library
 uint8_t md[] = {0x04, 0x02, 0x01, 0x20};
 uint8_t motors_d[] = {0x04,0x10,0x01,0x40 };
 uint8_t motors_r[] = {0x08,0x02,0x40,0x80 };
@@ -20,10 +21,10 @@ void Motor_Shield::set_speed(uint8_t motor, uint8_t speed_m)
 
 void Motor_Shield::change_speed(uint8_t speed_lf, uint8_t speed_rf, uint8_t speed_lb, uint8_t speed_rb)
 {
-  *speed_motors[M_LF] += speed_lf;
-  *speed_motors[M_RF] += speed_rf;
-  *speed_motors[M_LB] += speed_lb;
-  *speed_motors[M_RB] += speed_rb;
+  *speed_motors[M_LF] = max(255, *speed_motors[M_LF] + speed_lf);
+  *speed_motors[M_RF] = max(255, *speed_motors[M_RF] + speed_rf);
+  *speed_motors[M_LB] = max(255, *speed_motors[M_LB] + speed_lb);
+  *speed_motors[M_RB] = max(255, *speed_motors[M_RB] + speed_rb);
 }
 
 void Motor_Shield::change_speed(uint8_t motor, uint8_t speed_m)
@@ -41,13 +42,7 @@ void Motor_Shield::update_speed()
    }
 }
 
-void Motor_Shield::update_single_speed(uint8_t motor_)
-{
-  shift_out(md[motor_]);
-  delay(200);
-}
-
-void Motor_Shield::shift_out(uint8_t data)
+inline void Motor_Shield::shift_out(uint8_t data)
 {
   digitalWrite(MOTORLATCH, LOW);
   digitalWrite(DATA_PIN, LOW);
