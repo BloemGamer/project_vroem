@@ -67,16 +67,16 @@ Motor_Shield::Motor_Shield(void)
   pinMode(CLOCK_PIN, OUTPUT);
 
   digitalWrite(ENABLE_PIN, LOW);
-#ifdef ARDUINO
+#ifdef ARDUINO // this one is just so my PC doesn't give a lot of errors
   OCR1A = 255;
   OCR3C = 255;
   OCR4A = 255;
   OCR3A = 255;
-  speed_motors[0] = (uint16_t*)&OCR1A;
-  speed_motors[1] = (uint16_t*)&OCR3C;
-  speed_motors[2] = (uint16_t*)&OCR4A;
-  speed_motors[3] = (uint16_t*)&OCR3A;
-#endif
+  speed_motors[0] = &OCR1A;
+  speed_motors[1] = &OCR3C;
+  speed_motors[2] = &OCR4A;
+  speed_motors[3] = &OCR3A;
+#endif // Arduino
 }
 
 Motor_Shield::~Motor_Shield()
