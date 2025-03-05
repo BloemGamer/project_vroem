@@ -66,24 +66,24 @@ void loop()
       if(measured_ultrasonic_distance_right > measured_ultrasonic_distance_left)
       {
         //rotate 90 degrees right and continue moving
-        motor_shield.(FORWARD, BACKWARD, FORWARD, BACKWARD);
+        motor_shield.change_motor_direction(FORWARD, BACKWARD, FORWARD, BACKWARD);
         delay(QUARTER_DELAY);
-        motor_shield.(FORWARD, FORWARD, FORWARD, FORWARD);
+        motor_shield.change_motor_direction(FORWARD, FORWARD, FORWARD, FORWARD);
       }
       else
       {
         //rotate 90 degrees left and continue moving
-        motor_shield.(BACKWARD, FORWARD, BACKWARD, FORWARD);
+        motor_shield.change_motor_direction(BACKWARD, FORWARD, BACKWARD, FORWARD);
         delay(QUARTER_DELAY);
-        motor_shield.(FORWARD, FORWARD, FORWARD, FORWARD);
+        motor_shield.change_motor_direction(FORWARD, FORWARD, FORWARD, FORWARD);
       }
     }
     else
     {
       //rotate 180 degrees and continue moving
-      motor_shield.(BACKWARD, FORWARD, BACKWARD, FORWARD);
+      motor_shield.change_motor_direction(BACKWARD, FORWARD, BACKWARD, FORWARD);
       delay(HALF_DELAY);
-      motor_shield.change_motor_dir(FORWARD, FORWARD, FORWARD, FORWARD);
+      motor_shield.change_motor_direction(FORWARD, FORWARD, FORWARD, FORWARD);
     }
   }
   if (measured_ultrasonic_distance_left < MAX_ULTRASONIC_WALL_DISTANCE_SIDES)
