@@ -54,7 +54,6 @@ public:
   void change_speed(int8_t motor, int8_t speed_m);
   void update_speed(void);
   void shift_out(uint8_t data);
-  uint8_t motor_state_(uint8_t motor, uint8_t direction);
 
   void change_motor_direction(uint8_t dir1, uint8_t dir2, uint8_t dir3, uint8_t dir4);
 
