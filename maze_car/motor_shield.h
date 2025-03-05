@@ -1,16 +1,25 @@
 #pragma once
 #include <stdint.h>
 
+<<<<<<< HEAD
 // #define DEBUG_MODE 1
+=======
+#define DEBUG_MODE 
+>>>>>>> 6f6ef161562131406c3f50ba9469ae0bac5932ef
 
-#define RF1 2
-#define RF2 3
 #define LF1 1
 #define LF2 4
-#define RB1 0
-#define RB2 6
+#define RF1 2
+#define RF2 3
 #define LB1 7
 #define LB2 5
+#define RB1 0
+#define RB2 6
+
+#define LF 0
+#define RF 1
+#define LB 2
+#define RB 3
 
 #define M_LF 0
 #define M_RF 1
@@ -26,6 +35,14 @@
 #define BACKWARD 1
 #define BREAK 2
 
+#ifdef ARDUINO // So my pc doesn't give errors
+
+#define SPEED_LF OCR1A
+#define SPEED_RF OCR3C
+#define SPEED_LB OCR4A
+#define SPEED_RB OCR3A
+
+#endif // ARDUINO
 
 
 class Motor_Shield
@@ -33,15 +50,14 @@ class Motor_Shield
 private:
   volatile uint16_t *speed_motors[4];
   uint8_t motor_state = 0;
+  void shift_out(uint8_t data);
 
 public:
   void set_speed(uint8_t speed_m1, uint8_t speed_m2, uint8_t speed_m3, uint8_t speed_m4);
-  void set_speed(uint8_t motor, uint8_t speed_m);
+  void set_speed(int8_t motor, uint8_t speed_m);
   void change_speed(int8_t speed_m1, int8_t speed_m2, int8_t speed_m3, int8_t speed_m4);
-  void change_speed(uint8_t motor, uint8_t speed_m);
+  void change_speed(int8_t motor, int8_t speed_m);
   void update_speed(void);
-  void shift_out(uint8_t data);
-  uint8_t motor_state_(uint8_t motor, uint8_t direction);
 
   void change_motor_direction(uint8_t dir1, uint8_t dir2, uint8_t dir3, uint8_t dir4);
 
