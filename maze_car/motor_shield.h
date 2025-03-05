@@ -3,14 +3,14 @@
 
 #define DEBUG_MODE 1
 
-#define LF1 2
-#define LF2 3
-#define RF1 1
-#define RF2 4
-#define LB1 0
-#define LB2 6
-#define RB1 5
-#define RB2 7
+#define RF1 2
+#define RF2 3
+#define LF1 1
+#define LF2 4
+#define RB1 0
+#define RB2 6
+#define LB1 7
+#define LB2 5
 
 #define M_LF 0
 #define M_RF 1
