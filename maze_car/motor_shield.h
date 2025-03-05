@@ -1,7 +1,11 @@
 #pragma once
 #include <stdint.h>
 
+<<<<<<< HEAD
+// #define DEBUG_MODE 1
+=======
 #define DEBUG_MODE 
+>>>>>>> 6f6ef161562131406c3f50ba9469ae0bac5932ef
 
 #define LF1 1
 #define LF2 4

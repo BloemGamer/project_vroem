@@ -14,13 +14,13 @@
 #define DISTANCE_SENSOR_RIGHT_TRIG A3
 #define DISTANCE_SENSOR_FRONT_TRIG A5
 //tuning
-#define MAX_ULTRASONIC_WALL_DISTANCE_FRONT 10
-#define MAX_ULTRASONIC_WALL_DISTANCE_SIDES 10
+#define MAX_ULTRASONIC_WALL_DISTANCE_FRONT 5
+#define MAX_ULTRASONIC_WALL_DISTANCE_SIDES 5
 #define INPUT_AMOUTH 5
 #define OUTPUT_AMOUTH 3
-#define CAR_WIDTH 20
+#define CAR_WIDTH 17
 #define PATH_WIDTH 30
-#define STANDARD_FORWARD_SPEED (uint8_t)255
+#define STANDARD_FORWARD_SPEED (uint8_t)50
 #define QUARTER_DELAY 500
 #define HALF_DELAY 1000
 #define STRAFE_DELAY 20
@@ -51,12 +51,13 @@ void setup()
   {
     pinMode(outputs[i], OUTPUT);
   }
-  motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
+  motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, 255, STANDARD_FORWARD_SPEED);
 }
 
 void loop()
 {
   take_measurements();
+  
   motor_shield.update_speed();
   if (measured_ultrasonic_distance_front < MAX_ULTRASONIC_WALL_DISTANCE_FRONT)
   {
@@ -91,14 +92,14 @@ void loop()
     //strafe right
     motor_shield.change_speed(-STRAFE_CONSTANT, 0, 0, -STRAFE_CONSTANT);
     delay(STRAFE_DELAY);
-    motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
+    motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, 255, STANDARD_FORWARD_SPEED);
   }
   if (measured_ultrasonic_distance_right < MAX_ULTRASONIC_WALL_DISTANCE_SIDES)
   {
     //strafe left
     motor_shield.change_speed(0, -STRAFE_CONSTANT, -STRAFE_CONSTANT, 0);
     delay(STRAFE_DELAY);
-    motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
+    motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, 255, STANDARD_FORWARD_SPEED);
   }
 }
 
