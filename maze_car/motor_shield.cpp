@@ -51,10 +51,12 @@ void Motor_Shield::set_speed(uint8_t motor, uint8_t speed_m)
 
 void Motor_Shield::change_speed(int8_t speed_lf, int8_t speed_rf, int8_t speed_lb, int8_t speed_rb)
 {
-  *(speed_motors[M_LF]) = max(255, *speed_motors[M_LF] + speed_lf);
-  *(speed_motors[M_RF]) = max(255, *speed_motors[M_RF] + speed_rf);
-  *(speed_motors[M_LB]) = max(255, *speed_motors[M_LB] + speed_lb);
-  *(speed_motors[M_RB]) = max(255, *speed_motors[M_RB] + speed_rb);
+#ifdef ARDUINO
+  SPEED_LF = max(255, SPEED_LF + speed_lf);
+  SPEED_RF = max(255, SPEED_RF + speed_rf);
+  SPEED_LB = max(255, SPEED_LB + speed_lb);
+  SPEED_RB = max(255, SPEED_RB + speed_rb);
+#endif // ARDUINO
 }
 
 void Motor_Shield::change_speed(uint8_t motor, uint8_t speed_m)
