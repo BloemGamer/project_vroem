@@ -32,7 +32,7 @@ void Motor_Shield::set_speed(uint8_t speed_lf, uint8_t speed_rf, uint8_t speed_l
 #endif // ARDUINO
 }
 
-void Motor_Shield::set_speed(uint8_t motor, uint8_t speed_m)
+void Motor_Shield::set_speed(int8_t motor, uint8_t speed_m)
 {
 #ifdef ARDUINO
   switch(motor)
@@ -59,7 +59,7 @@ void Motor_Shield::change_speed(int8_t speed_lf, int8_t speed_rf, int8_t speed_l
 #endif // ARDUINO
 }
 
-void Motor_Shield::change_speed(uint8_t motor, uint8_t speed_m)
+void Motor_Shield::change_speed(int8_t motor, int8_t speed_m)
 {
 #ifdef ARDUINO
   switch(motor)

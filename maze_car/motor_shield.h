@@ -49,9 +49,9 @@ private:
 
 public:
   void set_speed(uint8_t speed_m1, uint8_t speed_m2, uint8_t speed_m3, uint8_t speed_m4);
-  void set_speed(uint8_t motor, uint8_t speed_m);
+  void set_speed(int8_t motor, uint8_t speed_m);
   void change_speed(int8_t speed_m1, int8_t speed_m2, int8_t speed_m3, int8_t speed_m4);
-  void change_speed(uint8_t motor, uint8_t speed_m);
+  void change_speed(int8_t motor, int8_t speed_m);
   void update_speed(void);
   void shift_out(uint8_t data);
   uint8_t motor_state_(uint8_t motor, uint8_t direction);
