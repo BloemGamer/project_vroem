@@ -104,6 +104,7 @@ void Motor_Shield::change_motor_direction(uint8_t dir1, uint8_t dir2, uint8_t di
   change_motor_dir(RF1, RF2, dir2);
   change_motor_dir(LB1, LB2, dir3);
   change_motor_dir(RB1, RB2, dir4);
+  update_speed();
 }
 
 Motor_Shield::~Motor_Shield()
