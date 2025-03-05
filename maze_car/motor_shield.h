@@ -3,14 +3,19 @@
 
 #define DEBUG_MODE 1
 
-#define RF1 2
-#define RF2 3
 #define LF1 1
 #define LF2 4
-#define RB1 0
-#define RB2 6
+#define RF1 2
+#define RF2 3
 #define LB1 7
 #define LB2 5
+#define RB1 0
+#define RB2 6
+
+#define LF 0
+#define RF 1
+#define LB 2
+#define RB 3
 
 #define M_LF 0
 #define M_RF 1
@@ -26,6 +31,14 @@
 #define BACKWARD 1
 #define BREAK 2
 
+#ifdef ARDUINO // So my pc doesn't give errors
+
+#define SPEED_LF ORC1A
+#define SPEED_RF ORC3C
+#define SPEED_LB ORC4A
+#define SPEED_RB ORC3A
+
+#endif // ARDUINO
 
 
 class Motor_Shield

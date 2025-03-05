@@ -18,23 +18,35 @@ switch(dir) \
   case(BREAK): \
     motor_state &= ~(1 << (a)); \
     motor_state &= (1 << (b)); \
-  default: \
-     break; \
 } 
 
 
 
 void Motor_Shield::set_speed(uint8_t speed_lf, uint8_t speed_rf, uint8_t speed_lb, uint8_t speed_rb)
 {
-  *(speed_motors[M_LF]) = speed_lf;
-  *(speed_motors[M_RF]) = speed_rf;
-  *(speed_motors[M_LB]) = speed_lb;
-  *(speed_motors[M_RB]) = speed_rb;
+#ifdef ARDUINO
+  SPEED_LF = speed_lf;
+  SPEED_RF = speed_rf;
+  SPEED_LB = speed_lb;
+  SPEED_RB = speed_rb;
+#endif // ARDUINO
 }
 
 void Motor_Shield::set_speed(uint8_t motor, uint8_t speed_m)
 {
-  *(speed_motors[motor]) = speed_m;
+#ifdef ARDUINO
+  switch(motor)
+  {
+    case(LF):
+      SPEED_LF = speed_m; break;
+    case(RF):
+      SPEED_RF = speed_m; break;
+    case(LB):
+      SPEED_LB = speed_m; break;
+    case(RB):
+      SPEED_RB = speed_m; break;
+ }
+#endif // ARDUINO 
 }
 
 void Motor_Shield::change_speed(int8_t speed_lf, int8_t speed_rf, int8_t speed_lb, int8_t speed_rb)
