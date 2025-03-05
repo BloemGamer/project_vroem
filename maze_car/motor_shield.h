@@ -1,6 +1,7 @@
 #pragma once
 #include <stdint.h>
 
+#define DEBUG_MODE 1
 
 #define LF1 2
 #define LF2 3
@@ -36,11 +37,13 @@ private:
 public:
   void set_speed(uint8_t speed_m1, uint8_t speed_m2, uint8_t speed_m3, uint8_t speed_m4);
   void set_speed(uint8_t motor, uint8_t speed_m);
-  void change_speed(uint8_t speed_m1, uint8_t speed_m2, uint8_t speed_m3, uint8_t speed_m4);
+  void change_speed(int8_t speed_m1, int8_t speed_m2, int8_t speed_m3, int8_t speed_m4);
   void change_speed(uint8_t motor, uint8_t speed_m);
   void update_speed(void);
   void shift_out(uint8_t data);
   uint8_t motor_state_(uint8_t motor, uint8_t direction);
+
+  void change_motor_direction(uint8_t dir1, uint8_t dir2, uint8_t dir3, uint8_t dir4);
 
   Motor_Shield(void);
   ~Motor_Shield(void);
