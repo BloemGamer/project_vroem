@@ -12,11 +12,6 @@
 #define RB1 0
 #define RB2 6
 
-#define LF 0
-#define RF 1
-#define LB 2
-#define RB 3
-
 #define M_LF 0
 #define M_RF 1
 #define M_LB 2

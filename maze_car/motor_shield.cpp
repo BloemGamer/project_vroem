@@ -34,13 +34,13 @@ void Motor_Shield::set_speed(int8_t motor, uint8_t speed_m)
 #ifdef ARDUINO
   switch(motor)
   {
-    case(LF):
+    case(M_LF):
       SPEED_LF = speed_m; break;
-    case(RF):
+    case(M_RF):
       SPEED_RF = speed_m; break;
-    case(LB):
+    case(M_LB):
       SPEED_LB = speed_m; break;
-    case(RB):
+    case(M_RB):
       SPEED_RB = speed_m; break;
  }
 #endif // ARDUINO 
@@ -61,13 +61,13 @@ void Motor_Shield::change_speed(int8_t motor, int8_t speed_m)
 #ifdef ARDUINO
   switch(motor)
   {
-    case(LF):
+    case(M_LF):
       SPEED_LF = (min(255, SPEED_LF + speed_m)); break;
-    case(RF):
+    case(M_RF):
       SPEED_RF = (min(255, SPEED_RF + speed_m)); break;
-    case(LB):
+    case(M_LB):
       SPEED_LB = (min(255, SPEED_LB + speed_m)); break;
-    case(RB):
+    case(M_RB):
       SPEED_RB = (min(255, SPEED_RB + speed_m)); break;
  }
 #endif
@@ -107,15 +107,6 @@ Motor_Shield::Motor_Shield(void)
   OCR3C = 255;
   OCR4A = 255;
   OCR3A = 255;
-
-  // TCCR1A |= _BV(COM1A1) | _BV(WGM10); // fast PWM, turn on oc1a
-  // TCCR1B = (3 & 0x7) | _BV(WGM12);
-  // TCCR3A |= _BV(COM1C1) | _BV(WGM10); // fast PWM, turn on oc3c
-  // TCCR3B = (3 & 0x7) | _BV(WGM12);
-  // TCCR4A |= _BV(COM1A1) | _BV(WGM10);
-  // TCCR4B = (3 & 0x7) | _BV(WGM12); 
-  // TCCR3A |= _BV(COM1A1) | _BV(WGM10); // fast PWM, turn on oc3a
-  // TCCR3B = (3 & 0x7) | _BV(WGM12);
 
   speed_motors[0] = &OCR1A;
   speed_motors[1] = &OCR3C;
