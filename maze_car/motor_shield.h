@@ -21,6 +21,10 @@
 #define ENABLE_PIN 7
 #define DATA_PIN 8
 
+#define FORWARD 0
+#define BACKWARD 1
+#define BREAK 2
+
 
 
 class Motor_Shield
