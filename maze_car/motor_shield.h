@@ -1,7 +1,7 @@
 #pragma once
 #include <stdint.h>
 
-#define DEBUG_MODE 1
+// #define DEBUG_MODE 1
 
 #define RF1 2
 #define RF2 3
