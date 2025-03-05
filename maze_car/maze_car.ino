@@ -3,16 +3,19 @@
 #include "Servo.h"
 // #include "test.h"
 #include <NewPing.h>
+
 //constants -> inputs
 #define IR_SENSOR_LEFT 51
 #define IR_SENSOR_RIGHT 52
 #define DISTANCE_SENSOR_LEFT_ECHO A0
 #define DISTANCE_SENSOR_RIGHT_ECHO A2
 #define DISTANCE_SENSOR_FRONT_ECHO A4
+
 //constants -> outputs
 #define DISTANCE_SENSOR_LEFT_TRIG A1
 #define DISTANCE_SENSOR_RIGHT_TRIG A3
 #define DISTANCE_SENSOR_FRONT_TRIG A5
+
 //tuning
 #define MAX_ULTRASONIC_WALL_DISTANCE_FRONT 5
 #define MAX_ULTRASONIC_WALL_DISTANCE_SIDES 5
@@ -25,13 +28,16 @@
 #define HALF_DELAY 1500
 #define STRAFE_DELAY 20
 #define STRAFE_CONSTANT 50
+
 //sensor array
 const int8_t inputs[INPUT_AMOUTH] = {IR_SENSOR_LEFT, IR_SENSOR_RIGHT, DISTANCE_SENSOR_LEFT_ECHO, DISTANCE_SENSOR_RIGHT_ECHO, DISTANCE_SENSOR_FRONT_ECHO};
 const int8_t outputs[OUTPUT_AMOUTH] = {DISTANCE_SENSOR_LEFT_TRIG, DISTANCE_SENSOR_RIGHT_TRIG, DISTANCE_SENSOR_FRONT_TRIG};
+
 //library objects
 NewPing sonarLeft(DISTANCE_SENSOR_LEFT_TRIG, DISTANCE_SENSOR_LEFT_ECHO, 300);
 NewPing sonarRight(DISTANCE_SENSOR_RIGHT_TRIG, DISTANCE_SENSOR_RIGHT_ECHO, 300);
 NewPing sonarFront(DISTANCE_SENSOR_FRONT_TRIG, DISTANCE_SENSOR_FRONT_ECHO, 300);
+
 //variables
 bool ir_right_trigged = false;
 bool ir_left_trigged = false;
@@ -39,10 +45,6 @@ long duration1, duration2, duration3;
 unsigned int measured_ultrasonic_distance_left, measured_ultrasonic_distance_right, measured_ultrasonic_distance_front;
 
 Motor_Shield motor_shield;
-// AF_DCMotor m1(1);
-// AF_DCMotor m2(1);
-// AF_DCMotor m3(1);
-// AF_DCMotor m4(1);
 
 void setup()
 {
@@ -56,14 +58,13 @@ void setup()
     pinMode(outputs[i], OUTPUT);
   }
   motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
-  motor_shield.change_motor_direction(0, 0, 0, 0);
 }
 
 void loop()
 {
   take_measurements();
-  
-  motor_shield.update_speed();
+  motor_shield.update_speed(); // this one shouldn't be necessary
+
   if (measured_ultrasonic_distance_front < MAX_ULTRASONIC_WALL_DISTANCE_FRONT)
   {
     if((measured_ultrasonic_distance_left + measured_ultrasonic_distance_right + CAR_WIDTH) > PATH_WIDTH)
