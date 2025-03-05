@@ -1,11 +1,8 @@
 #include "Arduino.h"
 #include "motor_shield.h"
 
-// these ones aren't correct and will NOT be used in the final version of the library
-// uint8_t md[] = {0x04, 0x02, 0x01, 0x20};
-// uint8_t motors_d[] = {0x04,0x10,0x01,0x40 };
-// uint8_t motors_r[] = {0x08,0x02,0x40,0x80 };
-
+// bitwise black magic
+//
 #define change_motor_dir(a, b, dir) \
 switch(dir) \
 { \
@@ -78,13 +75,6 @@ void Motor_Shield::change_speed(int8_t motor, int8_t speed_m)
 
 void Motor_Shield::update_speed()
 {
-  /* uint8_t m_data = 0;
-  for(uint8_t m = 0; m < 8; m++)
-  {
-    m_data = 1<<m;
-    shift_out(m_data);
-    delay(200);
-  } */
   shift_out(motor_state);
 }
 
