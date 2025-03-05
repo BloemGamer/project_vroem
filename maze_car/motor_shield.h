@@ -1,7 +1,7 @@
 #pragma once
 #include <stdint.h>
 
-#define DEBUG_MODE 
+// #define DEBUG_MODE 
 
 #define LF1 1
 #define LF2 4
@@ -33,9 +33,9 @@
 
 #ifdef ARDUINO // So my pc doesn't give errors
 
-#define SPEED_LF OCR1A
+#define SPEED_LB OCR1A
 #define SPEED_RF OCR3C
-#define SPEED_LB OCR4A
+#define SPEED_LF OCR4A
 #define SPEED_RB OCR3A
 
 #endif // ARDUINO

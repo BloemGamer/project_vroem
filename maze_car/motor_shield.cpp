@@ -108,14 +108,14 @@ Motor_Shield::Motor_Shield(void)
   OCR4A = 255;
   OCR3A = 255;
 
-  TCCR1A |= _BV(COM1A1) | _BV(WGM10); // fast PWM, turn on oc1a
-  TCCR1B = (3 & 0x7) | _BV(WGM12);
-  TCCR3A |= _BV(COM1C1) | _BV(WGM10); // fast PWM, turn on oc3c
-  TCCR3B = (3 & 0x7) | _BV(WGM12);
-  TCCR4A |= _BV(COM1A1) | _BV(WGM10);
-  TCCR4B = (3 & 0x7) | _BV(WGM12); 
-  TCCR3A |= _BV(COM1A1) | _BV(WGM10); // fast PWM, turn on oc3a
-  TCCR3B = (3 & 0x7) | _BV(WGM12);
+  // TCCR1A |= _BV(COM1A1) | _BV(WGM10); // fast PWM, turn on oc1a
+  // TCCR1B = (3 & 0x7) | _BV(WGM12);
+  // TCCR3A |= _BV(COM1C1) | _BV(WGM10); // fast PWM, turn on oc3c
+  // TCCR3B = (3 & 0x7) | _BV(WGM12);
+  // TCCR4A |= _BV(COM1A1) | _BV(WGM10);
+  // TCCR4B = (3 & 0x7) | _BV(WGM12); 
+  // TCCR3A |= _BV(COM1A1) | _BV(WGM10); // fast PWM, turn on oc3a
+  // TCCR3B = (3 & 0x7) | _BV(WGM12);
 
   speed_motors[0] = &OCR1A;
   speed_motors[1] = &OCR3C;

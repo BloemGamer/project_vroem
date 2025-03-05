@@ -20,7 +20,7 @@
 #define OUTPUT_AMOUTH 3
 #define CAR_WIDTH 17
 #define PATH_WIDTH 27
-#define STANDARD_FORWARD_SPEED (uint8_t)50
+#define STANDARD_FORWARD_SPEED (uint8_t)255
 #define QUARTER_DELAY 750
 #define HALF_DELAY 1500
 #define STRAFE_DELAY 20
@@ -39,6 +39,10 @@ long duration1, duration2, duration3;
 unsigned int measured_ultrasonic_distance_left, measured_ultrasonic_distance_right, measured_ultrasonic_distance_front;
 
 Motor_Shield motor_shield;
+// AF_DCMotor m1(1);
+// AF_DCMotor m2(1);
+// AF_DCMotor m3(1);
+// AF_DCMotor m4(1);
 
 void setup()
 {
@@ -51,7 +55,8 @@ void setup()
   {
     pinMode(outputs[i], OUTPUT);
   }
-  motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, 255, STANDARD_FORWARD_SPEED);
+  motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
+  motor_shield.change_motor_direction(0, 0, 0, 0);
 }
 
 void loop()
