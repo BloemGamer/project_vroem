@@ -14,7 +14,7 @@ switch(dir) \
     motor_state |= 1 << (b); break; \
   case(BREAK): \
     motor_state &= ~(1 << (a)); \
-    motor_state &= (1 << (b)); \
+    motor_state &= (1 << (b)); break; \
 } 
 
 
