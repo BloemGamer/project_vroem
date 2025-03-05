@@ -109,7 +109,7 @@ void take_measurements()
   measured_ultrasonic_distance_left = sonarLeft.ping_cm();
   measured_ultrasonic_distance_right = sonarRight.ping_cm();
   measured_ultrasonic_distance_front = sonarFront.ping_cm();
- #ifdef DEBUG_MODE
+#ifdef DEBUG_MODE
   Serial.print("Left: ");
   Serial.println(measured_ultrasonic_distance_left);
   Serial.print("Right: ");
