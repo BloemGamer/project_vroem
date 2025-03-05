@@ -21,6 +21,10 @@
 #define CAR_WIDTH 20
 #define PATH_WIDTH 30
 #define STANDARD_FORWARD_SPEED (uint8_t)255
+#define QUARTER_DELAY 500
+#define HALF_DELAY 1000
+#define STRAFE_DELAY 20
+#define STRAFE_CONSTANT 50
 //sensor array
 const int8_t inputs[INPUT_AMOUTH] = {IR_SENSOR_LEFT, IR_SENSOR_RIGHT, DISTANCE_SENSOR_LEFT_ECHO, DISTANCE_SENSOR_RIGHT_ECHO, DISTANCE_SENSOR_FRONT_ECHO};
 const int8_t outputs[OUTPUT_AMOUTH] = {DISTANCE_SENSOR_LEFT_TRIG, DISTANCE_SENSOR_RIGHT_TRIG, DISTANCE_SENSOR_FRONT_TRIG};
@@ -56,31 +60,45 @@ void loop()
   motor_shield.update_speed();
   if (measured_ultrasonic_distance_front < MAX_ULTRASONIC_WALL_DISTANCE_FRONT)
   {
-    //stop moving
     if((measured_ultrasonic_distance_left + measured_ultrasonic_distance_right + CAR_WIDTH) > PATH_WIDTH)
     {
       //there is a free space next to the car
       if(measured_ultrasonic_distance_right > measured_ultrasonic_distance_left)
       {
         //rotate 90 degrees right and continue moving
+        motor_shield.(FORWARD, BACKWARD, FORWARD, BACKWARD);
+        delay(QUARTER_DELAY);
+        motor_shield.(FORWARD, FORWARD, FORWARD, FORWARD);
       }
       else
       {
         //rotate 90 degrees left and continue moving
+        motor_shield.(BACKWARD, FORWARD, BACKWARD, FORWARD);
+        delay(QUARTER_DELAY);
+        motor_shield.(FORWARD, FORWARD, FORWARD, FORWARD);
       }
     }
     else
     {
       //rotate 180 degrees and continue moving
+      motor_shield.(BACKWARD, FORWARD, BACKWARD, FORWARD);
+      delay(HALF_DELAY);
+      motor_shield.change_motor_dir(FORWARD, FORWARD, FORWARD, FORWARD);
     }
   }
   if (measured_ultrasonic_distance_left < MAX_ULTRASONIC_WALL_DISTANCE_SIDES)
   {
-    //strafe right 
+    //strafe right
+    motor_shield.change_speed(-STRAFE_CONSTANT, 0, 0, -STRAFE_CONSTANT);
+    delay(STRAFE_DELAY);
+    motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
   }
   if (measured_ultrasonic_distance_right < MAX_ULTRASONIC_WALL_DISTANCE_SIDES)
   {
     //strafe left
+    motor_shield.change_speed(0, -STRAFE_CONSTANT, -STRAFE_CONSTANT, 0);
+    delay(STRAFE_DELAY);
+    motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
   }
 }
 
