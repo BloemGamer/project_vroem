@@ -34,7 +34,7 @@ void Motor_Shield::set_speed(uint8_t speed_lf, uint8_t speed_rf, uint8_t speed_l
 
 void Motor_Shield::set_speed(uint8_t motor, uint8_t speed_m)
 {
-  *speed_motors[motor] = speed_m;
+  *(speed_motors[motor]) = speed_m;
 }
 
 void Motor_Shield::change_speed(int8_t speed_lf, int8_t speed_rf, int8_t speed_lb, int8_t speed_rb)
@@ -47,7 +47,7 @@ void Motor_Shield::change_speed(int8_t speed_lf, int8_t speed_rf, int8_t speed_l
 
 void Motor_Shield::change_speed(uint8_t motor, uint8_t speed_m)
 {
-  *speed_motors[motor] += speed_m;
+  *(speed_motors[motor]) += speed_m;
 }
 
 void Motor_Shield::update_speed()
