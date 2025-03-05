@@ -19,10 +19,10 @@
 #define INPUT_AMOUTH 5
 #define OUTPUT_AMOUTH 3
 #define CAR_WIDTH 17
-#define PATH_WIDTH 30
+#define PATH_WIDTH 27
 #define STANDARD_FORWARD_SPEED (uint8_t)50
-#define QUARTER_DELAY 500
-#define HALF_DELAY 1000
+#define QUARTER_DELAY 750
+#define HALF_DELAY 1500
 #define STRAFE_DELAY 20
 #define STRAFE_CONSTANT 50
 //sensor array
