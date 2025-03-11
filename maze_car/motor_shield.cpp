@@ -99,6 +99,7 @@ Motor_Shield::Motor_Shield(void)
   pinMode(CLOCK_PIN, OUTPUT);
 
   digitalWrite(ENABLE_PIN, LOW);
+  
 #ifdef ARDUINO // this one is just so my PC doesn't give a lot of errors
   // setting speed on full
   OCR1A = 255;
