@@ -1,5 +1,5 @@
 #pragma once
-#include <cstdint>
+#include <stdint.h>
 
 // #define DEBUG_MODE 
 
@@ -26,6 +26,11 @@
 #define BACKWARD 1
 #define BREAK 2
 
+#define LF_PIN 11
+#define RF_PIN 3
+#define LB_PIN 5
+#define RB_PIN 6
+
 #define GO_FORWARD FORWARD, FORWARD, FORWARD, FORWARD
 #define GO_BACK BACKWARD, BACKWARD, BACKWARD, BACKWARD
 #define GO_LEFT FORWARD, BACKWARD, FORWARD, BACKWARD
@@ -44,7 +49,7 @@
 class Motor_Shield
 {
 private:
-  volatile uint16_t *speed_motors[4];
+  uint8_t speed_motors[4];
   uint8_t motor_state = 0;
   void shift_out(uint8_t data);
 

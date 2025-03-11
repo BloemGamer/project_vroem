@@ -57,56 +57,57 @@ void setup()
   {
     pinMode(outputs[i], OUTPUT);
   }
-  motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
+  motor_shield.change_motor_direction(GO_FORWARD);
+  // motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
 }
 
 void loop()
 {
-  take_measurements();
+  // take_measurements();
   motor_shield.update_speed(); // this one shouldn't be necessary
 
-  if (measured_ultrasonic_distance_front < MAX_ULTRASONIC_WALL_DISTANCE_FRONT)
-  {
-    if((measured_ultrasonic_distance_left + measured_ultrasonic_distance_right + CAR_WIDTH) > PATH_WIDTH)
-    {
-      //there is a free space next to the car
-      if(measured_ultrasonic_distance_right > measured_ultrasonic_distance_left)
-      {
-        //rotate 90 degrees right and continue moving
-        motor_shield.change_motor_direction(FORWARD, BACKWARD, FORWARD, BACKWARD);
-        delay(QUARTER_DELAY);
-        motor_shield.change_motor_direction(FORWARD, FORWARD, FORWARD, FORWARD);
-      }
-      else
-      {
-        //rotate 90 degrees left and continue moving
-        motor_shield.change_motor_direction(BACKWARD, FORWARD, BACKWARD, FORWARD);
-        delay(QUARTER_DELAY);
-        motor_shield.change_motor_direction(FORWARD, FORWARD, FORWARD, FORWARD);
-      }
-    }
-    else
-    {
-      //rotate 180 degrees and continue moving
-      motor_shield.change_motor_direction(BACKWARD, FORWARD, BACKWARD, FORWARD);
-      delay(HALF_DELAY);
-      motor_shield.change_motor_direction(FORWARD, FORWARD, FORWARD, FORWARD);
-    }
-  }
-  if (measured_ultrasonic_distance_left < MAX_ULTRASONIC_WALL_DISTANCE_SIDES)
-  {
-    //strafe right
-    motor_shield.change_speed(-STRAFE_CONSTANT, 0, 0, -STRAFE_CONSTANT);
-    delay(STRAFE_DELAY);
-    motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, 255, STANDARD_FORWARD_SPEED);
-  }
-  if (measured_ultrasonic_distance_right < MAX_ULTRASONIC_WALL_DISTANCE_SIDES)
-  {
-    //strafe left
-    motor_shield.change_speed(0, -STRAFE_CONSTANT, -STRAFE_CONSTANT, 0);
-    delay(STRAFE_DELAY);
-    motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, 255, STANDARD_FORWARD_SPEED);
-  }
+  // if (measured_ultrasonic_distance_front < MAX_ULTRASONIC_WALL_DISTANCE_FRONT)
+  // {
+  //   if((measured_ultrasonic_distance_left + measured_ultrasonic_distance_right + CAR_WIDTH) > PATH_WIDTH)
+  //   {
+  //     //there is a free space next to the car
+  //     if(measured_ultrasonic_distance_right > measured_ultrasonic_distance_left)
+  //     {
+  //       //rotate 90 degrees right and continue moving
+  //       motor_shield.change_motor_direction(FORWARD, BACKWARD, FORWARD, BACKWARD);
+  //       delay(QUARTER_DELAY);
+  //       motor_shield.change_motor_direction(FORWARD, FORWARD, FORWARD, FORWARD);
+  //     }
+  //     else
+  //     {
+  //       //rotate 90 degrees left and continue moving
+  //       motor_shield.change_motor_direction(BACKWARD, FORWARD, BACKWARD, FORWARD);
+  //       delay(QUARTER_DELAY);
+  //       motor_shield.change_motor_direction(FORWARD, FORWARD, FORWARD, FORWARD);
+  //     }
+  //   }
+  //   else
+  //   {
+  //     //rotate 180 degrees and continue moving
+  //     motor_shield.change_motor_direction(BACKWARD, FORWARD, BACKWARD, FORWARD);
+  //     delay(HALF_DELAY);
+  //     motor_shield.change_motor_direction(FORWARD, FORWARD, FORWARD, FORWARD);
+  //   }
+  // }
+  // if (measured_ultrasonic_distance_left < MAX_ULTRASONIC_WALL_DISTANCE_SIDES)
+  // {
+  //   //strafe right
+  //   motor_shield.change_speed(-STRAFE_CONSTANT, 0, 0, -STRAFE_CONSTANT);
+  //   delay(STRAFE_DELAY);
+  //   motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, 255, STANDARD_FORWARD_SPEED);
+  // }
+  // if (measured_ultrasonic_distance_right < MAX_ULTRASONIC_WALL_DISTANCE_SIDES)
+  // {
+  //   //strafe left
+  //   motor_shield.change_speed(0, -STRAFE_CONSTANT, -STRAFE_CONSTANT, 0);
+  //   delay(STRAFE_DELAY);
+  //   motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, 255, STANDARD_FORWARD_SPEED);
+  // }
 }
 
 void take_measurements()

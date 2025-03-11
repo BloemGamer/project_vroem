@@ -23,10 +23,14 @@ switch(dir) \
 void Motor_Shield::set_speed(uint8_t speed_lf, uint8_t speed_rf, uint8_t speed_lb, uint8_t speed_rb)
 {
 #ifdef ARDUINO
-  SPEED_LF = speed_lf;
-  SPEED_RF = speed_rf;
-  SPEED_LB = speed_lb;
-  SPEED_RB = speed_rb;
+  analogWrite(LF_PIN, speed_lf);
+  speed_motors[M_LF] = speed_lf;
+  analogWrite(RF_PIN, speed_rf);
+  speed_motors[M_RF] = speed_rf;
+  analogWrite(LB_PIN, speed_lb);
+  speed_motors[M_LB] = speed_lb;
+  analogWrite(RB_PIN, speed_rb);
+  speed_motors[M_RB] = speed_rb;
 #endif // ARDUINO
 }
 
@@ -36,13 +40,17 @@ void Motor_Shield::set_speed(int8_t motor, uint8_t speed_m)
   switch(motor)
   {
     case(M_LF):
-      SPEED_LF = speed_m; break;
+      analogWrite(LF_pin, speed_m);
+      speed_motors[M_LF] = speed_m; break;
     case(M_RF):
-      SPEED_RF = speed_m; break;
+      analogWrite(RF_pin, speed_m);
+      speed_motors[M_RF] = speed_m; break;
     case(M_LB):
-      SPEED_LB = speed_m; break;
+      analogWrite(LB_pin, speed_m);
+      speed_motors[M_LB] = speed_m; break;
     case(M_RB):
-      SPEED_RB = speed_m; break;
+      analogWrite(RB_pin, speed_m);
+      speed_motors[M_RB] = speed_m; break;
  }
 #endif // ARDUINO 
 }
@@ -51,10 +59,14 @@ void Motor_Shield::set_speed(int8_t motor, uint8_t speed_m)
 void Motor_Shield::change_speed(int8_t speed_lf, int8_t speed_rf, int8_t speed_lb, int8_t speed_rb)
 {
 #ifdef ARDUINO
-  SPEED_LF = min(255, SPEED_LF + speed_lf);
-  SPEED_RF = min(255, SPEED_RF + speed_rf);
-  SPEED_LB = min(255, SPEED_LB + speed_lb);
-  SPEED_RB = min(255, SPEED_RB + speed_rb);
+  analogWrite(LF_PIN, speed_lf);
+  speed_motors[M_LF] += speed_lf;
+  analogWrite(RF_PIN, speed_rf);
+  speed_motors[M_RF] += speed_rf;
+  analogWrite(LB_PIN, speed_lb);
+  speed_motors[M_LB] += speed_lb;
+  analogWrite(RB_PIN, speed_rb);
+  speed_motors[M_RB] += speed_rb;
 #endif // ARDUINO
 }
 
@@ -64,20 +76,23 @@ void Motor_Shield::change_speed(int8_t motor, int8_t speed_m)
   switch(motor)
   {
     case(M_LF):
-      SPEED_LF = (min(255, SPEED_LF + speed_m)); break;
+      analogWrite(LF_PIN, speed_lf);
+      speed_motors[M_LF] += speed_m; break;
     case(M_RF):
-      SPEED_RF = (min(255, SPEED_RF + speed_m)); break;
+      analogWrite(RF_PIN, speed_rf);
+      speed_motors[M_RF] += speed_m; break;
     case(M_LB):
-      SPEED_LB = (min(255, SPEED_LB + speed_m)); break;
+      analogWrite(LB_PIN, speed_lb);
+      speed_motors[M_LB] += speed_m; break;
     case(M_RB):
-      SPEED_RB = (min(255, SPEED_RB + speed_m)); break;
+      analogWrite(RB_PIN, speed_rb);
+      speed_motors[M_RB] += speed_m; break;
  }
 #endif
 }
 
 void Motor_Shield::update_speed()
 {
-
   digitalWrite(MOTORLATCH, LOW);
   digitalWrite(DATA_PIN, LOW);
   for(uint8_t i = 0; i < 8; i++)
@@ -98,19 +113,34 @@ Motor_Shield::Motor_Shield(void)
   pinMode(DATA_PIN, OUTPUT);
   pinMode(CLOCK_PIN, OUTPUT);
 
+  pinMode(11, OUTPUT);
+  pinMode(3, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(6, OUTPUT);
+
+  digitalWrite(LF_PIN, HIGH);
+  digitalWrite(RF_PIN, HIGH);
+  digitalWrite(LB_PIN, HIGH);
+  digitalWrite(RB_PIN, HIGH);
+
+  // analogWrite(LF_PIN, 50);
+  // analogWrite(RF_PIN 50);
+  // analogWrite(LB_PIN, 50);
+  // analogWrite(RB_PIN, 255);
+
   digitalWrite(ENABLE_PIN, LOW);
   
 #ifdef ARDUINO // this one is just so my PC doesn't give a lot of errors
   // setting speed on full
-  OCR1A = 255;
-  OCR3C = 255;
-  OCR4A = 255;
-  OCR3A = 255;
+  // OCR1A = 255;
+  // OCR3C = 255;
+  // OCR4A = 255;
+  // OCR3A = 255;
 
-  speed_motors[0] = &OCR1A;
-  speed_motors[1] = &OCR3C;
-  speed_motors[2] = &OCR4A;
-  speed_motors[3] = &OCR3A;
+  // speed_motors[0] = &OCR1A;
+  // speed_motors[1] = &OCR3C;
+  // speed_motors[2] = &OCR4A;
+  // speed_motors[3] = &OCR3A;
 #endif // Arduino
 }
 
