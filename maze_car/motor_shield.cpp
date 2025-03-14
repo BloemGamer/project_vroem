@@ -118,15 +118,15 @@ Motor_Shield::Motor_Shield(void)
   pinMode(5, OUTPUT);
   pinMode(6, OUTPUT);
 
-  digitalWrite(LF_PIN, HIGH);
-  digitalWrite(RF_PIN, HIGH);
-  digitalWrite(LB_PIN, HIGH);
-  digitalWrite(RB_PIN, HIGH);
+  // digitalWrite(LF_PIN, HIGH);
+  // digitalWrite(RF_PIN, HIGH);
+  // digitalWrite(LB_PIN, HIGH);
+  // digitalWrite(RB_PIN, HIGH);
 
-  // analogWrite(LF_PIN, 50);
-  // analogWrite(RF_PIN 50);
-  // analogWrite(LB_PIN, 50);
-  // analogWrite(RB_PIN, 255);
+  analogWrite(LF_PIN, 255);
+  analogWrite(RF_PIN 255);
+  analogWrite(LB_PIN, 255);
+  analogWrite(RB_PIN, 255);
 
   digitalWrite(ENABLE_PIN, LOW);
   
