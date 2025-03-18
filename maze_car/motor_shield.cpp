@@ -40,16 +40,16 @@ void Motor_Shield::set_speed(int8_t motor, uint8_t speed_m)
   switch(motor)
   {
     case(M_LF):
-      analogWrite(LF_pin, speed_m);
+      analogWrite(LF_PIN, speed_m);
       speed_motors[M_LF] = speed_m; break;
     case(M_RF):
-      analogWrite(RF_pin, speed_m);
+      analogWrite(RF_PIN, speed_m);
       speed_motors[M_RF] = speed_m; break;
     case(M_LB):
-      analogWrite(LB_pin, speed_m);
+      analogWrite(LB_PIN, speed_m);
       speed_motors[M_LB] = speed_m; break;
     case(M_RB):
-      analogWrite(RB_pin, speed_m);
+      analogWrite(RB_PIN, speed_m);
       speed_motors[M_RB] = speed_m; break;
  }
 #endif // ARDUINO 
@@ -76,16 +76,16 @@ void Motor_Shield::change_speed(int8_t motor, int8_t speed_m)
   switch(motor)
   {
     case(M_LF):
-      analogWrite(LF_PIN, speed_lf);
+      analogWrite(LF_PIN, speed_m);
       speed_motors[M_LF] += speed_m; break;
     case(M_RF):
-      analogWrite(RF_PIN, speed_rf);
+      analogWrite(RF_PIN, speed_m);
       speed_motors[M_RF] += speed_m; break;
     case(M_LB):
-      analogWrite(LB_PIN, speed_lb);
+      analogWrite(LB_PIN, speed_m);
       speed_motors[M_LB] += speed_m; break;
     case(M_RB):
-      analogWrite(RB_PIN, speed_rb);
+      analogWrite(RB_PIN, speed_m);
       speed_motors[M_RB] += speed_m; break;
  }
 #endif
@@ -124,7 +124,7 @@ Motor_Shield::Motor_Shield(void)
   // digitalWrite(RB_PIN, HIGH);
 
   analogWrite(LF_PIN, 255);
-  analogWrite(RF_PIN 255);
+  analogWrite(RF_PIN, 255);
   analogWrite(LB_PIN, 255);
   analogWrite(RB_PIN, 255);
 

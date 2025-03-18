@@ -51,7 +51,6 @@ class Motor_Shield
 private:
   uint8_t speed_motors[4];
   uint8_t motor_state = 0;
-  void shift_out(uint8_t data);
 
 public:
   void set_speed(uint8_t speed_m1, uint8_t speed_m2, uint8_t speed_m3, uint8_t speed_m4);
