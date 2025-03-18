@@ -7,5 +7,5 @@ class Blue_Tooth
 private:
 
 public:
-  void bluetoothRead();
+  char bluetoothRead(void);
 };

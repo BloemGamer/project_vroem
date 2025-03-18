@@ -1,8 +1,10 @@
 //libraries
 #include "motor_shield.h"
+#include "bluetooth.h"
 #include "Servo.h"
 // #include "test.h"
 #include <NewPing.h>
+
 
 //constants -> inputs
 #define IR_SENSOR_LEFT 51
@@ -45,6 +47,7 @@ long duration1, duration2, duration3;
 unsigned int measured_ultrasonic_distance_left, measured_ultrasonic_distance_right, measured_ultrasonic_distance_front;
 
 Motor_Shield motor_shield;
+Blue_Tooth bluetooth;
 
 void setup()
 {
@@ -63,6 +66,7 @@ void setup()
 
 void loop()
 {
+  Serial.print(bluetooth.bluetoothRead());
   take_measurements();
   motor_shield.update_speed(); // this one shouldn't be necessary
 
