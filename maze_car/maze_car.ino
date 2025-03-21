@@ -47,7 +47,9 @@ long duration1, duration2, duration3;
 unsigned int measured_ultrasonic_distance_left, measured_ultrasonic_distance_right, measured_ultrasonic_distance_front;
 
 Motor_Shield motor_shield;
-Blue_Tooth bluetooth;
+#ifdef BLUETOOTH
+    Blue_Tooth bluetooth;
+#endif // BLUETOOTH
 
 void setup()
 {
@@ -66,9 +68,11 @@ void setup()
 
 void loop()
 {
+#ifdef BLUETOOTH
   Serial.print(bluetooth.bluetoothRead());
+#else // BLUETOOTH
+
   take_measurements();
-  motor_shield.update_speed(); // this one shouldn't be necessary
 
   if (measured_ultrasonic_distance_front < MAX_ULTRASONIC_WALL_DISTANCE_FRONT)
   {
@@ -112,6 +116,7 @@ void loop()
     delay(STRAFE_DELAY);
     motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
   }
+#endif // NOT BLUETOOTH
 }
 
 void take_measurements()

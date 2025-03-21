@@ -2,6 +2,8 @@
 #include <stdint.h>
 
 // #define DEBUG_MODE 
+#define BLUETOOTH
+
 
 #define LF1 1
 #define LF2 4
