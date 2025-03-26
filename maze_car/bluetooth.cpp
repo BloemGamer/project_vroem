@@ -10,4 +10,5 @@ char Blue_Tooth::bluetoothRead()
 //    Serial.println(bluetoothChar);
     return bluetoothChar;
   }
+  return '\0';
 }
