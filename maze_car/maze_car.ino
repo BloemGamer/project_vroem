@@ -31,6 +31,23 @@
 #define STRAFE_DELAY 20
 #define STRAFE_CONSTANT 20
 
+//bluetooth instructions
+#define BLUETOOTH_FORWARDS 'f'
+#define BLUETOOTH_BACKWARDS 'b'
+#define BLUETOOTH_ROTATE_LEFT 'l'
+#define BLUETOOTH_ROTATE_RIGHT 'r'
+#define BLUETOOTH_STRAFE_RIGHT 'y'
+#define BLUETOOTH_STRAFE_LEFT 'x'
+
+
+#ifdef BLUETOOTH
+char instruction;
+#elif defined TEST
+
+#else
+
+#endif
+
 //sensor array
 const int8_t inputs[INPUT_AMOUTH] = {IR_SENSOR_LEFT, IR_SENSOR_RIGHT, DISTANCE_SENSOR_LEFT_ECHO, DISTANCE_SENSOR_RIGHT_ECHO, DISTANCE_SENSOR_FRONT_ECHO};
 const int8_t outputs[OUTPUT_AMOUTH] = {DISTANCE_SENSOR_LEFT_TRIG, DISTANCE_SENSOR_RIGHT_TRIG, DISTANCE_SENSOR_FRONT_TRIG};
@@ -53,6 +70,7 @@ Motor_Shield motor_shield;
 void setup()
 {
   Serial.begin(9600);
+  Serial1.begin(9600);
   for(int8_t i = 0; i < INPUT_AMOUTH; i++)
   {
     pinMode(inputs[i], INPUT);
@@ -61,14 +79,47 @@ void setup()
   {
     pinMode(outputs[i], OUTPUT);
   }
-  motor_shield.change_motor_direction(GO_FORWARD);
+  // motor_shield.change_motor_direction(GO_FORWARD);
   motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
 }
 
 void loop()
 {
 #ifdef BLUETOOTH
-  Serial.print(bluetooth.bluetoothRead());
+  instruction = bluetooth.bluetoothRead();
+  Serial.println(instruction);
+  if(instruction != '\0')
+  {
+    motor_shield.set_speed(155, 155, 155, 155);
+    if(instruction == BLUETOOTH_FORWARDS)
+    {
+      Serial.println("forwards");
+      motor_shield.change_motor_direction(GO_FORWARD);
+    }
+    if(instruction == BLUETOOTH_BACKWARDS)
+    {
+      motor_shield.change_motor_direction(GO_BACK);
+    }
+    if(instruction == BLUETOOTH_ROTATE_LEFT)
+    {
+      motor_shield.change_motor_direction(GO_LEFT);
+    }
+    if(instruction == BLUETOOTH_ROTATE_RIGHT)
+    {
+      motor_shield.change_motor_direction(GO_RIGHT);
+    }
+    if(instruction == BLUETOOTH_STRAFE_RIGHT){
+      motor_shield.change_motor_direction(FORWARD, BACKWARD, BACKWARD, FORWARD);
+    }
+    if(instruction == BLUETOOTH_STRAFE_LEFT){
+      motor_shield.change_motor_direction(BACKWARD, FORWARD, FORWARD, BACKWARD);
+    }
+    if (instruction == 's')
+    {
+      Serial.println("stop");
+      motor_shield.change_motor_direction(STOP);
+    }
+  }
 #else // BLUETOOTH
 
   take_measurements();
