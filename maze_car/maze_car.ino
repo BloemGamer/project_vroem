@@ -66,6 +66,7 @@ bool ir_right_trigged = false;
 bool ir_left_trigged = false;
 unsigned int measured_ultrasonic_distance_left, measured_ultrasonic_distance_right, measured_ultrasonic_distance_front;
 const uint8_t* old_speed;
+unsigned long delay_time = 0;
 
 Motor_Shield motor_shield;
 Led_Matrix led_matrix;
@@ -140,52 +141,59 @@ void loop(void)
 
 #else // TEST & BLUETOOTH
   take_measurements();
-
-  if(measured_ultrasonic_distance_front < MAX_ULTRASONIC_WALL_DISTANCE_FRONT) // if to close to front wall
+  if(delay_time > millis())
   {
-    if((measured_ultrasonic_distance_left + measured_ultrasonic_distance_right + CAR_WIDTH) > PATH_WIDTH) // if there is a path right or left
+    if(measured_ultrasonic_distance_front < MAX_ULTRASONIC_WALL_DISTANCE_FRONT) // if to close to front wall
     {
-      //there is a free space next to the car
-      if(measured_ultrasonic_distance_right > measured_ultrasonic_distance_left)
+      if((measured_ultrasonic_distance_left + measured_ultrasonic_distance_right + CAR_WIDTH) > PATH_WIDTH) // if there is a path right or left
       {
-        //rotate 90 degrees right and continue moving
-        motor_shield.change_motor_direction(FORWARD, BACKWARD, FORWARD, BACKWARD);
-        delay(QUARTER_DELAY);
-        motor_shield.change_motor_direction(FORWARD, FORWARD, FORWARD, FORWARD);
+        //there is a free space next to the car
+        if(measured_ultrasonic_distance_right > measured_ultrasonic_distance_left)
+        {
+          //rotate 90 degrees right and continue moving
+          motor_shield.change_motor_direction(FORWARD, BACKWARD, FORWARD, BACKWARD);
+          //delay(QUARTER_DELAY);
+          delay_time = millis() + QUARTER_DELAY;
+          motor_shield.change_motor_direction(FORWARD, FORWARD, FORWARD, FORWARD);
+        }
+        else
+        {
+          //rotate 90 degrees left and continue moving
+          motor_shield.change_motor_direction(BACKWARD, FORWARD, BACKWARD, FORWARD);
+          //delay(QUARTER_DELAY);
+          delay_time = millis() + QUARTER_DELAY;
+          motor_shield.change_motor_direction(FORWARD, FORWARD, FORWARD, FORWARD);
+        }
       }
       else
       {
-        //rotate 90 degrees left and continue moving
+        //rotate 180 degrees and continue moving
         motor_shield.change_motor_direction(BACKWARD, FORWARD, BACKWARD, FORWARD);
-        delay(QUARTER_DELAY);
+        //delay(HALF_DELAY);
+        delay_time = millis() + HALF_DELAY;
         motor_shield.change_motor_direction(FORWARD, FORWARD, FORWARD, FORWARD);
       }
     }
-    else
+  
+  
+    else if(measured_ultrasonic_distance_left < MAX_ULTRASONIC_WALL_DISTANCE_SIDES)
     {
-      //rotate 180 degrees and continue moving
-      motor_shield.change_motor_direction(BACKWARD, FORWARD, BACKWARD, FORWARD);
-      delay(HALF_DELAY);
-      motor_shield.change_motor_direction(FORWARD, FORWARD, FORWARD, FORWARD);
+      //strafe right
+      old_speed = motor_shield.change_speed(-STRAFE_CONSTANT, 0, 0, -STRAFE_CONSTANT); // Hoe TF werkt dit??
+      //delay(STRAFE_DELAY);
+      delay_time = millis() + STRAFE_DELAY;
+      motor_shield.set_speed(old_speed);
+      // motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
     }
-  }
-
-
-  else if(measured_ultrasonic_distance_left < MAX_ULTRASONIC_WALL_DISTANCE_SIDES)
-  {
-    //strafe right
-    old_speed = motor_shield.change_speed(-STRAFE_CONSTANT, 0, 0, -STRAFE_CONSTANT); // Hoe TF werkt dit??
-    delay(STRAFE_DELAY);
-    motor_shield.set_speed(old_speed);
-    // motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
-  }
-  else if(measured_ultrasonic_distance_right < MAX_ULTRASONIC_WALL_DISTANCE_SIDES)
-  {
-    //strafe left
-    old_speed = motor_shield.change_speed(0, -STRAFE_CONSTANT, -STRAFE_CONSTANT, 0);
-    delay(STRAFE_DELAY);
-    motor_shield.set_speed(old_speed);
-    // motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
+    else if(measured_ultrasonic_distance_right < MAX_ULTRASONIC_WALL_DISTANCE_SIDES)
+    {
+      //strafe left
+      old_speed = motor_shield.change_speed(0, -STRAFE_CONSTANT, -STRAFE_CONSTANT, 0);
+      //delay(STRAFE_DELAY);
+      delay_time = millis() + STRAFE_DELAY;
+      motor_shield.set_speed(old_speed);
+      // motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
+    }
   }
 #endif // NOT BLUETOOTH && NOT TEST
 }
