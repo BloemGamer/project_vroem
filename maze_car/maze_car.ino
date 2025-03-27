@@ -69,7 +69,7 @@ Led_Matrix led_matrix;
     Blue_Tooth bluetooth;
 #endif // BLUETOOTH
 
-void setup()
+void setup(void)
 {
   Serial.begin(9600);
   Serial1.begin(9600);
@@ -85,7 +85,7 @@ void setup()
   motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
 }
 
-void loop()
+void loop(void)
 {
 #ifdef BLUETOOTH
   instruction = bluetooth.bluetoothRead();
@@ -110,18 +110,21 @@ void loop()
     {
       motor_shield.change_motor_direction(GO_RIGHT);
     }
-    if(instruction == BLUETOOTH_STRAFE_RIGHT){
+    if(instruction == BLUETOOTH_STRAFE_RIGHT)
+    {
       motor_shield.change_motor_direction(FORWARD, BACKWARD, BACKWARD, FORWARD);
     }
-    if(instruction == BLUETOOTH_STRAFE_LEFT){
+    if(instruction == BLUETOOTH_STRAFE_LEFT)
+    {
       motor_shield.change_motor_direction(BACKWARD, FORWARD, FORWARD, BACKWARD);
     }
-    if (instruction == 's')
+    if(instruction == 's')
     {
       Serial.println("stop");
       motor_shield.change_motor_direction(STOP);
     }
   }
+
 #elif defined TEST // BLUETOOTH
   motor_shield.change_motor_direction(STOP);
   led_matrix.show_sensors();
@@ -174,7 +177,7 @@ void loop()
 #endif // NOT BLUETOOTH && NOT TEST
 }
 
-void take_measurements()
+void take_measurements(void)
 {
   ir_right_trigged = digitalRead(IR_SENSOR_RIGHT);
   ir_left_trigged = digitalRead(IR_SENSOR_LEFT);
