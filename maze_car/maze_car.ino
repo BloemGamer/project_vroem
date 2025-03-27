@@ -88,9 +88,6 @@ void setup()
 void loop()
 {
 #ifdef BLUETOOTH
-<<<<<<< HEAD
-  Serial.print(bluetooth.bluetoothRead());
-=======
   instruction = bluetooth.bluetoothRead();
   Serial.println(instruction);
   if(instruction != '\0')
@@ -125,9 +122,6 @@ void loop()
       motor_shield.change_motor_direction(STOP);
     }
   }
-#else // BLUETOOTH
->>>>>>> refs/remotes/origin/main
-
 #elif defined TEST // BLUETOOTH
   motor_shield.change_motor_direction(STOP);
   led_matrix.show_sensors();
