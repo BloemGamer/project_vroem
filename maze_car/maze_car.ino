@@ -2,6 +2,7 @@
 #include "motor_shield.h"
 #include "bluetooth.h"
 #include "Servo.h"
+#include "led_matrix.h"
 // #include "test.h"
 #include <NewPing.h>
 
@@ -46,6 +47,7 @@ bool ir_left_trigged = false;
 unsigned int measured_ultrasonic_distance_left, measured_ultrasonic_distance_right, measured_ultrasonic_distance_front;
 
 Motor_Shield motor_shield;
+Led_Matrix led_matrix;
 #ifdef BLUETOOTH
     Blue_Tooth bluetooth;
 #endif // BLUETOOTH
@@ -61,7 +63,7 @@ void setup()
   {
     pinMode(outputs[i], OUTPUT);
   }
-  motor_shield.change_motor_direction(GO_FORWARD);
+  // motor_shield.change_motor_direction(GO_FORWARD);
   motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
 }
 
@@ -69,8 +71,12 @@ void loop()
 {
 #ifdef BLUETOOTH
   Serial.print(bluetooth.bluetoothRead());
-#else // BLUETOOTH
 
+#elif defined TEST // BLUETOOTH
+  motor_shield.change_motor_direction(STOP);
+  led_matrix.show_sensors();
+
+#else // TEST & BLUETOOTH
   take_measurements();
 
   if (measured_ultrasonic_distance_front < MAX_ULTRASONIC_WALL_DISTANCE_FRONT)
@@ -115,7 +121,7 @@ void loop()
     delay(STRAFE_DELAY);
     motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
   }
-#endif // NOT BLUETOOTH
+#endif // NOT BLUETOOTH && NOT TEST
 }
 
 void take_measurements()
