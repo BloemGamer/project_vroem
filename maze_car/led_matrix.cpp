@@ -1,4 +1,3 @@
-#include "LedControl.h"
 #include "Arduino.h"
 #include "led_matrix.h"
 /*
@@ -6,7 +5,6 @@
  CLK pin
  CS pin
 */
-LedControl lc=LedControl(45,47,49,1);
 
 // delay time between faces
 unsigned long delaytime=1000;
@@ -18,7 +16,7 @@ byte nf[8]={ 0b00111100,  0b01000010, 0b10100101, 0b10000001, 0b10111101, 0b1000
 // sad face
 byte sf[8]= { 0b00111100, 0b01000010, 0b10100101, 0b10000001, 0b10011001, 0b10100101, 0b01000010, 0b00111100 };
 
-led_matrix::led_matrix(void)
+Led_Matrix::led_matrix(void)
 {
   lc.shutdown(0,false);
   // Set brightness to a medium value
@@ -27,7 +25,7 @@ led_matrix::led_matrix(void)
   lc.clearDisplay(0);  
 }
 
-void led_matrix::draw(byte* picture)
+void Led_Matrix::draw(byte* picture)
 {
   // Display sad face
   lc.setRow(0,0,picture[0]);

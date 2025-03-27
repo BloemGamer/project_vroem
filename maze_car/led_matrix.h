@@ -1,12 +1,12 @@
 #include "LedControl.h"
 
-class led_matrix
+class Led_Matrix
 {
 private:
   LedControl lc=LedControl(45,47,49,1);
 
 public:
-  led_matrix(void);
+  Led_Matrix(void);
   void draw(byte* picture);
 };
 
