@@ -132,9 +132,9 @@ void loop(void)
 #else // TEST & BLUETOOTH
   take_measurements();
 
-  if (measured_ultrasonic_distance_front < MAX_ULTRASONIC_WALL_DISTANCE_FRONT)
+  if(measured_ultrasonic_distance_front < MAX_ULTRASONIC_WALL_DISTANCE_FRONT) // if to close to front wall
   {
-    if((measured_ultrasonic_distance_left + measured_ultrasonic_distance_right + CAR_WIDTH) > PATH_WIDTH)
+    if((measured_ultrasonic_distance_left + measured_ultrasonic_distance_right + CAR_WIDTH) > PATH_WIDTH) // if there is a path right or left
     {
       //there is a free space next to the car
       if(measured_ultrasonic_distance_right > measured_ultrasonic_distance_left)
@@ -160,14 +160,16 @@ void loop(void)
       motor_shield.change_motor_direction(FORWARD, FORWARD, FORWARD, FORWARD);
     }
   }
-  if (measured_ultrasonic_distance_left < MAX_ULTRASONIC_WALL_DISTANCE_SIDES)
+
+
+  else if(measured_ultrasonic_distance_left < MAX_ULTRASONIC_WALL_DISTANCE_SIDES)
   {
     //strafe right
     motor_shield.change_speed(-STRAFE_CONSTANT, 0, 0, -STRAFE_CONSTANT);
     delay(STRAFE_DELAY);
     motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
   }
-  if (measured_ultrasonic_distance_right < MAX_ULTRASONIC_WALL_DISTANCE_SIDES)
+  else if(measured_ultrasonic_distance_right < MAX_ULTRASONIC_WALL_DISTANCE_SIDES)
   {
     //strafe left
     motor_shield.change_speed(0, -STRAFE_CONSTANT, -STRAFE_CONSTANT, 0);
