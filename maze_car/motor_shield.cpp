@@ -74,13 +74,13 @@ void Motor_Shield::set_speed(int8_t motor, uint8_t speed_m)
 const uint8_t* Motor_Shield::change_speed(int8_t speed_lf, int8_t speed_rf, int8_t speed_lb, int8_t speed_rb)
 {
 #ifdef ARDUINO
-  speed_motors[M_LF] += speed_lf;
+  speed_motors[M_LF] += max(speed_motors[M_LF], speed_lf);
   analogWrite(LF_PIN, speed_motors[M_LF]);
-  speed_motors[M_RF] += speed_rf;
+  speed_motors[M_RF] += max(speed_motors[M_RF], speed_rf);
   analogWrite(RF_PIN, speed_motors[M_RF]);
-  speed_motors[M_LB] += speed_lb;
+  speed_motors[M_LB] += max(speed_motors[M_LB], speed_lb);
   analogWrite(LB_PIN, speed_motors[M_LB]);
-  speed_motors[M_RB] += speed_rb;
+  speed_motors[M_RB] += max(speed_motors[M_RB], speed_rb);
   analogWrite(RB_PIN, speed_motors[M_RB]);
 #endif // ARDUINO
   memcpy((void*)speed_motors, (void*)speed_motors_old, 4 * sizeof(uint8_t));
@@ -93,19 +93,19 @@ void Motor_Shield::change_speed(int8_t motor, int8_t speed_m)
   switch(motor)
   {
     case(M_LF):
-      speed_motors[M_LF] += speed_m;
+      speed_motors[M_LF] += max(speed_motors[M_LF], speed_m);
       analogWrite(LF_PIN, speed_motors[M_LF]);
       break;
     case(M_RF):
-      speed_motors[M_RF] += speed_m;
+      speed_motors[M_RF] += max(speed_motors[M_RF], speed_m);
       analogWrite(RF_PIN, speed_motors[M_RF]);
       break;
     case(M_LB):
-      speed_motors[M_LB] += speed_m;
+      speed_motors[M_LB] += max(speed_motors[M_LB], speed_m);
       analogWrite(LB_PIN, speed_motors[M_LB]);
       break;
     case(M_RB):
-      speed_motors[M_RB] += speed_m;
+      speed_motors[M_RB] += max(speed_motors[M_RB], speed_m);
       analogWrite(RB_PIN, speed_motors[M_RB]);
       break;
  }
