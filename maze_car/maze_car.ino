@@ -38,6 +38,8 @@
 #define BLUETOOTH_ROTATE_RIGHT 'r'
 #define BLUETOOTH_STRAFE_RIGHT 'y'
 #define BLUETOOTH_STRAFE_LEFT 'x'
+#define BLUETOOTH_SPEED_UP 'u'
+#define BLUETOOTH_SPEED_DOWN 'd'
 
 
 #ifdef BLUETOOTH
@@ -90,7 +92,12 @@ void loop()
   Serial.println(instruction);
   if(instruction != '\0')
   {
-    motor_shield.set_speed(155, 155, 155, 155);
+    if(instruction == BLUETOOTH_SPEED_UP)(
+      motor_shield.set_speed(255, 255, 255, 255);
+    )
+    if(instruction == BLUETOOTH_SPEED_DOWN)(
+      motor_shield.set_speed(50, 50, 50, 50);
+    )
     if(instruction == BLUETOOTH_FORWARDS)
     {
       Serial.println("forwards");
