@@ -7,8 +7,9 @@ char Blue_Tooth::bluetoothRead()
   if (Serial1.available())
   {
     char bluetoothChar = Serial1.read();
-//    Serial.println(bluetoothChar);
     return bluetoothChar;
   }
-  return '\0';
+  else{
+    return 1;
+  }
 }
