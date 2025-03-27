@@ -1,4 +1,6 @@
 #include "Arduino.h"
+#include <stdint.h>
+#include <string.h>
 #include "motor_shield.h"
 
 // bitwise black magic
@@ -18,7 +20,6 @@ switch(dir) \
     motor_state &= ~(1 << (b)); break; \
 } 
 
-
 // Set the PWM pin of the motors on the right value
 void Motor_Shield::set_speed(uint8_t speed_lf, uint8_t speed_rf, uint8_t speed_lb, uint8_t speed_rb)
 {
@@ -31,6 +32,20 @@ void Motor_Shield::set_speed(uint8_t speed_lf, uint8_t speed_rf, uint8_t speed_l
   speed_motors[M_LB] = speed_lb;
   analogWrite(RB_PIN, speed_rb);
   speed_motors[M_RB] = speed_rb;
+#endif // ARDUINO
+}
+
+void Motor_Shield::set_speed(uint8_t* speed)
+{
+#ifdef ARDUINO
+  analogWrite(LF_PIN, speed[M_LF]);
+  speed_motors[M_LF] = speed[M_LF]);
+  analogWrite(RF_PIN, speed[M_RF]);
+  speed_motors[M_RF] = speed[M_RF]);
+  analogWrite(LB_PIN, speed[M_LB]);
+  speed_motors[M_LB] = speed[M_LB]);
+  analogWrite(RB_PIN, speed[M_RB]);
+  speed_motors[M_RB] = speed[M_RB]);
 #endif // ARDUINO
 }
 
@@ -56,39 +71,45 @@ void Motor_Shield::set_speed(int8_t motor, uint8_t speed_m)
 }
 
 // changing the speed
-void Motor_Shield::change_speed(int8_t speed_lf, int8_t speed_rf, int8_t speed_lb, int8_t speed_rb)
+const uint8_t* Motor_Shield::change_speed(int8_t speed_lf, int8_t speed_rf, int8_t speed_lb, int8_t speed_rb)
 {
 #ifdef ARDUINO
-  analogWrite(LF_PIN, speed_lf);
   speed_motors[M_LF] += speed_lf;
-  analogWrite(RF_PIN, speed_rf);
+  analogWrite(LF_PIN, speed_motors[M_LF]);
   speed_motors[M_RF] += speed_rf;
-  analogWrite(LB_PIN, speed_lb);
+  analogWrite(RF_PIN, speed_motors[M_RF]);
   speed_motors[M_LB] += speed_lb;
-  analogWrite(RB_PIN, speed_rb);
+  analogWrite(LB_PIN, speed_motors[M_LB]);
   speed_motors[M_RB] += speed_rb;
+  analogWrite(RB_PIN, speed_motors[M_RB]);
 #endif // ARDUINO
+  memcpy((void*)speed_motors, (void*)speed_motors_old, 4 * sizeof(uint8_t));
+  return speed_motors_old;
 }
 
 void Motor_Shield::change_speed(int8_t motor, int8_t speed_m)
 {
-#ifdef ARDUINO
+// #ifdef ARDUINO
   switch(motor)
   {
     case(M_LF):
-      analogWrite(LF_PIN, speed_m);
-      speed_motors[M_LF] += speed_m; break;
+      speed_motors[M_LF] += speed_m;
+      analogWrite(LF_PIN, speed_motors[M_LF]);
+      break;
     case(M_RF):
-      analogWrite(RF_PIN, speed_m);
-      speed_motors[M_RF] += speed_m; break;
+      speed_motors[M_RF] += speed_m;
+      analogWrite(RF_PIN, speed_motors[M_RF]);
+      break;
     case(M_LB):
-      analogWrite(LB_PIN, speed_m);
-      speed_motors[M_LB] += speed_m; break;
+      speed_motors[M_LB] += speed_m;
+      analogWrite(LB_PIN, speed_motors[M_LB]);
+      break;
     case(M_RB):
-      analogWrite(RB_PIN, speed_m);
-      speed_motors[M_RB] += speed_m; break;
+      speed_motors[M_RB] += speed_m;
+      analogWrite(RB_PIN, speed_motors[M_RB]);
+      break;
  }
-#endif
+//#endif
 }
 
 void Motor_Shield::update_speed()

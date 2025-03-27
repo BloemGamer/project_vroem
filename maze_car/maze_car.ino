@@ -2,6 +2,7 @@
 #include "motor_shield.h"
 #include "bluetooth.h"
 #include "Servo.h"
+#include "led_matrix.h"
 // #include "test.h"
 #include <NewPing.h>
 
@@ -42,6 +43,7 @@
 #define BLUETOOTH_SPEED_DOWN 'd'
 
 
+
 #ifdef BLUETOOTH
 char instruction;
 #elif defined TEST
@@ -63,13 +65,15 @@ NewPing sonarFront(DISTANCE_SENSOR_FRONT_TRIG, DISTANCE_SENSOR_FRONT_ECHO, 300);
 bool ir_right_trigged = false;
 bool ir_left_trigged = false;
 unsigned int measured_ultrasonic_distance_left, measured_ultrasonic_distance_right, measured_ultrasonic_distance_front;
+const uint8_t* old_speed;
 
 Motor_Shield motor_shield;
+Led_Matrix led_matrix;
 #ifdef BLUETOOTH
     Blue_Tooth bluetooth;
 #endif // BLUETOOTH
 
-void setup()
+void setup(void)
 {
   Serial.begin(9600);
   Serial1.begin(9600);
@@ -85,7 +89,7 @@ void setup()
   motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
 }
 
-void loop()
+void loop(void)
 {
 #ifdef BLUETOOTH
   instruction = bluetooth.bluetoothRead();
@@ -115,25 +119,31 @@ void loop()
     {
       motor_shield.change_motor_direction(GO_RIGHT);
     }
-    if(instruction == BLUETOOTH_STRAFE_RIGHT){
+    if(instruction == BLUETOOTH_STRAFE_RIGHT)
+    {
       motor_shield.change_motor_direction(FORWARD, BACKWARD, BACKWARD, FORWARD);
     }
-    if(instruction == BLUETOOTH_STRAFE_LEFT){
+    if(instruction == BLUETOOTH_STRAFE_LEFT)
+    {
       motor_shield.change_motor_direction(BACKWARD, FORWARD, FORWARD, BACKWARD);
     }
-    if (instruction == 's')
+    if(instruction == 's')
     {
       Serial.println("stop");
       motor_shield.change_motor_direction(STOP);
     }
   }
-#else // BLUETOOTH
 
+#elif defined TEST // BLUETOOTH
+  motor_shield.change_motor_direction(STOP);
+  led_matrix.show_sensors();
+
+#else // TEST & BLUETOOTH
   take_measurements();
 
-  if (measured_ultrasonic_distance_front < MAX_ULTRASONIC_WALL_DISTANCE_FRONT)
+  if(measured_ultrasonic_distance_front < MAX_ULTRASONIC_WALL_DISTANCE_FRONT) // if to close to front wall
   {
-    if((measured_ultrasonic_distance_left + measured_ultrasonic_distance_right + CAR_WIDTH) > PATH_WIDTH)
+    if((measured_ultrasonic_distance_left + measured_ultrasonic_distance_right + CAR_WIDTH) > PATH_WIDTH) // if there is a path right or left
     {
       //there is a free space next to the car
       if(measured_ultrasonic_distance_right > measured_ultrasonic_distance_left)
@@ -159,24 +169,28 @@ void loop()
       motor_shield.change_motor_direction(FORWARD, FORWARD, FORWARD, FORWARD);
     }
   }
-  if (measured_ultrasonic_distance_left < MAX_ULTRASONIC_WALL_DISTANCE_SIDES)
+
+
+  else if(measured_ultrasonic_distance_left < MAX_ULTRASONIC_WALL_DISTANCE_SIDES)
   {
     //strafe right
-    motor_shield.change_speed(-STRAFE_CONSTANT, 0, 0, -STRAFE_CONSTANT);
+    old_speed = motor_shield.change_speed(-STRAFE_CONSTANT, 0, 0, -STRAFE_CONSTANT); // Hoe TF werkt dit??
     delay(STRAFE_DELAY);
-    motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
+    motor_shield.set_speed(old_speed);
+    // motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
   }
-  if (measured_ultrasonic_distance_right < MAX_ULTRASONIC_WALL_DISTANCE_SIDES)
+  else if(measured_ultrasonic_distance_right < MAX_ULTRASONIC_WALL_DISTANCE_SIDES)
   {
     //strafe left
-    motor_shield.change_speed(0, -STRAFE_CONSTANT, -STRAFE_CONSTANT, 0);
+    old_speed = motor_shield.change_speed(0, -STRAFE_CONSTANT, -STRAFE_CONSTANT, 0);
     delay(STRAFE_DELAY);
-    motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
+    motor_shield.set_speed(old_speed);
+    // motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
   }
-#endif // NOT BLUETOOTH
+#endif // NOT BLUETOOTH && NOT TEST
 }
 
-void take_measurements()
+void take_measurements(void)
 {
   ir_right_trigged = digitalRead(IR_SENSOR_RIGHT);
   ir_left_trigged = digitalRead(IR_SENSOR_LEFT);
