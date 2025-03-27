@@ -41,6 +41,7 @@
 #define BLUETOOTH_STRAFE_LEFT 'x'
 
 
+
 #ifdef BLUETOOTH
 char instruction;
 #elif defined TEST
@@ -62,6 +63,7 @@ NewPing sonarFront(DISTANCE_SENSOR_FRONT_TRIG, DISTANCE_SENSOR_FRONT_ECHO, 300);
 bool ir_right_trigged = false;
 bool ir_left_trigged = false;
 unsigned int measured_ultrasonic_distance_left, measured_ultrasonic_distance_right, measured_ultrasonic_distance_front;
+const uint8_t* old_speed;
 
 Motor_Shield motor_shield;
 Led_Matrix led_matrix;
@@ -165,17 +167,17 @@ void loop(void)
   else if(measured_ultrasonic_distance_left < MAX_ULTRASONIC_WALL_DISTANCE_SIDES)
   {
     //strafe right
-    motor_shield.change_speed(-STRAFE_CONSTANT, 0, 0, -STRAFE_CONSTANT); // Hoe TF werkt dit??
+    old_speed = motor_shield.change_speed(-STRAFE_CONSTANT, 0, 0, -STRAFE_CONSTANT); // Hoe TF werkt dit??
     delay(STRAFE_DELAY);
-    motor_shield.change_speed(STRAFE_CONSTANT, 0, 0, STRAFE_CONSTANT); // Hoe TF werkt dit??
+    motor_shield.set_speed(old_speed);
     // motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
   }
   else if(measured_ultrasonic_distance_right < MAX_ULTRASONIC_WALL_DISTANCE_SIDES)
   {
     //strafe left
-    motor_shield.change_speed(0, -STRAFE_CONSTANT, -STRAFE_CONSTANT, 0);
+    old_speed = motor_shield.change_speed(0, -STRAFE_CONSTANT, -STRAFE_CONSTANT, 0);
     delay(STRAFE_DELAY);
-    motor_shield.change_speed(0, STRAFE_CONSTANT, STRAFE_CONSTANT, 0);
+    motor_shield.set_speed(old_speed);
     // motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
   }
 #endif // NOT BLUETOOTH && NOT TEST

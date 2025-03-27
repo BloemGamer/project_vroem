@@ -71,7 +71,7 @@ void Motor_Shield::set_speed(int8_t motor, uint8_t speed_m)
 }
 
 // changing the speed
-uint8_t* Motor_Shield::change_speed(int8_t speed_lf, int8_t speed_rf, int8_t speed_lb, int8_t speed_rb)
+const uint8_t* Motor_Shield::change_speed(int8_t speed_lf, int8_t speed_rf, int8_t speed_lb, int8_t speed_rb)
 {
 #ifdef ARDUINO
   speed_motors[M_LF] += speed_lf;
