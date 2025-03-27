@@ -165,16 +165,18 @@ void loop(void)
   else if(measured_ultrasonic_distance_left < MAX_ULTRASONIC_WALL_DISTANCE_SIDES)
   {
     //strafe right
-    motor_shield.change_speed(-STRAFE_CONSTANT, 0, 0, -STRAFE_CONSTANT);
+    motor_shield.change_speed(-STRAFE_CONSTANT, 0, 0, -STRAFE_CONSTANT); // Hoe TF werkt dit??
     delay(STRAFE_DELAY);
-    motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
+    motor_shield.change_speed(STRAFE_CONSTANT, 0, 0, STRAFE_CONSTANT); // Hoe TF werkt dit??
+    // motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
   }
   else if(measured_ultrasonic_distance_right < MAX_ULTRASONIC_WALL_DISTANCE_SIDES)
   {
     //strafe left
     motor_shield.change_speed(0, -STRAFE_CONSTANT, -STRAFE_CONSTANT, 0);
     delay(STRAFE_DELAY);
-    motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
+    motor_shield.change_speed(0, STRAFE_CONSTANT, STRAFE_CONSTANT, 0);
+    // motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
   }
 #endif // NOT BLUETOOTH && NOT TEST
 }

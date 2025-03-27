@@ -1,4 +1,6 @@
 #include "Arduino.h"
+#include <stdint.h>
+#include <string.h>
 #include "motor_shield.h"
 
 // bitwise black magic
@@ -56,18 +58,20 @@ void Motor_Shield::set_speed(int8_t motor, uint8_t speed_m)
 }
 
 // changing the speed
-void Motor_Shield::change_speed(int8_t speed_lf, int8_t speed_rf, int8_t speed_lb, int8_t speed_rb)
+uint8_t* Motor_Shield::change_speed(int8_t speed_lf, int8_t speed_rf, int8_t speed_lb, int8_t speed_rb)
 {
 #ifdef ARDUINO
-  analogWrite(LF_PIN, speed_lf);
   speed_motors[M_LF] += speed_lf;
-  analogWrite(RF_PIN, speed_rf);
+  analogWrite(LF_PIN, speed_motors[M_LF]);
   speed_motors[M_RF] += speed_rf;
-  analogWrite(LB_PIN, speed_lb);
+  analogWrite(RF_PIN, speed_motors[M_RF]);
   speed_motors[M_LB] += speed_lb;
-  analogWrite(RB_PIN, speed_rb);
+  analogWrite(LB_PIN, speed_motors[M_LB]);
   speed_motors[M_RB] += speed_rb;
+  analogWrite(RB_PIN, speed_motors[M_RB]);
 #endif // ARDUINO
+  memcpy((void*)speed_motors, (void*)speed_motors_old, 4 * sizeof(uint8_t));
+  return speed_motors_old;
 }
 
 void Motor_Shield::change_speed(int8_t motor, int8_t speed_m)
