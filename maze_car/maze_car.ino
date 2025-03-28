@@ -199,7 +199,9 @@ void loop(void)
   }
   else
   {
+
   }
+  led_matrix.show_sensors(); 
 #endif // NOT BLUETOOTH && NOT TEST
 }
 
