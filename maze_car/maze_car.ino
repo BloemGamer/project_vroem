@@ -154,7 +154,7 @@ void loop(void)
           motor_shield.change_motor_direction(FORWARD, BACKWARD, FORWARD, BACKWARD);
           //delay(QUARTER_DELAY);
           delay_time = millis() + QUARTER_DELAY;
-          motor_shield.change_motor_direction(FORWARD, FORWARD, FORWARD, FORWARD);
+          // motor_shield.change_motor_direction(FORWARD, FORWARD, FORWARD, FORWARD);
         }
         else
         {
@@ -162,7 +162,7 @@ void loop(void)
           motor_shield.change_motor_direction(BACKWARD, FORWARD, BACKWARD, FORWARD);
           //delay(QUARTER_DELAY);
           delay_time = millis() + QUARTER_DELAY;
-          motor_shield.change_motor_direction(FORWARD, FORWARD, FORWARD, FORWARD);
+          // motor_shield.change_motor_direction(FORWARD, FORWARD, FORWARD, FORWARD);
         }
       }
       else
@@ -171,7 +171,7 @@ void loop(void)
         motor_shield.change_motor_direction(BACKWARD, FORWARD, BACKWARD, FORWARD);
         //delay(HALF_DELAY);
         delay_time = millis() + HALF_DELAY;
-        motor_shield.change_motor_direction(FORWARD, FORWARD, FORWARD, FORWARD);
+        // motor_shield.change_motor_direction(FORWARD, FORWARD, FORWARD, FORWARD);
       }
     }
   
@@ -182,7 +182,7 @@ void loop(void)
       old_speed = motor_shield.change_speed(-STRAFE_CONSTANT, 0, 0, -STRAFE_CONSTANT); // Hoe TF werkt dit??
       //delay(STRAFE_DELAY);
       delay_time = millis() + STRAFE_DELAY;
-      motor_shield.set_speed(old_speed);
+      // motor_shield.set_speed(old_speed);
       // motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
     }
     else if(measured_ultrasonic_distance_right < MAX_ULTRASONIC_WALL_DISTANCE_SIDES)
@@ -191,9 +191,14 @@ void loop(void)
       old_speed = motor_shield.change_speed(0, -STRAFE_CONSTANT, -STRAFE_CONSTANT, 0);
       //delay(STRAFE_DELAY);
       delay_time = millis() + STRAFE_DELAY;
-      motor_shield.set_speed(old_speed);
+      // motor_shield.set_speed(old_speed);
       // motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
     }
+  }
+  else
+  {
+    motor_shield.change_motor_direction(FORWARD, FORWARD, FORWARD, FORWARD);
+    motor_shield.set_speed(old_speed);
   }
 #endif // NOT BLUETOOTH && NOT TEST
 }
