@@ -143,6 +143,8 @@ void loop(void)
   take_measurements();
   if(delay_time > millis())
   {
+    motor_shield.change_motor_direction(FORWARD, FORWARD, FORWARD, FORWARD);
+    motor_shield.set_speed(old_speed);
     if(measured_ultrasonic_distance_front < MAX_ULTRASONIC_WALL_DISTANCE_FRONT) // if to close to front wall
     {
       if((measured_ultrasonic_distance_left + measured_ultrasonic_distance_right + CAR_WIDTH) > PATH_WIDTH) // if there is a path right or left
@@ -197,8 +199,6 @@ void loop(void)
   }
   else
   {
-    motor_shield.change_motor_direction(FORWARD, FORWARD, FORWARD, FORWARD);
-    motor_shield.set_speed(old_speed);
   }
 #endif // NOT BLUETOOTH && NOT TEST
 }
