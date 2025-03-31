@@ -200,7 +200,7 @@ void loop(void)
   }
   else
   {
-
+    // functions only run while turning or strafing
   }
   led_matrix.show_sensors(); 
 #endif // NOT BLUETOOTH && NOT TEST

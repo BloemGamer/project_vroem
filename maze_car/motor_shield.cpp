@@ -20,10 +20,8 @@ switch(dir) \
     motor_state &= ~(1 << (b)); break; \
 } 
 
-// Set the PWM pin of the motors on the right value
-void Motor_Shield::set_speed(uint8_t speed_lf, uint8_t speed_rf, uint8_t speed_lb, uint8_t speed_rb)
+void Motor_Shield::set_speed(uint8_t speed_lf, uint8_t speed_rf, uint8_t speed_lb, uint8_t speed_rb)// changing the speed by changing the PWM speed of the pins
 {
-#ifdef ARDUINO
   analogWrite(LF_PIN, speed_lf);
   speed_motors[M_LF] = speed_lf;
   analogWrite(RF_PIN, speed_rf);
@@ -32,12 +30,10 @@ void Motor_Shield::set_speed(uint8_t speed_lf, uint8_t speed_rf, uint8_t speed_l
   speed_motors[M_LB] = speed_lb;
   analogWrite(RB_PIN, speed_rb);
   speed_motors[M_RB] = speed_rb;
-#endif // ARDUINO
 }
 
 void Motor_Shield::set_speed(uint8_t* speed)
 {
-#ifdef ARDUINO
   analogWrite(LF_PIN, speed[M_LF]);
   speed_motors[M_LF] = speed[M_LF];
   analogWrite(RF_PIN, speed[M_RF]);
@@ -46,12 +42,10 @@ void Motor_Shield::set_speed(uint8_t* speed)
   speed_motors[M_LB] = speed[M_LB];
   analogWrite(RB_PIN, speed[M_RB]);
   speed_motors[M_RB] = speed[M_RB];
-#endif // ARDUINO
 }
 
 void Motor_Shield::set_speed(int8_t motor, uint8_t speed_m)
 {
-#ifdef ARDUINO
   switch(motor)
   {
     case(M_LF):
@@ -67,13 +61,10 @@ void Motor_Shield::set_speed(int8_t motor, uint8_t speed_m)
       analogWrite(RB_PIN, speed_m);
       speed_motors[M_RB] = speed_m; break;
  }
-#endif // ARDUINO 
 }
 
-// changing the speed
-const uint8_t* Motor_Shield::change_speed(int16_t speed_lf, int16_t speed_rf, int16_t speed_lb, int16_t speed_rb)
+const uint8_t* Motor_Shield::change_speed(int16_t speed_lf, int16_t speed_rf, int16_t speed_lb, int16_t speed_rb) // changing the speed by changing the PWM speed of the pins
 {
-//#ifdef ARDUINO
   speed_motors[M_LF] += (uint8_t)max(min((int16_t)255, speed_lf), 0);
   analogWrite(LF_PIN, speed_motors[M_LF]);
   speed_motors[M_RF] += (uint8_t)max(min((int16_t)255, speed_rf), 0);
@@ -82,14 +73,12 @@ const uint8_t* Motor_Shield::change_speed(int16_t speed_lf, int16_t speed_rf, in
   analogWrite(LB_PIN, speed_motors[M_LB]);
   speed_motors[M_RB] += (uint8_t)max(min((int16_t)255, speed_rb), 0);
   analogWrite(RB_PIN, speed_motors[M_RB]);
-//#endif // ARDUINO
   memcpy((void*)speed_motors, (void*)speed_motors_old, 4 * sizeof(uint8_t));
   return speed_motors_old;
 }
 
 void Motor_Shield::change_speed(int8_t motor, int16_t speed_m)
 {
-// #ifdef ARDUINO
   switch(motor)
   {
     case(M_LF):
@@ -109,10 +98,9 @@ void Motor_Shield::change_speed(int8_t motor, int16_t speed_m)
       analogWrite(RB_PIN, speed_motors[M_RB]);
       break;
  }
-//#endif
 }
 
-void Motor_Shield::update_speed()
+void Motor_Shield::update_speed() // shifts the motor_state to the motor shield
 {
   digitalWrite(MOTORLATCH, LOW);
   digitalWrite(DATA_PIN, LOW);
@@ -139,11 +127,6 @@ Motor_Shield::Motor_Shield(void)
   pinMode(5, OUTPUT);
   pinMode(6, OUTPUT);
 
-  // digitalWrite(LF_PIN, HIGH);
-  // digitalWrite(RF_PIN, HIGH);
-  // digitalWrite(LB_PIN, HIGH);
-  // digitalWrite(RB_PIN, HIGH);
-
   analogWrite(LF_PIN, 255);
   analogWrite(RF_PIN, 255);
   analogWrite(LB_PIN, 255);
@@ -151,7 +134,6 @@ Motor_Shield::Motor_Shield(void)
 
   digitalWrite(ENABLE_PIN, LOW);
   
-#ifdef ARDUINO // this one is just so my PC doesn't give a lot of errors
   // setting speed on full
   // OCR1A = 255;
   // OCR3C = 255;
@@ -162,7 +144,6 @@ Motor_Shield::Motor_Shield(void)
   // speed_motors[1] = &OCR3C;
   // speed_motors[2] = &OCR4A;
   // speed_motors[3] = &OCR3A;
-#endif // Arduino
 }
 
 // changing the direction of the motor
