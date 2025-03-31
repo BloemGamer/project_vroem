@@ -46,8 +46,7 @@ void Led_Matrix::draw(byte* picture)
 void Led_Matrix::show_sensors(void)
 {
     
-byte picture[8] = { 0 };
-  take_measurements();
+  byte picture[8] = { 0 };
 
   // ultrasoon sensors
   if(measured_ultrasonic_distance_front > 10)
