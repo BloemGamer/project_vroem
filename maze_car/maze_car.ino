@@ -142,6 +142,7 @@ void loop(void)
 
 #elif defined TEST // BLUETOOTH
   motor_shield.change_motor_direction(STOP);
+  take_measurements();
   led_matrix.show_sensors();
 
 #else // TEST & BLUETOOTH
