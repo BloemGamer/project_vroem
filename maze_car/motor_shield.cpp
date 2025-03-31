@@ -71,41 +71,41 @@ void Motor_Shield::set_speed(int8_t motor, uint8_t speed_m)
 }
 
 // changing the speed
-const uint8_t* Motor_Shield::change_speed(int8_t speed_lf, int8_t speed_rf, int8_t speed_lb, int8_t speed_rb)
+const uint8_t* Motor_Shield::change_speed(int16_t speed_lf, int16_t speed_rf, int16_t speed_lb, int16_t speed_rb)
 {
-#ifdef ARDUINO
-  speed_motors[M_LF] += min(255, speed_lf);
+//#ifdef ARDUINO
+  speed_motors[M_LF] += (uint8_t)min((int16_t)255, speed_lf);
   analogWrite(LF_PIN, speed_motors[M_LF]);
-  speed_motors[M_RF] += min(255, speed_rf);
+  speed_motors[M_RF] += (uint8_t)min((int16_t)255, speed_rf);
   analogWrite(RF_PIN, speed_motors[M_RF]);
-  speed_motors[M_LB] += min(255, speed_lb);
+  speed_motors[M_LB] += (uint8_t)min((int16_t)255, speed_lb);
   analogWrite(LB_PIN, speed_motors[M_LB]);
-  speed_motors[M_RB] += min(255, speed_rb);
+  speed_motors[M_RB] += (uint8_t)min((int16_t)255, speed_rb);
   analogWrite(RB_PIN, speed_motors[M_RB]);
-#endif // ARDUINO
+//#endif // ARDUINO
   memcpy((void*)speed_motors, (void*)speed_motors_old, 4 * sizeof(uint8_t));
   return speed_motors_old;
 }
 
-void Motor_Shield::change_speed(int8_t motor, int8_t speed_m)
+void Motor_Shield::change_speed(int8_t motor, int16_t speed_m)
 {
 // #ifdef ARDUINO
   switch(motor)
   {
     case(M_LF):
-      speed_motors[M_LF] += min(255, speed_m);
+      speed_motors[M_LF] += (uint8_t)min((int16_t)255, speed_m);
       analogWrite(LF_PIN, speed_motors[M_LF]);
       break;
     case(M_RF):
-      speed_motors[M_RF] += min(255, speed_m);
+      speed_motors[M_RF] += (uint8_t)min((int16_t)255, speed_m);
       analogWrite(RF_PIN, speed_motors[M_RF]);
       break;
     case(M_LB):
-      speed_motors[M_LB] += min(255, speed_m);
+      speed_motors[M_LB] += (uint8_t)min((int16_t)255, speed_m);
       analogWrite(LB_PIN, speed_motors[M_LB]);
       break;
     case(M_RB):
-      speed_motors[M_RB] += min(255, speed_m);
+      speed_motors[M_RB] += (uint8_t)min((int16_t)255, speed_m);
       analogWrite(RB_PIN, speed_motors[M_RB]);
       break;
  }
