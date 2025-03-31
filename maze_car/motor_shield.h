@@ -3,7 +3,7 @@
 
 // #define DEBUG_MODE 
 // #define BLUETOOTH
-#define TEST
+#define TEST_SENSORS
 
 
 #define LF1 1

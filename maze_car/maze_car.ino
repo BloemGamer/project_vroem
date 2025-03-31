@@ -45,8 +45,9 @@
 
 
 #ifdef BLUETOOTH
-char instruction;
-#elif defined TEST
+  Blue_Tooth bluetooth;
+  char instruction;
+#elif defined TEST_SENSORS
 
 #else
 
@@ -73,9 +74,6 @@ unsigned long delay_time = 0;
 
 Motor_Shield motor_shield;
 Led_Matrix led_matrix;
-#ifdef BLUETOOTH
-    Blue_Tooth bluetooth;
-#endif // BLUETOOTH
 
 void setup(void)
 {
@@ -140,7 +138,7 @@ void loop(void)
     }
   }
 
-#elif defined TEST // BLUETOOTH
+#elif defined TEST_SENSORS // BLUETOOTH
   motor_shield.change_motor_direction(STOP);
   take_measurements();
   led_matrix.show_sensors();
