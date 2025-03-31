@@ -6,6 +6,8 @@
  CS pin
 */
 
+extern bool ir_right_trigged;
+extern bool ir_left_trigged;
 extern unsigned int measured_ultrasonic_distance_left, measured_ultrasonic_distance_right, measured_ultrasonic_distance_front;
 void take_measurements(void);
 
@@ -44,8 +46,10 @@ void Led_Matrix::draw(byte* picture)
 void Led_Matrix::show_sensors(void)
 {
     
-  byte picture[8] = { 0 };
+byte picture[8] = { 0 };
   take_measurements();
+
+  // ultrasoon sensors
   if(measured_ultrasonic_distance_front > 10)
   {
     picture[3] |= 0b00011000;
@@ -102,6 +106,21 @@ void Led_Matrix::show_sensors(void)
       }
     }
   }
+
+  if(ir_left_trigged)
+  {
+    picture[0] |= 0b11000000;
+    picture[1] |= 0b10000000;
+  }
+  if(ir_right_trigged)
+  {
+    picture[0] |= 0b00000011;
+    picture[1] |= 0b00000001;
+  }
+
+
+
+
   draw(picture);
 
 
