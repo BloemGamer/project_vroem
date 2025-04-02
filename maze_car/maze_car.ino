@@ -8,8 +8,8 @@
 
 
 //constants -> inputs
-#define IR_SENSOR_LEFT 51
-#define IR_SENSOR_RIGHT 52
+#define IR_SENSOR_LEFT 28
+#define IR_SENSOR_RIGHT 29
 #define DISTANCE_SENSOR_LEFT_ECHO A0
 #define DISTANCE_SENSOR_RIGHT_ECHO A2
 #define DISTANCE_SENSOR_FRONT_ECHO A4
@@ -29,7 +29,7 @@
 #define STANDARD_FORWARD_SPEED 150
 #define QUARTER_DELAY 750
 #define HALF_DELAY 1500
-#define STRAFE_DELAY 20
+#define STRAFE_DELAY 50
 #define STRAFE_CONSTANT 20
 
 //bluetooth instructions
@@ -67,7 +67,6 @@ bool ir_right_trigged = false;
 bool ir_left_trigged = false;
 bool turning = false;
 unsigned int measured_ultrasonic_distance_left, measured_ultrasonic_distance_right, measured_ultrasonic_distance_front;
-const uint8_t* old_speed;
 unsigned long delay_time = 0;
 
 
@@ -145,12 +144,13 @@ void loop(void)
 
 #else // TEST & BLUETOOTH
   take_measurements();
-  if(delay_time > millis()) // if there is enough time between starting the turn and now/if not turning
+  if(delay_time < millis()) // if there is enough time between starting the turn and now/if not turning
   {
     if(turning) // reset the speed and direction
     {
-      motor_shield.change_motor_direction(FORWARD, FORWARD, FORWARD, FORWARD);
-      motor_shield.set_speed(old_speed);
+      Serial.println(turning);
+      motor_shield.change_motor_direction(GO_FORWARD);
+      motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
       turning = false; // make sure it only resets the speed and direction once
     }
     if(measured_ultrasonic_distance_front < MAX_ULTRASONIC_WALL_DISTANCE_FRONT) // if to close to front wall
@@ -158,6 +158,7 @@ void loop(void)
       if((measured_ultrasonic_distance_left + measured_ultrasonic_distance_right + CAR_WIDTH) > PATH_WIDTH) // if there is a path right or left
       {
         //there is a free space next to the car
+        Serial.print(": s");
         if(measured_ultrasonic_distance_right > measured_ultrasonic_distance_left)
         {
           //rotate 90 degrees right and continue moving
@@ -186,16 +187,20 @@ void loop(void)
     else if(measured_ultrasonic_distance_left < MAX_ULTRASONIC_WALL_DISTANCE_SIDES)
     {
       //strafe right
-      old_speed = motor_shield.change_speed(-STRAFE_CONSTANT, 0, 0, -STRAFE_CONSTANT); // Hoe TF werkt dit??
+      //motor_shield.change_speed(-STRAFE_CONSTANT, 0, 0, -STRAFE_CONSTANT); // Hoe TF werkt dit??
+      motor_shield.set_speed(STANDARD_FORWARD_SPEED - STRAFE_CONSTANT, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED - STRAFE_CONSTANT);
       delay_time = millis() + STRAFE_DELAY; // start the timer for when to reset and check again
       turning = true;
+      Serial.print(": s");
     }
     else if(measured_ultrasonic_distance_right < MAX_ULTRASONIC_WALL_DISTANCE_SIDES)
     {
       //strafe left
-      old_speed = motor_shield.change_speed(0, -STRAFE_CONSTANT, -STRAFE_CONSTANT, 0);
+      //motor_shield.change_speed(0, -STRAFE_CONSTANT, -STRAFE_CONSTANT, 0);
+      motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED - STRAFE_CONSTANT, STANDARD_FORWARD_SPEED - STRAFE_CONSTANT, STANDARD_FORWARD_SPEED);
       delay_time = millis() + STRAFE_DELAY; // start the timer for when to reset and check again
       turning = true;
+      Serial.print(": s");
     }
   }
   else
@@ -208,8 +213,8 @@ void loop(void)
 
 void take_measurements(void)
 {
-  ir_right_trigged = digitalRead(IR_SENSOR_RIGHT);
-  ir_left_trigged = digitalRead(IR_SENSOR_LEFT);
+  ir_right_trigged = !digitalRead(IR_SENSOR_RIGHT);
+  ir_left_trigged = !digitalRead(IR_SENSOR_LEFT);
   measured_ultrasonic_distance_left = sonarLeft.ping_cm();
   measured_ultrasonic_distance_right = sonarRight.ping_cm();
   measured_ultrasonic_distance_front = sonarFront.ping_cm();

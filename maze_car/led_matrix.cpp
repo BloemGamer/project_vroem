@@ -106,12 +106,12 @@ void Led_Matrix::show_sensors(void)
     }
   }
 
-  if(ir_left_trigged)
+  if(!ir_left_trigged)
   {
     picture[0] |= 0b11000000;
     picture[1] |= 0b10000000;
   }
-  if(ir_right_trigged)
+  if(!ir_right_trigged)
   {
     picture[0] |= 0b00000011;
     picture[1] |= 0b00000001;

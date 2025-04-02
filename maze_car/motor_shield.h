@@ -3,7 +3,7 @@
 
 // #define DEBUG_MODE 
 // #define BLUETOOTH
-#define TEST_SENSORS
+// #define TEST_SENSORS
 
 
 #define LF1 1
@@ -54,16 +54,18 @@ class Motor_Shield
 {
 private:
   uint8_t speed_motors[4];
-  uint8_t speed_motors_old[4];
   uint8_t motor_state = 0;
+  void store_old_motor_state(void);
 
 public:
+  uint8_t speed_motors_old[5];
+  void go_old_speed(void);
   void set_speed(uint8_t speed_m1, uint8_t speed_m2, uint8_t speed_m3, uint8_t speed_m4);
   void set_speed(uint8_t* speed);
   void set_speed(int8_t motor, uint8_t speed_m);
-  const uint8_t* change_speed(int16_t speed_m1, int16_t speed_m2, int16_t speed_m3, int16_t speed_m4);
+  void change_speed(int16_t speed_m1, int16_t speed_m2, int16_t speed_m3, int16_t speed_m4);
   void change_speed(int8_t motor, int16_t speed_m);
-  void update_speed(void);
+  void update_motor_directions(); // shifts the motor_state to the motor shield
 
   void change_motor_direction(uint8_t dir1, uint8_t dir2, uint8_t dir3, uint8_t dir4);
 
