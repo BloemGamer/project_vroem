@@ -30,7 +30,7 @@
 #define QUARTER_DELAY 750
 #define HALF_DELAY 1500
 #define STRAFE_DELAY 50
-#define STRAFE_CONSTANT 20
+#define STRAFE_CONSTANT 50
 
 //bluetooth instructions
 #define BLUETOOTH_FORWARDS 'f'
@@ -103,7 +103,7 @@ void loop(void)
     }
     if(instruction == BLUETOOTH_SPEED_DOWN)
     {
-      motor_shield.set_speed(50, 50, 50, 50);
+      motor_shield.set_speed(100, 100, 100, 100);
     }
     if(instruction == BLUETOOTH_FORWARDS)
     {

@@ -1,8 +1,8 @@
 #pragma once
 #include <stdint.h>
 
-// #define DEBUG_MODE 
-// #define BLUETOOTH
+// #define DEBUG_MODE
+#define BLUETOOTH
 // #define TEST_SENSORS
 
 
