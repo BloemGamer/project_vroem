@@ -26,7 +26,7 @@
 #define OUTPUT_AMOUTH 3
 #define CAR_WIDTH 17
 #define PATH_WIDTH 27
-#define STANDARD_FORWARD_SPEED 150
+#define STANDARD_FORWARD_SPEED 130
 #define QUARTER_DELAY 750
 #define HALF_DELAY 1500
 #define STRAFE_DELAY 50
@@ -188,7 +188,7 @@ void loop(void)
     {
       //strafe right
       //motor_shield.change_speed(-STRAFE_CONSTANT, 0, 0, -STRAFE_CONSTANT); // Hoe TF werkt dit??
-      motor_shield.set_speed(STANDARD_FORWARD_SPEED - STRAFE_CONSTANT, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED - STRAFE_CONSTANT);
+      motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED - STRAFE_CONSTANT, STANDARD_FORWARD_SPEED - STRAFE_CONSTANT, STANDARD_FORWARD_SPEED);
       delay_time = millis() + STRAFE_DELAY; // start the timer for when to reset and check again
       turning = true;
       Serial.print(": s");
@@ -197,7 +197,7 @@ void loop(void)
     {
       //strafe left
       //motor_shield.change_speed(0, -STRAFE_CONSTANT, -STRAFE_CONSTANT, 0);
-      motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED - STRAFE_CONSTANT, STANDARD_FORWARD_SPEED - STRAFE_CONSTANT, STANDARD_FORWARD_SPEED);
+      motor_shield.set_speed(STANDARD_FORWARD_SPEED - STRAFE_CONSTANT, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED - STRAFE_CONSTANT);
       delay_time = millis() + STRAFE_DELAY; // start the timer for when to reset and check again
       turning = true;
       Serial.print(": s");
