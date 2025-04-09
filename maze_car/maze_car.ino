@@ -43,7 +43,6 @@
 #define BLUETOOTH_SPEED_DOWN 'd'
 
 
-
 #ifdef BLUETOOTH
   Blue_Tooth bluetooth;
   char instruction;
@@ -93,8 +92,12 @@ void setup(void)
 void loop(void)
 {
 #ifdef BLUETOOTH
-  instruction = bluetooth.bluetoothRead();
-  Serial.println(instruction);
+  if (Serial1.available())
+  {
+    instruction = bluetooth.bluetooth_read_char();
+  }
+  // Serial.println(instruction);
+  // bluetooth.bluetooth_read_string();
   if(instruction == BLUETOOTH_SPEED_UP)
   {
     motor_shield.set_speed(255, 255, 255, 255);

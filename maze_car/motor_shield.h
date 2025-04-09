@@ -2,7 +2,7 @@
 #include <stdint.h>
 
 // #define DEBUG_MODE
-// #define BLUETOOTH
+#define BLUETOOTH
 // #define TEST_SENSORS
 
 
