@@ -32,25 +32,7 @@
 #define STRAFE_DELAY 50
 #define STRAFE_CONSTANT 50
 
-//bluetooth instructions
-#define BLUETOOTH_FORWARDS 'f'
-#define BLUETOOTH_BACKWARDS 'b'
-#define BLUETOOTH_ROTATE_LEFT 'l'
-#define BLUETOOTH_ROTATE_RIGHT 'r'
-#define BLUETOOTH_STRAFE_RIGHT 'y'
-#define BLUETOOTH_STRAFE_LEFT 'x'
-#define BLUETOOTH_SPEED_UP 'u'
-#define BLUETOOTH_SPEED_DOWN 'd'
 
-
-#ifdef BLUETOOTH
-  Blue_Tooth bluetooth;
-  char instruction;
-#elif defined TEST_SENSORS
-
-#else
-
-#endif
 
 //sensor array
 const int8_t inputs[INPUT_AMOUTH] = {IR_SENSOR_LEFT, IR_SENSOR_RIGHT, DISTANCE_SENSOR_LEFT_ECHO, DISTANCE_SENSOR_RIGHT_ECHO, DISTANCE_SENSOR_FRONT_ECHO};
@@ -72,6 +54,7 @@ unsigned long delay_time = 0;
 
 Motor_Shield motor_shield;
 Led_Matrix led_matrix;
+Blue_Tooth bluetooth;
 
 void setup(void)
 {
@@ -91,56 +74,14 @@ void setup(void)
 
 void loop(void)
 {
-#ifdef BLUETOOTH
-  if (Serial1.available())
-  {
-    instruction = bluetooth.bluetooth_read_char();
-  }
-  // Serial.println(instruction);
-  // bluetooth.bluetooth_read_string();
-  if(instruction == BLUETOOTH_SPEED_UP)
-  {
-    motor_shield.set_speed(255, 255, 255, 255);
-  }
-  if(instruction == BLUETOOTH_SPEED_DOWN)
-  {
-    motor_shield.set_speed(100, 100, 100, 100);
-  }
-  if(instruction == BLUETOOTH_FORWARDS)
-  {
-    motor_shield.change_motor_direction(GO_FORWARD);
-  }
-  if(instruction == BLUETOOTH_BACKWARDS)
-  {
-    motor_shield.change_motor_direction(GO_BACK);
-  }
-  if(instruction == BLUETOOTH_ROTATE_LEFT)
-  {
-    motor_shield.change_motor_direction(TURN_LEFT);
-  }
-  if(instruction == BLUETOOTH_ROTATE_RIGHT)
-  {
-    motor_shield.change_motor_direction(TURN_RIGHT);
-  }
-  if(instruction == BLUETOOTH_STRAFE_RIGHT)
-  {
-    motor_shield.change_motor_direction(FORWARD, BACKWARD, BACKWARD, FORWARD);
-  }
-  if(instruction == BLUETOOTH_STRAFE_LEFT)
-  {
-    motor_shield.change_motor_direction(BACKWARD, FORWARD, FORWARD, BACKWARD);
-  }
-  if(instruction == 's')
-  {
-    motor_shield.change_motor_direction(STOP);
-  }
-
-#elif defined TEST_SENSORS // BLUETOOTH
+if defined TEST_SENSORS
   motor_shield.change_motor_direction(STOP);
   take_measurements();
   led_matrix.show_sensors();
 
-#else // TEST & BLUETOOTH
+#else // TEST_SENSORS
+  // Serial.println(instruction);
+  // bluetooth.bluetooth_read_string();
   take_measurements();
   if(delay_time < millis()) // if there is enough time between starting the turn and now/if not turning
   {
@@ -192,15 +133,6 @@ void take_measurements(void)
   measured_ultrasonic_distance_left = sonarLeft.ping_cm();
   measured_ultrasonic_distance_right = sonarRight.ping_cm();
   measured_ultrasonic_distance_front = sonarFront.ping_cm();
-#ifdef DEBUG_MODE
-  Serial.print("Left: ");
-  Serial.println(measured_ultrasonic_distance_left);
-  Serial.print("Right: ");
-  Serial.println(measured_ultrasonic_distance_right);
-  Serial.print("Front: ");
-  Serial.println(measured_ultrasonic_distance_front);
-  delay(100);
-#endif // DEBUG_MODE
 }
 
 inline void left_90(long& delay_time, bool& turning)
