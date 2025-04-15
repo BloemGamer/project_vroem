@@ -146,10 +146,7 @@ void loop(void)
   {
     if(turning) // reset the speed and direction
     {
-      Serial.println(turning);
-      motor_shield.change_motor_direction(GO_FORWARD);
-      motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
-      turning = false; // make sure it only resets the speed and direction once
+      reset_speed(delay_time, turning)
     }
     if(measured_ultrasonic_distance_front < MAX_ULTRASONIC_WALL_DISTANCE_FRONT) // if to close to front wall
     {
@@ -248,3 +245,11 @@ inline void strafe_right(long& delay_time, bool& turning)
   delay_time = millis() + STRAFE_DELAY; // start the timer for when to reset and check again
   turning = true;
 }
+
+inline void reset_speed(long& delay_time, bool& turning)
+{
+  motor_shield.change_motor_direction(GO_FORWARD);
+  motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
+  turning = false; // make sure it only resets the speed and direction once
+}
+
