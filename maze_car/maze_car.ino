@@ -116,11 +116,11 @@ void loop(void)
   }
   if(instruction == BLUETOOTH_ROTATE_LEFT)
   {
-    motor_shield.change_motor_direction(GO_LEFT);
+    motor_shield.change_motor_direction(TURN_LEFT);
   }
   if(instruction == BLUETOOTH_ROTATE_RIGHT)
   {
-    motor_shield.change_motor_direction(GO_RIGHT);
+    motor_shield.change_motor_direction(TURN_RIGHT);
   }
   if(instruction == BLUETOOTH_STRAFE_RIGHT)
   {
@@ -155,49 +155,29 @@ void loop(void)
     {
       if((measured_ultrasonic_distance_left + measured_ultrasonic_distance_right + CAR_WIDTH) > PATH_WIDTH) // if there is a path right or left
       {
-        //there is a free space next to the car
-        if(measured_ultrasonic_distance_right > measured_ultrasonic_distance_left)
+        if(measured_ultrasonic_distance_right > measured_ultrasonic_distance_left) //there is a free space next to the car
         {
-          //rotate 90 degrees right and continue moving
-          //motor_shield.change_motor_direction(FORWARD, BACKWARD, FORWARD, BACKWARD);
-          //delay_time = millis() + QUARTER_DELAY; // start the timer for when to reset and check again
-          //turning = true;
           right_90(delay_time, turning);
         }
         else
         {
-          //rotate 90 degrees left and continue moving
-         // motor_shield.change_motor_direction(BACKWARD, FORWARD, BACKWARD, FORWARD);
-         // delay_time = millis() + QUARTER_DELAY; // start the timer for when to reset and check again
-         // turning = true;
           left_90(delay_time, turning);
         }
       }
       else
       {
-        //rotate 180 degrees and continue moving
-        motor_shield.change_motor_direction(BACKWARD, FORWARD, BACKWARD, FORWARD);
-        delay_time = millis() + HALF_DELAY; // start the timer for when to reset and check again
-        turning = true;
+        right_90(delay_time, turning);
       }
     }
   
   
     else if(measured_ultrasonic_distance_left < MAX_ULTRASONIC_WALL_DISTANCE_SIDES)
     {
-      //strafe right
-      //motor_shield.change_speed(-STRAFE_CONSTANT, 0, 0, -STRAFE_CONSTANT); // Hoe TF werkt dit??
-      motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED - STRAFE_CONSTANT, STANDARD_FORWARD_SPEED - STRAFE_CONSTANT, STANDARD_FORWARD_SPEED);
-      delay_time = millis() + STRAFE_DELAY; // start the timer for when to reset and check again
-      turning = true;
+      strafe_right(delay_time, turning);
     }
     else if(measured_ultrasonic_distance_right < MAX_ULTRASONIC_WALL_DISTANCE_SIDES)
     {
-      //strafe left
-      //motor_shield.change_speed(0, -STRAFE_CONSTANT, -STRAFE_CONSTANT, 0);
-      motor_shield.set_speed(STANDARD_FORWARD_SPEED - STRAFE_CONSTANT, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED - STRAFE_CONSTANT);
-      delay_time = millis() + STRAFE_DELAY; // start the timer for when to reset and check again
-      turning = true;
+      strafe_left(delay_time, turning);
     }
   }
   else
@@ -228,22 +208,43 @@ void take_measurements(void)
 
 inline void left_90(long& delay_time, bool& turning)
 {
-  motor_shield.change_motor_direction(GO_LEFT);
+  motor_shield.change_motor_direction(TURN_LEFT);
   delay_time = millis() + QUARTER_DELAY; // start the timer for when to reset and check again
   turning = true;
 }
 
 inline void right_90(long& delay_time, bool& turning)
 {
-  motor_shield.change_motor_direction(GO_RIGHT);
+  motor_shield.change_motor_direction(TURN_RIGHT);
   delay_time = millis() + QUARTER_DELAY; // start the timer for when to reset and check again
   turning = true;
 }
 
 
-inline void turn_180(long& delay_time, bool& turning)
+inline void right_180(long& delay_time, bool& turning)
 {
-  motor_shield.change_motor_direction(GO_RIGHT);
+  motor_shield.change_motor_direction(TURN_RIGHT);
   delay_time = millis() + HALF_DELAY; // start the timer for when to reset and check again
+  turning = true;
+}
+
+inline void left_180(long& delay_time, bool& turning)
+{
+  motor_shield.change_motor_direction(TURN_LEFT);
+  delay_time = millis() + HALF_DELAY; // start the timer for when to reset and check again
+  turning = true;
+}
+
+inline void strafe_left(long& delay_time, bool& turning)
+{
+  motor_shield.set_speed(STANDARD_FORWARD_SPEED - STRAFE_CONSTANT, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED - STRAFE_CONSTANT);
+  delay_time = millis() + STRAFE_DELAY; // start the timer for when to reset and check again
+  turning = true;
+}
+
+inline void strafe_right(long& delay_time, bool& turning)
+{
+  motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED - STRAFE_CONSTANT, STANDARD_FORWARD_SPEED - STRAFE_CONSTANT, STANDARD_FORWARD_SPEED);
+  delay_time = millis() + STRAFE_DELAY; // start the timer for when to reset and check again
   turning = true;
 }
