@@ -159,16 +159,18 @@ void loop(void)
         if(measured_ultrasonic_distance_right > measured_ultrasonic_distance_left)
         {
           //rotate 90 degrees right and continue moving
-          motor_shield.change_motor_direction(FORWARD, BACKWARD, FORWARD, BACKWARD);
-          delay_time = millis() + QUARTER_DELAY; // start the timer for when to reset and check again
-          turning = true;
+          //motor_shield.change_motor_direction(FORWARD, BACKWARD, FORWARD, BACKWARD);
+          //delay_time = millis() + QUARTER_DELAY; // start the timer for when to reset and check again
+          //turning = true;
+          right_90(delay_time, turning);
         }
         else
         {
           //rotate 90 degrees left and continue moving
-          motor_shield.change_motor_direction(BACKWARD, FORWARD, BACKWARD, FORWARD);
-          delay_time = millis() + QUARTER_DELAY; // start the timer for when to reset and check again
-          turning = true;
+         // motor_shield.change_motor_direction(BACKWARD, FORWARD, BACKWARD, FORWARD);
+         // delay_time = millis() + QUARTER_DELAY; // start the timer for when to reset and check again
+         // turning = true;
+          left_90(delay_time, turning);
         }
       }
       else
@@ -222,4 +224,26 @@ void take_measurements(void)
   Serial.println(measured_ultrasonic_distance_front);
   delay(100);
 #endif // DEBUG_MODE
+}
+
+inline void left_90(long& delay_time, bool& turning)
+{
+  motor_shield.change_motor_direction(GO_LEFT);
+  delay_time = millis() + QUARTER_DELAY; // start the timer for when to reset and check again
+  turning = true;
+}
+
+inline void right_90(long& delay_time, bool& turning)
+{
+  motor_shield.change_motor_direction(GO_RIGHT);
+  delay_time = millis() + QUARTER_DELAY; // start the timer for when to reset and check again
+  turning = true;
+}
+
+
+inline void turn_180(long& delay_time, bool& turning)
+{
+  motor_shield.change_motor_direction(GO_RIGHT);
+  delay_time = millis() + HALF_DELAY; // start the timer for when to reset and check again
+  turning = true;
 }
