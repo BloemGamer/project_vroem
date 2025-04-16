@@ -80,9 +80,9 @@ if defined TEST_SENSORS
   led_matrix.show_sensors();
 
 #else // TEST_SENSORS
+  take_measurements();
   // Serial.println(instruction);
   // bluetooth.bluetooth_read_string();
-  take_measurements();
   if(delay_time < millis()) // if there is enough time between starting the turn and now/if not turning
   {
     if(turning) // reset the speed and direction
@@ -123,7 +123,7 @@ if defined TEST_SENSORS
     // functions only run while turning or strafing
   }
   led_matrix.show_sensors(); 
-#endif // NOT BLUETOOTH && NOT TEST
+#endif // NOT TEST
 }
 
 void take_measurements(void)

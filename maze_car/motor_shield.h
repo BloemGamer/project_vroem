@@ -2,7 +2,7 @@
 #include <stdint.h>
 
 // #define DEBUG_MODE
-#define BLUETOOTH
+// #define BLUETOOTH
 // #define TEST_SENSORS
 
 
@@ -25,9 +25,9 @@
 #define ENABLE_PIN 7
 #define DATA_PIN 8
 
-#define FORWARD 0
-#define BACKWARD 1
-#define BREAK 2
+#define BREAK 0b00
+#define FORWARD 0b01
+#define BACKWARD 0b10
 
 #define LF_PIN 11
 #define RF_PIN 3
