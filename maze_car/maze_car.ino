@@ -104,7 +104,7 @@ if defined TEST_SENSORS
       }
       else
       {
-        right_90(delay_time, turning);
+        right_180(delay_time, turning);
       }
     }
   
