@@ -27,6 +27,7 @@
 #define CAR_WIDTH 17
 #define PATH_WIDTH 27
 #define STANDARD_FORWARD_SPEED 130
+#define TURNING_SPEED 130
 #define QUARTER_DELAY 750
 #define HALF_DELAY 1500
 #define STRAFE_DELAY 50
@@ -137,6 +138,7 @@ void take_measurements(void)
 
 inline void left_90(long& delay_time, bool& turning)
 {
+  motor_shield.set_speed(TURNING_SPEED, TURNING_SPEED, TURNING_SPEED, TURNING_SPEED);
   motor_shield.change_motor_direction(TURN_LEFT);
   delay_time = millis() + QUARTER_DELAY; // start the timer for when to reset and check again
   turning = true;
@@ -144,14 +146,15 @@ inline void left_90(long& delay_time, bool& turning)
 
 inline void right_90(long& delay_time, bool& turning)
 {
+  motor_shield.set_speed(TURNING_SPEED, TURNING_SPEED, TURNING_SPEED, TURNING_SPEED);
   motor_shield.change_motor_direction(TURN_RIGHT);
   delay_time = millis() + QUARTER_DELAY; // start the timer for when to reset and check again
   turning = true;
 }
 
-
 inline void right_180(long& delay_time, bool& turning)
 {
+  motor_shield.set_speed(TURNING_SPEED, TURNING_SPEED, TURNING_SPEED, TURNING_SPEED);
   motor_shield.change_motor_direction(TURN_RIGHT);
   delay_time = millis() + HALF_DELAY; // start the timer for when to reset and check again
   turning = true;
@@ -159,9 +162,17 @@ inline void right_180(long& delay_time, bool& turning)
 
 inline void left_180(long& delay_time, bool& turning)
 {
+  motor_shield.set_speed(TURNING_SPEED, TURNING_SPEED, TURNING_SPEED, TURNING_SPEED);
   motor_shield.change_motor_direction(TURN_LEFT);
   delay_time = millis() + HALF_DELAY; // start the timer for when to reset and check again
   turning = true;
+}
+
+inline void reset_speed(long& delay_time, bool& turning)
+{
+  motor_shield.change_motor_direction(GO_FORWARD);
+  motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
+  turning = false; // make sure it only resets the speed and direction once
 }
 
 inline void strafe_left(long& delay_time, bool& turning)
@@ -178,10 +189,4 @@ inline void strafe_right(long& delay_time, bool& turning)
   turning = true;
 }
 
-inline void reset_speed(long& delay_time, bool& turning)
-{
-  motor_shield.change_motor_direction(GO_FORWARD);
-  motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
-  turning = false; // make sure it only resets the speed and direction once
-}
 
