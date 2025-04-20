@@ -26,16 +26,16 @@ This is a library we wrote to use with the `L293D Motor Shield Module`.
 ## planning
 
 1. Basic:
- - [ ] Motor shield
- - [ ] Ultrasoon-sensor
- - [ ] IR-spensor
- - [ ] 8x8 led ding
- - [ ] Bluetooth chip
- - [ ] App op telefoon
+ - [x] Motor shield
+ - [x] Ultrasoon-sensor
+ - [x] IR-spensor
+ - [x] 8x8 led ding
+ - [x] Bluetooth chip
+ - [x] App op telefoon
 
 2. Algoritmes:
- - [ ] Automatisch rijden
- - [ ] Niet tegen muur aan rijden
+ - [x] Automatisch rijden
+ - [x] Niet tegen muur aan rijden
  - [ ] Algoritme verzinnen hoe uit doolhof
  - [ ] Uit doolhof algoritme programmeren
 
