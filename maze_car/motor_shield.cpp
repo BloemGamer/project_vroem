@@ -87,19 +87,19 @@ void Motor_Shield::change_speed(int8_t motor, int16_t speed_m)
   switch(motor)
   {
     case(M_LF):
-      speed_motors[M_LF] = (uint8_t)max(min((int16_t)255 + (uint16_t)speed_motors[M_LF], speed_m), 0);
+      speed_motors[M_LF] = (uint8_t)max(min((int16_t)255 + (int16_t)speed_motors[M_LF], speed_m), 0);
       analogWrite(LF_PIN, speed_motors[M_LF]);
       break;
     case(M_RF):
-      speed_motors[M_RF] = (uint8_t)max(min((int16_t)255 + (uint16_t)speed_motors[M_RF], speed_m), 0);
+      speed_motors[M_RF] = (uint8_t)max(min((int16_t)255 + (int16_t)speed_motors[M_RF], speed_m), 0);
       analogWrite(RF_PIN, speed_motors[M_RF]);
       break;
     case(M_LB):
-      speed_motors[M_LB] = (uint8_t)max(min((int16_t)255 + (uint16_t)speed_motors[M_LB], speed_m), 0);
+      speed_motors[M_LB] = (uint8_t)max(min((int16_t)255 + (int16_t)speed_motors[M_LB], speed_m), 0);
       analogWrite(LB_PIN, speed_motors[M_LB]);
       break;
     case(M_RB):
-      speed_motors[M_RB] = (uint8_t)max(min((int16_t)255 + (uint16_t)speed_motors[M_RB], speed_m), 0);
+      speed_motors[M_RB] = (uint8_t)max(min((int16_t)255 + (int16_t)speed_motors[M_RB], speed_m), 0);
       analogWrite(RB_PIN, speed_motors[M_RB]);
       break;
   }
