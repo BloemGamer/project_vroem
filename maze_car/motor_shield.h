@@ -40,20 +40,19 @@
 #define TURN_RIGHT BACKWARD, FORWARD, BACKWARD, FORWARD
 #define STOP BREAK, BREAK, BREAK, BREAK
 
-#ifdef ARDUINO // So my pc doesn't give errors
 
-#define SPEED_LB OCR1A
-#define SPEED_RF OCR3C
-#define SPEED_LF OCR4A
+#define SPEED_RF OCR1A
+#define SPEED_LF OCR3C
+#define SPEED_LB OCR4A
 #define SPEED_RB OCR3A
 
-#endif // ARDUINO
 
 
 class Motor_Shield
 {
 private:
   uint8_t speed_motors[4];
+  volatile uint16_t* motors_speed[4];
   uint8_t motor_state = 0;
   void store_old_motor_state(void);
 

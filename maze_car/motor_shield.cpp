@@ -28,6 +28,10 @@ inline void Motor_Shield::store_old_motor_state()
 
 void Motor_Shield::set_speed(uint8_t speed_lf, uint8_t speed_rf, uint8_t speed_lb, uint8_t speed_rb)// changing the speed by changing the PWM speed of the pins
 {
+//  SPEED_LF = speed_lf;
+//  SPEED_RF = speed_rf;
+//  SPEED_LB = speed_lb;
+//  SPEED_RB = speed_rb;
   analogWrite(LF_PIN, speed_lf);
   speed_motors[M_LF] = speed_lf;
   analogWrite(RF_PIN, speed_rf);
@@ -142,23 +146,23 @@ Motor_Shield::Motor_Shield(void)
   pinMode(5, OUTPUT);
   pinMode(6, OUTPUT);
 
-  analogWrite(LF_PIN, 255);
-  analogWrite(RF_PIN, 255);
-  analogWrite(LB_PIN, 255);
-  analogWrite(RB_PIN, 255);
+  analogWrite(LF_PIN, 130);
+  analogWrite(RF_PIN, 130);
+  analogWrite(LB_PIN, 130);
+  analogWrite(RB_PIN, 130);
 
   digitalWrite(ENABLE_PIN, LOW);
   
   // setting speed on full
-  // OCR1A = 255;
-  // OCR3C = 255;
-  // OCR4A = 255;
-  // OCR3A = 255;
+  OCR1A = 255;
+  OCR3C = 255;
+  OCR4A = 255;
+  OCR3A = 255;
 
-  // speed_motors[0] = &OCR1A;
-  // speed_motors[1] = &OCR3C;
-  // speed_motors[2] = &OCR4A;
-  // speed_motors[3] = &OCR3A;
+  speed_motors[0] = &OCR1A;
+  speed_motors[1] = &OCR3C;
+  speed_motors[2] = &OCR4A;
+  speed_motors[3] = &OCR3A;
 }
 
 // destructer of the class, doesn't do anything at the moment

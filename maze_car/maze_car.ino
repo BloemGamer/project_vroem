@@ -69,7 +69,9 @@ void setup(void)
   {
     pinMode(outputs[i], OUTPUT);
   }
-  // motor_shield.change_motor_direction(GO_FORWARD);
+  motor_shield.change_motor_direction(GO_FORWARD);
+  motor_shield.set_speed(50, 255, 255, 255);
+  delay(10000);
   motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
 }
 
