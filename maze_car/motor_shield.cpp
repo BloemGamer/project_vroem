@@ -28,8 +28,10 @@ inline void Motor_Shield::store_old_motor_state()
 
 void Motor_Shield::set_speed(uint8_t speed_lf, uint8_t speed_rf, uint8_t speed_lb, uint8_t speed_rb)// changing the speed by changing the PWM speed of the pins
 {
-  store_old_motor_state();
-
+//  SPEED_LF = speed_lf;
+//  SPEED_RF = speed_rf;
+//  SPEED_LB = speed_lb;
+//  SPEED_RB = speed_rb;
   analogWrite(LF_PIN, speed_lf);
   speed_motors[M_LF] = speed_lf;
   analogWrite(RF_PIN, speed_rf);
@@ -42,8 +44,6 @@ void Motor_Shield::set_speed(uint8_t speed_lf, uint8_t speed_rf, uint8_t speed_l
 
 void Motor_Shield::set_speed(uint8_t* speed)
 {
-  store_old_motor_state();
-
   analogWrite(LF_PIN, speed[M_LF]);
   speed_motors[M_LF] = speed[M_LF];
   analogWrite(RF_PIN, speed[M_RF]);
@@ -56,8 +56,6 @@ void Motor_Shield::set_speed(uint8_t* speed)
 
 void Motor_Shield::set_speed(int8_t motor, uint8_t speed_m)
 {
-  store_old_motor_state();
-
   switch(motor)
   {
     case(M_LF):
@@ -77,8 +75,6 @@ void Motor_Shield::set_speed(int8_t motor, uint8_t speed_m)
 
 void Motor_Shield::change_speed(int16_t speed_lf, int16_t speed_rf, int16_t speed_lb, int16_t speed_rb) // changing the speed by changing the PWM speed of the pins
 {
-  store_old_motor_state();
-
   speed_motors[M_LF] = (uint8_t)max(min((int16_t)255, speed_lf + (int16_t)speed_motors[M_LF]), 0);
   analogWrite(LF_PIN, speed_motors[M_LF]);
   speed_motors[M_RF] = (uint8_t)max(min((int16_t)255, speed_rf + (int16_t)speed_motors[M_RF]), 0);
@@ -92,24 +88,22 @@ void Motor_Shield::change_speed(int16_t speed_lf, int16_t speed_rf, int16_t spee
 
 void Motor_Shield::change_speed(int8_t motor, int16_t speed_m)
 {
-  store_old_motor_state();
-
   switch(motor)
   {
     case(M_LF):
-      speed_motors[M_LF] += (uint8_t)max(min((int16_t)255, speed_m), 0);
+      speed_motors[M_LF] = (uint8_t)max(min((int16_t)255 + (int16_t)speed_motors[M_LF], speed_m), 0);
       analogWrite(LF_PIN, speed_motors[M_LF]);
       break;
     case(M_RF):
-      speed_motors[M_RF] += (uint8_t)max(min((int16_t)255, speed_m), 0);
+      speed_motors[M_RF] = (uint8_t)max(min((int16_t)255 + (int16_t)speed_motors[M_RF], speed_m), 0);
       analogWrite(RF_PIN, speed_motors[M_RF]);
       break;
     case(M_LB):
-      speed_motors[M_LB] += (uint8_t)max(min((int16_t)255, speed_m), 0);
+      speed_motors[M_LB] = (uint8_t)max(min((int16_t)255 + (int16_t)speed_motors[M_LB], speed_m), 0);
       analogWrite(LB_PIN, speed_motors[M_LB]);
       break;
     case(M_RB):
-      speed_motors[M_RB] += (uint8_t)max(min((int16_t)255, speed_m), 0);
+      speed_motors[M_RB] = (uint8_t)max(min((int16_t)255 + (int16_t)speed_motors[M_RB], speed_m), 0);
       analogWrite(RB_PIN, speed_motors[M_RB]);
       break;
   }
@@ -128,6 +122,16 @@ void Motor_Shield::update_motor_directions() // shifts the motor_state to the mo
   digitalWrite(MOTORLATCH, HIGH);
 }
 
+// changing the direction of the motor
+void Motor_Shield::change_motor_direction(uint8_t dir1, uint8_t dir2, uint8_t dir3, uint8_t dir4)
+{
+    change_motor_dir(LF1, LF2, dir1);
+    change_motor_dir(RF1, RF2, dir2);
+    change_motor_dir(LB1, LB2, dir3);
+    change_motor_dir(RB1, RB2, dir4);
+    update_motor_directions();
+}
+
 // setting the pins on output and setting the speed on full
 Motor_Shield::Motor_Shield(void)
 {
@@ -142,44 +146,23 @@ Motor_Shield::Motor_Shield(void)
   pinMode(5, OUTPUT);
   pinMode(6, OUTPUT);
 
-  analogWrite(LF_PIN, 255);
-  analogWrite(RF_PIN, 255);
-  analogWrite(LB_PIN, 255);
-  analogWrite(RB_PIN, 255);
+  analogWrite(LF_PIN, 130);
+  analogWrite(RF_PIN, 130);
+  analogWrite(LB_PIN, 130);
+  analogWrite(RB_PIN, 130);
 
   digitalWrite(ENABLE_PIN, LOW);
   
   // setting speed on full
-  // OCR1A = 255;
-  // OCR3C = 255;
-  // OCR4A = 255;
-  // OCR3A = 255;
+  OCR1A = 255;
+  OCR3C = 255;
+  OCR4A = 255;
+  OCR3A = 255;
 
-  // speed_motors[0] = &OCR1A;
-  // speed_motors[1] = &OCR3C;
-  // speed_motors[2] = &OCR4A;
-  // speed_motors[3] = &OCR3A;
-}
-
-// changing the direction of the motor
-void Motor_Shield::change_motor_direction(uint8_t dir1, uint8_t dir2, uint8_t dir3, uint8_t dir4)
-{
-  store_old_motor_state();
-
-  change_motor_dir(LF1, LF2, dir1);
-  change_motor_dir(RF1, RF2, dir2);
-  change_motor_dir(LB1, LB2, dir3);
-  change_motor_dir(RB1, RB2, dir4);
-  update_motor_directions();
-}
-
-void Motor_Shield::go_old_speed(void)
-{
-    if(motor_state != 0)
-      motor_state = speed_motors_old[4];
-    change_motor_direction(GO_FORWARD);
-    update_motor_directions();
-    set_speed(155, 155, 155, 155);
+  speed_motors[0] = &OCR1A;
+  speed_motors[1] = &OCR3C;
+  speed_motors[2] = &OCR4A;
+  speed_motors[3] = &OCR3A;
 }
 
 // destructer of the class, doesn't do anything at the moment

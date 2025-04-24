@@ -27,30 +27,13 @@
 #define CAR_WIDTH 17
 #define PATH_WIDTH 27
 #define STANDARD_FORWARD_SPEED 130
+#define TURNING_SPEED 130
 #define QUARTER_DELAY 750
 #define HALF_DELAY 1500
 #define STRAFE_DELAY 50
 #define STRAFE_CONSTANT 50
 
-//bluetooth instructions
-#define BLUETOOTH_FORWARDS 'f'
-#define BLUETOOTH_BACKWARDS 'b'
-#define BLUETOOTH_ROTATE_LEFT 'l'
-#define BLUETOOTH_ROTATE_RIGHT 'r'
-#define BLUETOOTH_STRAFE_RIGHT 'y'
-#define BLUETOOTH_STRAFE_LEFT 'x'
-#define BLUETOOTH_SPEED_UP 'u'
-#define BLUETOOTH_SPEED_DOWN 'd'
 
-
-#ifdef BLUETOOTH
-  Blue_Tooth bluetooth;
-  char instruction;
-#elif defined TEST_SENSORS
-
-#else
-
-#endif
 
 //sensor array
 const int8_t inputs[INPUT_AMOUTH] = {IR_SENSOR_LEFT, IR_SENSOR_RIGHT, DISTANCE_SENSOR_LEFT_ECHO, DISTANCE_SENSOR_RIGHT_ECHO, DISTANCE_SENSOR_FRONT_ECHO};
@@ -72,6 +55,7 @@ unsigned long delay_time = 0;
 
 Motor_Shield motor_shield;
 Led_Matrix led_matrix;
+Blue_Tooth bluetooth;
 
 void setup(void)
 {
@@ -85,117 +69,56 @@ void setup(void)
   {
     pinMode(outputs[i], OUTPUT);
   }
-  // motor_shield.change_motor_direction(GO_FORWARD);
+  motor_shield.change_motor_direction(GO_FORWARD);
+  motor_shield.set_speed(50, 255, 255, 255);
+  delay(10000);
   motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
 }
 
 void loop(void)
 {
-#ifdef BLUETOOTH
-  if (Serial1.available())
-  {
-    instruction = bluetooth.bluetooth_read_char();
-  }
-  // Serial.println(instruction);
-  // bluetooth.bluetooth_read_string();
-  if(instruction == BLUETOOTH_SPEED_UP)
-  {
-    motor_shield.set_speed(255, 255, 255, 255);
-  }
-  if(instruction == BLUETOOTH_SPEED_DOWN)
-  {
-    motor_shield.set_speed(100, 100, 100, 100);
-  }
-  if(instruction == BLUETOOTH_FORWARDS)
-  {
-    motor_shield.change_motor_direction(GO_FORWARD);
-  }
-  if(instruction == BLUETOOTH_BACKWARDS)
-  {
-    motor_shield.change_motor_direction(GO_BACK);
-  }
-  if(instruction == BLUETOOTH_ROTATE_LEFT)
-  {
-    motor_shield.change_motor_direction(GO_LEFT);
-  }
-  if(instruction == BLUETOOTH_ROTATE_RIGHT)
-  {
-    motor_shield.change_motor_direction(GO_RIGHT);
-  }
-  if(instruction == BLUETOOTH_STRAFE_RIGHT)
-  {
-    motor_shield.change_motor_direction(FORWARD, BACKWARD, BACKWARD, FORWARD);
-  }
-  if(instruction == BLUETOOTH_STRAFE_LEFT)
-  {
-    motor_shield.change_motor_direction(BACKWARD, FORWARD, FORWARD, BACKWARD);
-  }
-  if(instruction == 's')
-  {
-    motor_shield.change_motor_direction(STOP);
-  }
-
-#elif defined TEST_SENSORS // BLUETOOTH
+#if defined TEST_SENSORS
   motor_shield.change_motor_direction(STOP);
   take_measurements();
   led_matrix.show_sensors();
 
-#else // TEST & BLUETOOTH
+#else // TEST_SENSORS
   take_measurements();
+  // Serial.println(instruction);
+  // bluetooth.bluetooth_read_string();
   if(delay_time < millis()) // if there is enough time between starting the turn and now/if not turning
   {
     if(turning) // reset the speed and direction
     {
-      Serial.println(turning);
-      motor_shield.change_motor_direction(GO_FORWARD);
-      motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
-      turning = false; // make sure it only resets the speed and direction once
+      reset_speed(delay_time, turning);
     }
     if(measured_ultrasonic_distance_front < MAX_ULTRASONIC_WALL_DISTANCE_FRONT) // if to close to front wall
     {
       if((measured_ultrasonic_distance_left + measured_ultrasonic_distance_right + CAR_WIDTH) > PATH_WIDTH) // if there is a path right or left
       {
-        //there is a free space next to the car
-        if(measured_ultrasonic_distance_right > measured_ultrasonic_distance_left)
+        if(measured_ultrasonic_distance_right > measured_ultrasonic_distance_left) //there is a free space next to the car
         {
-          //rotate 90 degrees right and continue moving
-          motor_shield.change_motor_direction(FORWARD, BACKWARD, FORWARD, BACKWARD);
-          delay_time = millis() + QUARTER_DELAY; // start the timer for when to reset and check again
-          turning = true;
+          right_90(delay_time, turning);
         }
         else
         {
-          //rotate 90 degrees left and continue moving
-          motor_shield.change_motor_direction(BACKWARD, FORWARD, BACKWARD, FORWARD);
-          delay_time = millis() + QUARTER_DELAY; // start the timer for when to reset and check again
-          turning = true;
+          left_90(delay_time, turning);
         }
       }
       else
       {
-        //rotate 180 degrees and continue moving
-        motor_shield.change_motor_direction(BACKWARD, FORWARD, BACKWARD, FORWARD);
-        delay_time = millis() + HALF_DELAY; // start the timer for when to reset and check again
-        turning = true;
+        right_180(delay_time, turning);
       }
     }
   
   
     else if(measured_ultrasonic_distance_left < MAX_ULTRASONIC_WALL_DISTANCE_SIDES)
     {
-      //strafe right
-      //motor_shield.change_speed(-STRAFE_CONSTANT, 0, 0, -STRAFE_CONSTANT); // Hoe TF werkt dit??
-      motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED - STRAFE_CONSTANT, STANDARD_FORWARD_SPEED - STRAFE_CONSTANT, STANDARD_FORWARD_SPEED);
-      delay_time = millis() + STRAFE_DELAY; // start the timer for when to reset and check again
-      turning = true;
+      strafe_right(delay_time, turning);
     }
     else if(measured_ultrasonic_distance_right < MAX_ULTRASONIC_WALL_DISTANCE_SIDES)
     {
-      //strafe left
-      //motor_shield.change_speed(0, -STRAFE_CONSTANT, -STRAFE_CONSTANT, 0);
-      motor_shield.set_speed(STANDARD_FORWARD_SPEED - STRAFE_CONSTANT, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED - STRAFE_CONSTANT);
-      delay_time = millis() + STRAFE_DELAY; // start the timer for when to reset and check again
-      turning = true;
+      strafe_left(delay_time, turning);
     }
   }
   else
@@ -203,7 +126,7 @@ void loop(void)
     // functions only run while turning or strafing
   }
   led_matrix.show_sensors(); 
-#endif // NOT BLUETOOTH && NOT TEST
+#endif // NOT TEST
 }
 
 void take_measurements(void)
@@ -213,13 +136,59 @@ void take_measurements(void)
   measured_ultrasonic_distance_left = sonarLeft.ping_cm();
   measured_ultrasonic_distance_right = sonarRight.ping_cm();
   measured_ultrasonic_distance_front = sonarFront.ping_cm();
-#ifdef DEBUG_MODE
-  Serial.print("Left: ");
-  Serial.println(measured_ultrasonic_distance_left);
-  Serial.print("Right: ");
-  Serial.println(measured_ultrasonic_distance_right);
-  Serial.print("Front: ");
-  Serial.println(measured_ultrasonic_distance_front);
-  delay(100);
-#endif // DEBUG_MODE
 }
+
+inline void left_90(unsigned long& delay_time, bool& turning)
+{
+  motor_shield.set_speed(TURNING_SPEED, TURNING_SPEED, TURNING_SPEED, TURNING_SPEED);
+  motor_shield.change_motor_direction(TURN_LEFT);
+  delay_time = millis() + QUARTER_DELAY; // start the timer for when to reset and check again
+  turning = true;
+}
+
+inline void right_90(unsigned long& delay_time, bool& turning)
+{
+  motor_shield.set_speed(TURNING_SPEED, TURNING_SPEED, TURNING_SPEED, TURNING_SPEED);
+  motor_shield.change_motor_direction(TURN_RIGHT);
+  delay_time = millis() + QUARTER_DELAY; // start the timer for when to reset and check again
+  turning = true;
+}
+
+inline void right_180(unsigned long& delay_time, bool& turning)
+{
+  motor_shield.set_speed(TURNING_SPEED, TURNING_SPEED, TURNING_SPEED, TURNING_SPEED);
+  motor_shield.change_motor_direction(TURN_RIGHT);
+  delay_time = millis() + HALF_DELAY; // start the timer for when to reset and check again
+  turning = true;
+}
+
+inline void left_180(unsigned long& delay_time, bool& turning)
+{
+  motor_shield.set_speed(TURNING_SPEED, TURNING_SPEED, TURNING_SPEED, TURNING_SPEED);
+  motor_shield.change_motor_direction(TURN_LEFT);
+  delay_time = millis() + HALF_DELAY; // start the timer for when to reset and check again
+  turning = true;
+}
+
+inline void reset_speed(unsigned long& delay_time, bool& turning)
+{
+  motor_shield.change_motor_direction(GO_FORWARD);
+  motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
+  turning = false; // make sure it only resets the speed and direction once
+}
+
+inline void strafe_left(unsigned long& delay_time, bool& turning)
+{
+  motor_shield.set_speed(STANDARD_FORWARD_SPEED - STRAFE_CONSTANT, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED - STRAFE_CONSTANT);
+  delay_time = millis() + STRAFE_DELAY; // start the timer for when to reset and check again
+  turning = true;
+}
+
+inline void strafe_right(unsigned long& delay_time, bool& turning)
+{
+  motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED - STRAFE_CONSTANT, STANDARD_FORWARD_SPEED - STRAFE_CONSTANT, STANDARD_FORWARD_SPEED);
+  delay_time = millis() + STRAFE_DELAY; // start the timer for when to reset and check again
+  turning = true;
+}
+
+

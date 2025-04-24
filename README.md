@@ -7,8 +7,13 @@ A maze solver, and catch robot car
 |  |-- maze_car.ino         // The main sketch that is to be uploaded to the microcontroller
 |  |-- motor_shield.h       // Headerfile of the library motor_shield
 |  |-- motor_shield.cpp     // Library that contains functions to make the motor shield work
+|  |-- bluetooth.h          // Headerfile of the library bluetooth
+|  |-- bluetooth.cpp        // Library that contains functions to make the bluetooth-module work
+|  |-- led_matrix.h          // Headerfile of the library led matrix
+|  |-- led_matrix.cpp        // Library that contains functions to make the led matrix work
 |
 |-- README.md               // Project description
+|-- motor_shiedl.md         // A little explanation of the motor shield
 |-- .gitignore              // Git ingore file
 ```
 
@@ -21,16 +26,16 @@ This is a library we wrote to use with the `L293D Motor Shield Module`.
 ## planning
 
 1. Basic:
- - [ ] Motor shield
- - [ ] Ultrasoon-sensor
- - [ ] IR-spensor
- - [ ] 8x8 led ding
- - [ ] Bluetooth chip
- - [ ] App op telefoon
+ - [x] Motor shield
+ - [x] Ultrasoon-sensor
+ - [x] IR-spensor
+ - [x] 8x8 led ding
+ - [x] Bluetooth chip
+ - [x] App op telefoon
 
 2. Algoritmes:
- - [ ] Automatisch rijden
- - [ ] Niet tegen muur aan rijden
+ - [x] Automatisch rijden
+ - [x] Niet tegen muur aan rijden
  - [ ] Algoritme verzinnen hoe uit doolhof
  - [ ] Uit doolhof algoritme programmeren
 
