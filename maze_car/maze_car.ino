@@ -140,7 +140,7 @@ void take_measurements(void)
 inline void left_90(unsigned long& delay_time, bool& turning)
 {
   motor_shield.set_speed(TURNING_SPEED, TURNING_SPEED, TURNING_SPEED, TURNING_SPEED);
-  motor_shield.change_motor_direction(TURN_LEFT);
+  motor_shield.change_motor_direction(TURN_RIGHT);
   delay_time = millis() + QUARTER_DELAY; // start the timer for when to reset and check again
   turning = true;
 }
@@ -148,7 +148,7 @@ inline void left_90(unsigned long& delay_time, bool& turning)
 inline void right_90(unsigned long& delay_time, bool& turning)
 {
   motor_shield.set_speed(TURNING_SPEED, TURNING_SPEED, TURNING_SPEED, TURNING_SPEED);
-  motor_shield.change_motor_direction(TURN_RIGHT);
+  motor_shield.change_motor_direction(TURN_LEFT);
   delay_time = millis() + QUARTER_DELAY; // start the timer for when to reset and check again
   turning = true;
 }
@@ -156,7 +156,7 @@ inline void right_90(unsigned long& delay_time, bool& turning)
 inline void right_180(unsigned long& delay_time, bool& turning)
 {
   motor_shield.set_speed(TURNING_SPEED, TURNING_SPEED, TURNING_SPEED, TURNING_SPEED);
-  motor_shield.change_motor_direction(TURN_RIGHT);
+  motor_shield.change_motor_direction(TURN_LEFT);
   delay_time = millis() + HALF_DELAY; // start the timer for when to reset and check again
   turning = true;
 }
@@ -164,7 +164,7 @@ inline void right_180(unsigned long& delay_time, bool& turning)
 inline void left_180(unsigned long& delay_time, bool& turning)
 {
   motor_shield.set_speed(TURNING_SPEED, TURNING_SPEED, TURNING_SPEED, TURNING_SPEED);
-  motor_shield.change_motor_direction(TURN_LEFT);
+  motor_shield.change_motor_direction(TURN_RIGHT);
   delay_time = millis() + HALF_DELAY; // start the timer for when to reset and check again
   turning = true;
 }
