@@ -70,8 +70,6 @@ void setup(void)
     pinMode(outputs[i], OUTPUT);
   }
   motor_shield.change_motor_direction(GO_FORWARD);
-  motor_shield.set_speed(50, 255, 255, 255);
-  delay(10000);
   motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
 }
 
@@ -94,6 +92,7 @@ void loop(void)
     }
     if(measured_ultrasonic_distance_front < MAX_ULTRASONIC_WALL_DISTANCE_FRONT) // if to close to front wall
     {
+      stop();
       if((measured_ultrasonic_distance_left + measured_ultrasonic_distance_right + CAR_WIDTH) > PATH_WIDTH) // if there is a path right or left
       {
         if(measured_ultrasonic_distance_right > measured_ultrasonic_distance_left) //there is a free space next to the car
@@ -191,4 +190,9 @@ inline void strafe_right(unsigned long& delay_time, bool& turning)
   turning = true;
 }
 
-
+inline void stop()
+{
+  motor_shield.change_motor_direction(GO_BACK);
+  delay(50);// delete
+  motor_shield.change_motor_direction(STOP);
+}
