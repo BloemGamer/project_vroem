@@ -5,6 +5,7 @@
 #include "motor_shield.h"
 #include "bluetooth.h"
 #include "led_matrix.h"
+#include "accelerometer.h"
 
 
 //constants -> inputs
@@ -56,11 +57,13 @@ unsigned long delay_time = 0;
 Motor_Shield motor_shield;
 Led_Matrix led_matrix;
 Blue_Tooth bluetooth;
+Accelerometer accelerometer;
 
 void setup(void)
 {
   Serial.begin(9600);
   Serial1.begin(9600);
+  accelerometer.initializeSerial2(9600);
   for(int8_t i = 0; i < INPUT_AMOUTH; i++)
   {
     pinMode(inputs[i], INPUT);
@@ -75,6 +78,7 @@ void setup(void)
 
 void loop(void)
 {
+  Serial.println(accelerometer.get_yaw());
 #if defined TEST_SENSORS
   motor_shield.change_motor_direction(STOP);
   take_measurements();
