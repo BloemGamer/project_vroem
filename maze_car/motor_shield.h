@@ -41,8 +41,8 @@
 #define STOP BREAK, BREAK, BREAK, BREAK
 
 
-#define SPEED_RF OCR1A
 #define SPEED_LF OCR3C
+#define SPEED_RF OCR1A
 #define SPEED_LB OCR4A
 #define SPEED_RB OCR3A
 
