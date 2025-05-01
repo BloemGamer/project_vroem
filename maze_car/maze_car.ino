@@ -1,10 +1,10 @@
 //libraries
+#include <Servo.h>
+#include <NewPing.h>
+
 #include "motor_shield.h"
 #include "bluetooth.h"
-#include "Servo.h"
 #include "led_matrix.h"
-// #include "test.h"
-#include <NewPing.h>
 
 
 //constants -> inputs
@@ -90,7 +90,7 @@ void loop(void)
     {
       reset_speed(delay_time, turning);
     }
-    if(measured_ultrasonic_distance_front < MAX_ULTRASONIC_WALL_DISTANCE_FRONT) // if to close to front wall
+    if(measured_ultrasonic_distance_front < MAX_ULTRASONIC_WALL_DISTANCE_FRONT) // if too close to front wall
     {
       stop();
       if((measured_ultrasonic_distance_left + measured_ultrasonic_distance_right + CAR_WIDTH) > PATH_WIDTH) // if there is a path right or left
