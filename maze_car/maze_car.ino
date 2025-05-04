@@ -84,6 +84,8 @@ void loop(void)
   take_measurements();
   led_matrix.show_sensors();
 
+#else if defined SOLVE_MASE
+
 #else // TEST_SENSORS
   take_measurements();
   // Serial.println(instruction);
