@@ -4,11 +4,18 @@
 #include "MPU6050.h"
 
 MPU6050 imu;
+float forward_velocity = 0.0;
+float forward_position = 0.0;
+unsigned long last_time_movement = 0;
+const float acceleration_scale = 1.0 / 16384.0; // Assuming +/- 2g range
+const float alpha = 0.98; // Complementary filter weight for accelerometer
+float gravity[3] = {0.0, 0.0, 1.0}; // Initial gravity vector
+
 
 Accelerometer::Accelerometer()
 {
   Wire.begin();
-  //imu.initialize();
+  //imu.initialize(); idk why but this needs to be commented
   last_update_time_ = millis();
 }
 
@@ -33,7 +40,36 @@ int16_t Accelerometer::get_yaw(void)
     return static_cast<int16_t>(yaw_);
 }
 
-int8_t Accelerometer::get_forwards_movement(void)
-{
-    return 0;
+float Accelerometer::get_forwards_movement(void) {
+    int16_t ax_raw, ay_raw, az_raw, gx, gy, gz;
+    imu.getMotion6(&ax_raw, &ay_raw, &az_raw, &gx, &gy, &gz);
+
+    unsigned long current_time = millis();
+    unsigned long delta_time_ms = current_time - last_time_movement;
+    last_time_movement = current_time;
+    float delta_time_s = delta_time_ms / 1000.0;
+
+    // Convert raw accelerometer readings to g-force
+    float ax = ax_raw * acceleration_scale;
+    float ay = ay_raw * acceleration_scale;
+    float az = az_raw * acceleration_scale;
+
+    // Simple Complementary Filter to estimate orientation (Roll and Pitch)
+    gravity[0] = alpha * gravity[0] + (1 - alpha) * ax;
+    gravity[1] = alpha * gravity[1] + (1 - alpha) * ay;
+    gravity[2] = alpha * gravity[2] + (1 - alpha) * az;
+
+    float roll = atan2(gravity[1], sqrt(gravity[0] * gravity[0] + gravity[2] * gravity[2]));
+    float pitch = atan2(-gravity[0], sqrt(gravity[1] * gravity[1] + gravity[2] * gravity[2]));
+
+    // Remove gravity component from accelerometer readings along an assumed forward axis
+    // Assuming the sensor's X-axis is roughly aligned with the forward direction
+    float forward_acceleration = ax - sin(pitch); // Project gravity out
+
+    // Simple integration (prone to drift)
+    forward_velocity += forward_acceleration * delta_time_s;
+    forward_position += forward_velocity * delta_time_s;
+    return forward_position;
+    //float distance_cm = (forward_position);
+    //return static_cast<int8_t>(distance_cm); // Return as int8_t (can lose precision)
 }

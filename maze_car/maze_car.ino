@@ -78,7 +78,7 @@ void setup(void)
 
 void loop(void)
 {
-  Serial.println(accelerometer.get_yaw());
+  Serial.println(accelerometer.get_forwards_movement());
 #if defined TEST_SENSORS
   motor_shield.change_motor_direction(STOP);
   take_measurements();
