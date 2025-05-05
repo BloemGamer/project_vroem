@@ -16,9 +16,9 @@ float gravity[3] = {0.0, 0.0, 1.0}; // Initial gravity vector
 
 Accelerometer::Accelerometer()
 {
-  Wire.begin();
-  //imu.initialize(); idk why but this needs to be commented
-  last_update_time_ = millis();
+    Wire.begin();
+    //imu.initialize(); idk why but this needs to be commented
+    last_update_time_ = millis();
 }
 
 void Accelerometer::initializeSerial2(long baudRate)
