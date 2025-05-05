@@ -4,6 +4,7 @@
 // #define DEBUG_MODE
 // #define BLUETOOTH
 // #define TEST_SENSORS
+#define SOLVE_MAZE
 
 
 #define LF1 1
@@ -20,7 +21,7 @@
 #define M_LB 2
 #define M_RB 3
 
-#define MOTORLATCH 12
+#define MOTOR_LATCH 12
 #define CLOCK_PIN 4
 #define ENABLE_PIN 7
 #define DATA_PIN 8

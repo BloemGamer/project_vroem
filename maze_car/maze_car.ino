@@ -6,6 +6,7 @@
 #include "bluetooth.h"
 #include "led_matrix.h"
 #include "accelerometer.h"
+#include "algoritms.h"
 
 
 //constants -> inputs
@@ -84,9 +85,60 @@ void loop(void)
   take_measurements();
   led_matrix.show_sensors();
 
-#else if defined SOLVE_MASE
+#elif defined SOLVE_MAZE
+    take_measurements();
+    int16_t rotation = accelerometer.get_yaw();
+    if(rotation < 10 && rotation > -10 && turning) // if done turning
+    {
+        reset_speed();
+    }
+    if((!turning) // when not turning
+    {
+        fix_position();
+        // if there is a place right, dan go right, else go forward, else go to the left
+        if((measured_ultrasonic_distance_right > PATH_WIDTH) && 
+            (!(maze.position_map.little[right_place_in_map(maze.position.y - maze.position.direction.x)] & 1 << (maze.position.x - maze.position.direction.y)))) // prob not to safe, but checks if we've been at the place on the right
+        {
+            right_90();
+        }
+        else if((measured_ultrasonic_distance_front > PATH_WIDTH) && 
+            (!(maze.position_map.little[right_place_in_map(maze.position.y + maze.position.direction.y)] & 1 << (maze.position.x + maze.position.direction.x)))) // prob not to safe, but checks if we've been at the place on the front
+        {
+            // just go forward
+        }
+        else if((measured_ultrasonic_distance_left > PATH_WIDTH) && 
+            (!(maze.position_map.little[right_place_in_map(maze.position.y + maze.position.direction.x)] & 1 << (maze.position.x + maze.position.direction.y)))) // prob not to safe, but checks if we've been at the place on the left
+        {
+            left_90();
+        }
+        else // if all things have been tried, just go yolo
+        // there will be a better new algoritm in the future, I just don't want to write that at the moment, it's late and I'm tired
+        {
+            if(measured_ultrasonic_distance_front < MAX_ULTRASONIC_WALL_DISTANCE_FRONT) // if too close to front wall
+            {
+                if((measured_ultrasonic_distance_left + measured_ultrasonic_distance_right + CAR_WIDTH) > PATH_WIDTH) // if there is a path right or left
+                {
+                    if(measured_ultrasonic_distance_right > measured_ultrasonic_distance_left) //there is a free space next to the car
+                    {
+                        right_90();
+                    }
+                    else
+                    {
+                        left_90();
+                    }
+                }
+                else
+                {
+                    right_180();
+                }
+            }
+
+        }
+    }
+
 
 #else // TEST_SENSORS
+    // the old function, will prob NOT work anymore, because the inner function will be/are rewritten
   take_measurements();
   // Serial.println(instruction);
   // bluetooth.bluetooth_read_string();
@@ -94,7 +146,8 @@ void loop(void)
   {
     if(turning) // reset the speed and direction
     {
-      reset_speed(delay_time, turning);
+      stop();
+      reset_speed();
     }
     if(measured_ultrasonic_distance_front < MAX_ULTRASONIC_WALL_DISTANCE_FRONT) // if too close to front wall
     {
@@ -103,27 +156,27 @@ void loop(void)
       {
         if(measured_ultrasonic_distance_right > measured_ultrasonic_distance_left) //there is a free space next to the car
         {
-          right_90(delay_time, turning);
+          right_90();
         }
         else
         {
-          left_90(delay_time, turning);
+          left_90();
         }
       }
       else
       {
-        right_180(delay_time, turning);
+        right_180();
       }
     }
   
   
     else if(measured_ultrasonic_distance_left < MAX_ULTRASONIC_WALL_DISTANCE_SIDES)
     {
-      strafe_right(delay_time, turning);
+      strafe_right();
     }
     else if(measured_ultrasonic_distance_right < MAX_ULTRASONIC_WALL_DISTANCE_SIDES)
     {
-      strafe_left(delay_time, turning);
+      strafe_left();
     }
   }
   else
@@ -143,62 +196,77 @@ void take_measurements(void)
   measured_ultrasonic_distance_front = sonarFront.ping_cm();
 }
 
-inline void left_90(unsigned long& delay_time, bool& turning)
+inline void left_90()
 {
+    accelerometer.yaw_ = 90;
+    maze.position.direction_step = (maze.position.direction_step + 3) % 4;
+    maze.position.direction = dir_arr[maze.position.direction_step];
   motor_shield.set_speed(TURNING_SPEED, TURNING_SPEED, TURNING_SPEED, TURNING_SPEED);
   motor_shield.change_motor_direction(TURN_LEFT);
-  delay_time = millis() + QUARTER_DELAY; // start the timer for when to reset and check again
   turning = true;
 }
 
-inline void right_90(unsigned long& delay_time, bool& turning)
+inline void right_90()
 {
+    accelerometer.yaw_ = -90;
+    maze.position.direction_step = (maze.position.direction_step + 5) % 4;
+    maze.position.direction = dir_arr[maze.position.direction_step];
   motor_shield.set_speed(TURNING_SPEED, TURNING_SPEED, TURNING_SPEED, TURNING_SPEED);
   motor_shield.change_motor_direction(TURN_RIGHT);
-  delay_time = millis() + QUARTER_DELAY; // start the timer for when to reset and check again
   turning = true;
 }
 
-inline void right_180(unsigned long& delay_time, bool& turning)
+inline void right_180()
 {
+    accelerometer.yaw_ = 180;
+    maze.position.direction_step = (maze.position.direction_step + 2) % 4;
+    maze.position.direction = dir_arr[maze.position.direction_step];
   motor_shield.set_speed(TURNING_SPEED, TURNING_SPEED, TURNING_SPEED, TURNING_SPEED);
   motor_shield.change_motor_direction(TURN_RIGHT);
-  delay_time = millis() + HALF_DELAY; // start the timer for when to reset and check again
   turning = true;
 }
 
-inline void left_180(unsigned long& delay_time, bool& turning)
+inline void left_180()
 {
+    accelerometer.yaw_ = 180;
+    maze.position.direction_step = (maze.position.direction_step + 2) % 4;
+    maze.position.direction = dir_arr[maze.position.direction_step];
   motor_shield.set_speed(TURNING_SPEED, TURNING_SPEED, TURNING_SPEED, TURNING_SPEED);
   motor_shield.change_motor_direction(TURN_LEFT);
-  delay_time = millis() + HALF_DELAY; // start the timer for when to reset and check again
   turning = true;
 }
 
-inline void reset_speed(unsigned long& delay_time, bool& turning)
+inline void reset_speed()
 {
+    stop();
+    accelerometer.get_forwards_movement(); // just to reset everything
+    accelerometer.get_forwards_movement(); // just to reset everything
+    accelerometer.yaw_ = 0;
   motor_shield.change_motor_direction(GO_FORWARD);
   motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
-  turning = false; // make sure it only resets the speed and direction once
+  turning = false; 
 }
 
-inline void strafe_left(unsigned long& delay_time, bool& turning)
+inline void strafe_left()
 {
+    accelerometer.yaw_ = 0;
   motor_shield.set_speed(STANDARD_FORWARD_SPEED - STRAFE_CONSTANT, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED - STRAFE_CONSTANT);
-  delay_time = millis() + STRAFE_DELAY; // start the timer for when to reset and check again
+  delay(STRAFE_DELAY);
   turning = true;
 }
 
-inline void strafe_right(unsigned long& delay_time, bool& turning)
+inline void strafe_right()
 {
+    accelerometer.yaw_ = 0;
   motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED - STRAFE_CONSTANT, STANDARD_FORWARD_SPEED - STRAFE_CONSTANT, STANDARD_FORWARD_SPEED);
-  delay_time = millis() + STRAFE_DELAY; // start the timer for when to reset and check again
+  delay(STRAFE_DELAY);
   turning = true;
 }
 
 inline void stop()
 {
   motor_shield.change_motor_direction(GO_BACK);
-  delay(50);// delete
+  accelerometer.forward_velocity = 0.0f;
+  delay(50); // delete
   motor_shield.change_motor_direction(STOP);
 }

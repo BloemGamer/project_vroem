@@ -111,7 +111,7 @@ void Motor_Shield::change_speed(int8_t motor, int16_t speed_m)
 
 void Motor_Shield::update_motor_directions() // shifts the motor_state to the motor shield
 {
-  digitalWrite(MOTORLATCH, LOW);
+  digitalWrite(MOTOR_LATCH, LOW);
   digitalWrite(DATA_PIN, LOW);
   for(uint8_t i = 0; i < 8; i++)
   {
@@ -119,7 +119,7 @@ void Motor_Shield::update_motor_directions() // shifts the motor_state to the mo
     digitalWrite(DATA_PIN, (motor_state & (1 << (7 - i)) ? HIGH : LOW));
     digitalWrite(CLOCK_PIN, HIGH);
   }
-  digitalWrite(MOTORLATCH, HIGH);
+  digitalWrite(MOTOR_LATCH, HIGH);
 }
 
 // changing the direction of the motor
@@ -136,7 +136,7 @@ void Motor_Shield::change_motor_direction(uint8_t dir1, uint8_t dir2, uint8_t di
 Motor_Shield::Motor_Shield(void)
 {
 // set pins on right mode
-  pinMode(MOTORLATCH, OUTPUT);
+  pinMode(MOTOR_LATCH, OUTPUT);
   pinMode(ENABLE_PIN, OUTPUT);
   pinMode(DATA_PIN, OUTPUT);
   pinMode(CLOCK_PIN, OUTPUT);
@@ -159,10 +159,10 @@ Motor_Shield::Motor_Shield(void)
   OCR4A = 255;
   OCR3A = 255;
 
-  speed_motors[0] = &OCR1A;
-  speed_motors[1] = &OCR3C;
-  speed_motors[2] = &OCR4A;
-  speed_motors[3] = &OCR3A;
+  motors_speed[0] = &OCR1A;
+  motors_speed[1] = &OCR3C;
+  motors_speed[2] = &OCR4A;
+  motors_speed[3] = &OCR3A;
 }
 
 // destructer of the class, doesn't do anything at the moment

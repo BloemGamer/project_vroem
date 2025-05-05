@@ -1,12 +1,14 @@
-#include "Accelerometer.h"
+#include "accelerometer.h"
 #include <Wire.h>
+
+// just so I don't get warnings
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wall"
 #include "I2Cdev.h"
 #include "MPU6050.h"
+#pragma GCC diagnostic pop
 
 MPU6050 imu;
-float forward_velocity = 0.0;
-float forward_position = 0.0;
-unsigned long last_time_movement = 0;
 const float acceleration_scale = 1.0 / 16384.0; // Assuming +/- 2g range
 const float alpha = 0.98; // Complementary filter weight for accelerometer
 float gravity[3] = {0.0, 0.0, 1.0}; // Initial gravity vector
@@ -19,7 +21,8 @@ Accelerometer::Accelerometer()
   last_update_time_ = millis();
 }
 
-void Accelerometer::initializeSerial2(long baudRate) {
+void Accelerometer::initializeSerial2(long baudRate)
+{
     Serial2.begin(baudRate);
     serialPort2 = &Serial2; // Assign the Serial2 object to the pointer
     Serial.print("Serial2 initialized at ");
@@ -40,7 +43,8 @@ int16_t Accelerometer::get_yaw(void)
     return static_cast<int16_t>(yaw_);
 }
 
-float Accelerometer::get_forwards_movement(void) {
+float Accelerometer::get_forwards_movement(void)
+{
     int16_t ax_raw, ay_raw, az_raw, gx, gy, gz;
     imu.getMotion6(&ax_raw, &ay_raw, &az_raw, &gx, &gy, &gz);
 
