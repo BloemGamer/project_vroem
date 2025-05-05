@@ -92,7 +92,7 @@ void loop(void)
     {
         reset_speed();
     }
-    if((!turning) // when not turning
+    if(!turning) // when not turning
     {
         fix_position();
         // if there is a place right, dan go right, else go forward, else go to the left
