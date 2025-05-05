@@ -14,7 +14,7 @@ Direction dir_arr[4] = {{1, 0}, {0, -1}, {-1, 0}, {0, 1}};
 
 void fix_position(void)
 {
-    if(accelerometer.forward_position > BLOCK_LENGHT)
+    if(accelerometer.get_forwards_movement() > BLOCK_LENGHT)
     {
         accelerometer.forward_position -= BLOCK_LENGHT;
         maze.position.step();
