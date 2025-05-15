@@ -40,6 +40,8 @@ int16_t Accelerometer::get_yaw(void)
     float gyroScaleFactor = 131.0;
     float yawRate = (float)gz / gyroScaleFactor;
     yaw_ += yawRate * (deltaTime / 1000.0);
+    if(yaw_ > 180) yaw_ -= 360;
+    if(yaw_ < -180) yaw_ += 360;
     return static_cast<int16_t>(yaw_);
 }
 

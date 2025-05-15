@@ -99,7 +99,12 @@ void loop(void)
         if((measured_ultrasonic_distance_right > PATH_WIDTH) && 
             (!(maze.position_map.little[right_place_in_map(maze.position.y - maze.position.direction.x)] & 1 << (maze.position.x - maze.position.direction.y)))) // prob not to safe, but checks if we've been at the place on the right
         {
-            right_90();
+            delay(100);
+            if(measured_ultrasonic_distance_right > PATH_WIDTH)
+            {
+                right_90();
+                return;
+            }
         }
         else if((measured_ultrasonic_distance_front > PATH_WIDTH) && 
             (!(maze.position_map.little[right_place_in_map(maze.position.y + maze.position.direction.y)] & 1 << (maze.position.x + maze.position.direction.x)))) // prob not to safe, but checks if we've been at the place on the front
@@ -109,11 +114,16 @@ void loop(void)
         else if((measured_ultrasonic_distance_left > PATH_WIDTH) && 
             (!(maze.position_map.little[right_place_in_map(maze.position.y + maze.position.direction.x)] & 1 << (maze.position.x + maze.position.direction.y)))) // prob not to safe, but checks if we've been at the place on the left
         {
-            left_90();
+            delay(100);
+            if(measured_ultrasonic_distance_left > PATH_WIDTH)
+            {
+                left_90();
+                return;
+            }
         }
         else // if all things have been tried, just go yolo
         // there will be a better new algoritm in the future, I just don't want to write that at the moment, it's late and I'm tired
-    {
+        {
             if(measured_ultrasonic_distance_front < MAX_ULTRASONIC_WALL_DISTANCE_FRONT) // if too close to front wall
             {
                 if((measured_ultrasonic_distance_left + measured_ultrasonic_distance_right + CAR_WIDTH) > PATH_WIDTH) // if there is a path right or left
@@ -148,6 +158,7 @@ void loop(void)
         {
             stop();
             reset_speed();
+            delay(100);
         }
         if(measured_ultrasonic_distance_front < MAX_ULTRASONIC_WALL_DISTANCE_FRONT) // if too close to front wall
         {
@@ -198,17 +209,18 @@ void take_measurements(void)
 
 inline void left_90()
 {
-    accelerometer.yaw_ = 90;
+    accelerometer.yaw_ = -80;
     maze.position.direction_step = (maze.position.direction_step + 3) % 4;
     maze.position.direction = dir_arr[maze.position.direction_step];
     motor_shield.set_speed(TURNING_SPEED, TURNING_SPEED, TURNING_SPEED, TURNING_SPEED);
     motor_shield.change_motor_direction(TURN_LEFT);
     turning = true;
+    
 }
 
 inline void right_90()
 {
-    accelerometer.yaw_ = -90;
+    accelerometer.yaw_ = 80;
     maze.position.direction_step = (maze.position.direction_step + 5) % 4;
     maze.position.direction = dir_arr[maze.position.direction_step];
     motor_shield.set_speed(TURNING_SPEED, TURNING_SPEED, TURNING_SPEED, TURNING_SPEED);
