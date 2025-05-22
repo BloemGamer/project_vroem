@@ -45,6 +45,9 @@ struct Maze_Map
 
     void fix_maps(void);
     void shift_maps(int8_t dir);
+    bool can_go_right(void);
+    bool can_go_front(void);
+    bool can_go_left(void);
 
 };
 

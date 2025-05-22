@@ -9,8 +9,9 @@
 #define BLOCK_LENGHT 30
 
 Maze_Map maze;
-extern Accelerometer accelerometer;
 Direction dir_arr[4] = {{1, 0}, {0, -1}, {-1, 0}, {0, 1}};
+extern Accelerometer accelerometer;
+extern unsigned int measured_ultrasonic_distance_left, measured_ultrasonic_distance_right, measured_ultrasonic_distance_front;
 
 void fix_position(void)
 {
@@ -52,4 +53,33 @@ void Maze_Map::shift_maps(int8_t dir)
             break;
     }
     return;
+}
+
+bool Maze_Map::can_go_right(void)
+{
+    return 
+    (
+        (measured_ultrasonic_distance_right > BLOCK_LENGHT) && 
+        (!(position_map.little[right_place_in_map(position.y - position.direction.x)] & 1 << (position.x - position.direction.y))) && // prob not to safe, but checks if we've been at the place on the right
+        (1)
+    );
+}
+
+bool Maze_Map::can_go_front(void)
+{
+    return 
+    (
+        (measured_ultrasonic_distance_front > BLOCK_LENGHT) && 
+        (!(position_map.little[right_place_in_map(position.y + position.direction.y)] & 1 << (position.x + position.direction.x))) // prob not to safe, but checks if we've been at the place on the front
+    );
+}
+
+bool Maze_Map::can_go_left(void)
+{
+    return 
+    (
+        (measured_ultrasonic_distance_left > BLOCK_LENGHT) && 
+        (!(position_map.little[right_place_in_map(position.y + position.direction.x)] & 1 << (position.x + position.direction.y))) && // prob not to safe, but checks if we've been at the place on the left
+        (1)
+    );
 }
