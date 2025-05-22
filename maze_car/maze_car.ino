@@ -52,13 +52,14 @@ bool ir_left_trigged = false;
 bool turning = false;
 unsigned int measured_ultrasonic_distance_left, measured_ultrasonic_distance_right, measured_ultrasonic_distance_front;
 unsigned long delay_time = 0;
-
+int16_t rotation = 0;
 
 
 Motor_Shield motor_shield;
 Led_Matrix led_matrix;
 Blue_Tooth bluetooth;
 Accelerometer accelerometer;
+Maze_Map maze;
 
 void setup(void)
 {
@@ -87,7 +88,7 @@ void loop(void)
 
 #elif defined SOLVE_MAZE
     take_measurements();
-    int16_t rotation = accelerometer.get_yaw();
+    rotation = accelerometer.get_yaw();
     if(rotation < 10 && rotation > -10 && turning) // if done turning
     {
         reset_speed();
@@ -96,8 +97,7 @@ void loop(void)
     {
         fix_position();
         // if there is a place right, dan go right, else go forward, else go to the left
-        if((measured_ultrasonic_distance_right > PATH_WIDTH) && 
-            (!(maze.position_map.little[right_place_in_map(maze.position.y - maze.position.direction.x)] & 1 << (maze.position.x - maze.position.direction.y)))) // prob not to safe, but checks if we've been at the place on the right
+        if(maze.can_go_right())
         {
             delay(100);
             if(measured_ultrasonic_distance_right > PATH_WIDTH)
@@ -106,13 +106,11 @@ void loop(void)
                 return;
             }
         }
-        else if((measured_ultrasonic_distance_front > PATH_WIDTH) && 
-            (!(maze.position_map.little[right_place_in_map(maze.position.y + maze.position.direction.y)] & 1 << (maze.position.x + maze.position.direction.x)))) // prob not to safe, but checks if we've been at the place on the front
+        else if(maze.can_go_front())
         {
             // just go forward
         }
-        else if((measured_ultrasonic_distance_left > PATH_WIDTH) && 
-            (!(maze.position_map.little[right_place_in_map(maze.position.y + maze.position.direction.x)] & 1 << (maze.position.x + maze.position.direction.y)))) // prob not to safe, but checks if we've been at the place on the left
+        else if(maze.can_go_left())
         {
             delay(100);
             if(measured_ultrasonic_distance_left > PATH_WIDTH)
@@ -221,6 +219,7 @@ inline void left_90()
 inline void right_90()
 {
     accelerometer.yaw_ = 80;
+    rotation = accelerometer.get_yaw();
     maze.position.direction_step = (maze.position.direction_step + 5) % 4;
     maze.position.direction = dir_arr[maze.position.direction_step];
     motor_shield.set_speed(TURNING_SPEED, TURNING_SPEED, TURNING_SPEED, TURNING_SPEED);
@@ -231,6 +230,7 @@ inline void right_90()
 inline void right_180()
 {
     accelerometer.yaw_ = 180;
+    rotation = accelerometer.get_yaw();
     maze.position.direction_step = (maze.position.direction_step + 2) % 4;
     maze.position.direction = dir_arr[maze.position.direction_step];
     motor_shield.set_speed(TURNING_SPEED, TURNING_SPEED, TURNING_SPEED, TURNING_SPEED);
@@ -241,6 +241,7 @@ inline void right_180()
 inline void left_180()
 {
     accelerometer.yaw_ = 180;
+    rotation = accelerometer.get_yaw();
     maze.position.direction_step = (maze.position.direction_step + 2) % 4;
     maze.position.direction = dir_arr[maze.position.direction_step];
     motor_shield.set_speed(TURNING_SPEED, TURNING_SPEED, TURNING_SPEED, TURNING_SPEED);
@@ -254,6 +255,7 @@ inline void reset_speed()
     accelerometer.get_forwards_movement(); // just to reset everything
     accelerometer.get_forwards_movement(); // just to reset everything
     accelerometer.yaw_ = 0;
+    rotation = accelerometer.get_yaw();
     motor_shield.change_motor_direction(GO_FORWARD);
     motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
     turning = false; 
@@ -262,6 +264,7 @@ inline void reset_speed()
 inline void strafe_left()
 {
     accelerometer.yaw_ = 0;
+    rotation = accelerometer.get_yaw();
     motor_shield.set_speed(STANDARD_FORWARD_SPEED - STRAFE_CONSTANT, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED - STRAFE_CONSTANT);
     delay(STRAFE_DELAY);
     turning = true;
@@ -270,6 +273,7 @@ inline void strafe_left()
 inline void strafe_right()
 {
     accelerometer.yaw_ = 0;
+    rotation = accelerometer.get_yaw();
     motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED - STRAFE_CONSTANT, STANDARD_FORWARD_SPEED - STRAFE_CONSTANT, STANDARD_FORWARD_SPEED);
     delay(STRAFE_DELAY);
     turning = true;
@@ -281,4 +285,27 @@ inline void stop()
     accelerometer.forward_velocity = 0.0f;
     delay(50); // delete
     motor_shield.change_motor_direction(STOP);
+}
+
+inline void left(float angle)
+{
+    accelerometer.yaw_ = -1 * abs(angle);
+    rotation = accelerometer.get_yaw();
+    maze.position.direction_step = (maze.position.direction_step + 3) % 4;
+    maze.position.direction = dir_arr[maze.position.direction_step];
+    motor_shield.set_speed(TURNING_SPEED, TURNING_SPEED, TURNING_SPEED, TURNING_SPEED);
+    motor_shield.change_motor_direction(TURN_LEFT);
+    turning = true;
+    
+}
+
+inline void right(float angle)
+{
+    accelerometer.yaw_ = abs(angle);
+    rotation = accelerometer.get_yaw();
+    maze.position.direction_step = (maze.position.direction_step + 5) % 4;
+    maze.position.direction = dir_arr[maze.position.direction_step];
+    motor_shield.set_speed(TURNING_SPEED, TURNING_SPEED, TURNING_SPEED, TURNING_SPEED);
+    motor_shield.change_motor_direction(TURN_RIGHT);
+    turning = true;
 }
