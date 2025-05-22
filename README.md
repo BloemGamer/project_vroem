@@ -36,7 +36,7 @@ This is a library we wrote to use with the `L293D Motor Shield Module`.
 2. Algoritmes:
  - [x] Automatisch rijden
  - [x] Niet tegen muur aan rijden
- - [ ] Algoritme verzinnen hoe uit doolhof
+ - [x] Algoritme verzinnen hoe uit doolhof
  - [ ] Uit doolhof algoritme programmeren
 
 3. Als tijd:
