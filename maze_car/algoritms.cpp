@@ -8,7 +8,7 @@
 
 #define BLOCK_LENGHT 30
 
-Maze_Map maze;
+extern Maze_Map maze;
 Direction dir_arr[4] = {{1, 0}, {0, -1}, {-1, 0}, {0, 1}};
 extern Accelerometer accelerometer;
 extern unsigned int measured_ultrasonic_distance_left, measured_ultrasonic_distance_right, measured_ultrasonic_distance_front;

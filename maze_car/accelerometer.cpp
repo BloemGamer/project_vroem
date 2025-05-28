@@ -25,9 +25,11 @@ void Accelerometer::initializeSerial2(long baudRate)
 {
     Serial2.begin(baudRate);
     serialPort2 = &Serial2; // Assign the Serial2 object to the pointer
+    /*
     Serial.print("Serial2 initialized at ");
     Serial.print(baudRate);
     Serial.println(" bps");
+    */
 }
 
 int16_t Accelerometer::get_yaw(void)
