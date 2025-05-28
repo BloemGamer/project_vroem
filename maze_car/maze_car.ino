@@ -80,6 +80,7 @@ void setup(void)
 
 void loop(void)
 {
+    led_matrix.draw(maze.position_map.little)
     Serial.println(accelerometer.get_forwards_movement());
 #if defined TEST_SENSORS
     motor_shield.change_motor_direction(STOP);
