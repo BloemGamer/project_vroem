@@ -80,14 +80,15 @@ void setup(void)
 
 void loop(void)
 {
-    led_matrix.draw(maze.position_map.little);
-    Serial.println(accelerometer.get_forwards_movement());
 #if defined TEST_SENSORS
     motor_shield.change_motor_direction(STOP);
     take_measurements();
     led_matrix.show_sensors();
 
 #elif defined SOLVE_MAZE
+    led_matrix.draw(maze.position_map.little);
+    //Serial.println(accelerometer.get_forwards_movement());
+    bluetooth.bluetooth_send_int64(maze.position_map.big); 
     take_measurements();
     rotation = accelerometer.get_yaw();
     if(rotation < 10 && rotation > -10 && turning) // if done turning
