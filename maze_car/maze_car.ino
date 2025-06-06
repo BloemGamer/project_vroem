@@ -101,6 +101,7 @@ void loop(void)
         // if there is a place right, dan go right, else go forward, else go to the left
         if(maze.can_go_right())
         {
+            delay(50);
             right(90);
             return;
         }
@@ -111,6 +112,7 @@ void loop(void)
         }
         else if(maze.can_go_left())
         {
+            delay(50);
             left(90);
             return;
         }
