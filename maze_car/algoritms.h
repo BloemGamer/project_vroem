@@ -41,7 +41,7 @@ struct Maze_Map
     {
         uint64_t big = 0; 
         uint8_t little[8];
-    }position_map, right_map, up_map;
+    }position_map, left_map, up_map;
 
     void fix_maps(void);
     void shift_maps(int8_t dir);

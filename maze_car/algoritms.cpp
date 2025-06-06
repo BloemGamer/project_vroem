@@ -40,7 +40,7 @@ void Maze_Map::fix_maps(void)
     if(position.x < 0) { shift_maps(RIGHT); position.x++; }
 
     position_map.little[right_place_in_map(position.y)] |= 1 << position.x;
-    right_map.little[right_place_in_map(position.y)] |= 1 << position.x;
+    left_map.little[right_place_in_map(position.y)] |= 1 << position.x;
     up_map.little[right_place_in_map(position.y)] |= 1 << position.x;
 }
 
