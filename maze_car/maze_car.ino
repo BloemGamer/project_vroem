@@ -294,7 +294,7 @@ inline void stop()
     motor_shield.change_motor_direction(STOP);
 }
 
-inline void left(float angle)
+inline void left(float angle) // THIS ONE SHOULD BE FIXED
 {
     accelerometer.yaw_ = -1 * abs(angle);
     rotation = accelerometer.get_yaw();
@@ -306,7 +306,7 @@ inline void left(float angle)
     
 }
 
-inline void right(float angle)
+inline void right(float angle) // THIS ONE SHOULD BE FIXED, THE 
 {
     accelerometer.yaw_ = abs(angle);
     rotation = accelerometer.get_yaw();
