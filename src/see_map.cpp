@@ -1,4 +1,3 @@
-#include <endian.h>
 #include <iostream>
 #include <fstream>
 #include <chrono>
@@ -10,6 +9,7 @@
 #include <cassert>
 #include <cstdint>
 
+#include <endian.h>
 #include <fcntl.h>
 #include <termios.h>
 #include <unistd.h>
@@ -178,6 +178,7 @@ void print_map(void)
             map_file << '\n';
             std::cout << '\n';
         }
+        std::cout << map_l.big;
         map_file.close();
         std::this_thread::sleep_for(std::chrono::milliseconds(WAITING_TIME_MS));
     }
