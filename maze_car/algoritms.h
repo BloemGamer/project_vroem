@@ -13,8 +13,8 @@
 
 struct Direction
 {
-    int8_t y;
-    int8_t x;
+    int8_t y: 4;
+    int8_t x: 4;
 
     Direction(int8_t y_val = 1, int8_t x_val = 0) : y(y_val), x(x_val) {}
 };
