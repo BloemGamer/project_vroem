@@ -8,6 +8,8 @@
 
 #define BLOCK_LENGHT 30
 
+extern bool ir_right_trigged;
+extern bool ir_left_trigged;
 extern Maze_Map maze;
 Direction dir_arr[4] = {{1, 0}, {0, -1}, {-1, 0}, {0, 1}};
 extern Accelerometer accelerometer;
@@ -15,10 +17,17 @@ extern unsigned int measured_ultrasonic_distance_left, measured_ultrasonic_dista
 
 void fix_position(void)
 {
+    Serial.print(accelerometer.get_forwards_movement());
     if(accelerometer.get_forwards_movement() > BLOCK_LENGHT)
     {
         accelerometer.forward_position -= BLOCK_LENGHT;
-        maze.position.step();
+        maze.position.step(1);
+        maze.fix_maps();
+    }
+    if(accelerometer.get_forwards_movement() < BLOCK_LENGHT)
+    {
+        accelerometer.forward_position += BLOCK_LENGHT;
+        maze.position.step(-1);
         maze.fix_maps();
     }
 }
@@ -61,7 +70,7 @@ bool Maze_Map::can_go_right(void)
     (
         (measured_ultrasonic_distance_right > BLOCK_LENGHT) && 
         (!(position_map.little[right_place_in_map(position.y - position.direction.x)] & 1 << (position.x - position.direction.y))) && // prob not to safe, but checks if we've been at the place on the right
-        (1)
+        (!ir_right_trigged)
     );
 }
 
@@ -80,6 +89,6 @@ bool Maze_Map::can_go_left(void)
     (
         (measured_ultrasonic_distance_left > BLOCK_LENGHT) && 
         (!(position_map.little[right_place_in_map(position.y + position.direction.x)] & 1 << (position.x + position.direction.y))) && // prob not to safe, but checks if we've been at the place on the left
-        (1)
+        (!ir_left_trigged)
     );
 }

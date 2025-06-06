@@ -30,10 +30,10 @@ struct Maze_Map
         int8_t y = 0, x = 0; // current position
         struct Direction direction;
         int8_t direction_step = 0;
-        void step(void)
+        void step(uint8_t dir)
         {
-            y += direction.y;
-            x += direction.x;
+            y += direction.y * dir;
+            x += direction.x * dir;
         }
     }position;
 
