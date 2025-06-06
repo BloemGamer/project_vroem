@@ -101,25 +101,18 @@ void loop(void)
         // if there is a place right, dan go right, else go forward, else go to the left
         if(maze.can_go_right())
         {
-            delay(100);
-            if(measured_ultrasonic_distance_right > PATH_WIDTH)
-            {
-                right_90();
-                return;
-            }
+            right(90);
+            return;
         }
         else if(maze.can_go_front())
         {
             // just go forward
+            return;
         }
         else if(maze.can_go_left())
         {
-            delay(100);
-            if(measured_ultrasonic_distance_left > PATH_WIDTH)
-            {
-                left_90();
-                return;
-            }
+            left(90);
+            return;
         }
         else // if all things have been tried, just go yolo
         // there will be a better new algoritm in the future, I just don't want to write that at the moment, it's late and I'm tired
@@ -130,16 +123,16 @@ void loop(void)
                 {
                     if(measured_ultrasonic_distance_right > measured_ultrasonic_distance_left) //there is a free space next to the car
                     {
-                        right_90();
+                        right(90);
                     }
                     else
                     {
-                        left_90();
+                        left(90);
                     }
                 }
                 else
                 {
-                    right_180();
+                    right(180);
                 }
             }
 
@@ -167,16 +160,16 @@ void loop(void)
             {
                 if(measured_ultrasonic_distance_right > measured_ultrasonic_distance_left) //there is a free space next to the car
                 {
-                    right_90();
+                    right(90);
                 }
                 else
                 {
-                    left_90();
+                    left(90);
                 }
             }
             else
             {
-                right_180();
+                right(180);
             }
         }
 
