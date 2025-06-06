@@ -98,6 +98,16 @@ void loop(void)
     if(!turning) // when not turning
     {
         fix_position();
+
+        if(measured_ultrasonic_distance_left < MAX_ULTRASONIC_WALL_DISTANCE_SIDES)
+        {
+            strafe_right();
+        }
+        else if(measured_ultrasonic_distance_right < MAX_ULTRASONIC_WALL_DISTANCE_SIDES)
+        {
+            strafe_left();
+        }
+
         // if there is a place right, dan go right, else go forward, else go to the left
         if(maze.can_go_right())
         {
@@ -116,7 +126,7 @@ void loop(void)
             left(90);
             return;
         }
-        else // if all things have been tried, just go yolo
+        else // if all things have been tried, just go yolo, I will fix this later, but first the mapping system should work reliable
         // there will be a better new algoritm in the future, I just don't want to write that at the moment, it's late and I'm tired
         {
             if(measured_ultrasonic_distance_front < MAX_ULTRASONIC_WALL_DISTANCE_FRONT) // if too close to front wall
