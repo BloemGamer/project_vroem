@@ -48,6 +48,10 @@ struct Maze_Map
     bool can_go_right(void);
     bool can_go_front(void);
     bool can_go_left(void);
+    Maze_Map(void)
+    {
+        fix_maps();
+    }
 
 };
 
