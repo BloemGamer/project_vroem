@@ -1,3 +1,4 @@
+#include <endian.h>
 #include <iostream>
 #include <fstream>
 #include <chrono>
@@ -132,6 +133,8 @@ void read_map(int file_descr)
             perror_print("read failed");
         }
 
+        map_l = le64toh(map_l);
+
         {
             std::lock_guard<std::mutex> lock(mtx);
             if(!running) return;
@@ -157,9 +160,9 @@ void print_map(void)
         }
 
         std::cout << "\033[2J\033[1;1H"; // clearing the terminal
-        for(int i = 0; i < 8; i++)
+        for(int i = 8; i <= 0; i--)
         {
-            for(int j = 8; j >= 0; j--)
+            for(int j = 0; j < 8; j++)
             {
                 if(map_l.little[i] & 1 << j)
                 {
