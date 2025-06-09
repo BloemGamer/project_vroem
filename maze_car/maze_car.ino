@@ -53,6 +53,7 @@ bool turning = false;
 unsigned int measured_ultrasonic_distance_left, measured_ultrasonic_distance_right, measured_ultrasonic_distance_front;
 unsigned long delay_time = 0;
 int16_t rotation = 0;
+bool map_not_working = false;
 
 
 Motor_Shield motor_shield;
@@ -296,6 +297,7 @@ inline void stop()
 
 inline void left(float angle) // THIS ONE SHOULD BE FIXED
 {
+    map_not_working = true;
     accelerometer.yaw_ = -1 * abs(angle);
     rotation = accelerometer.get_yaw();
     maze.position.direction_step = (maze.position.direction_step + 3) % 4;
@@ -308,6 +310,7 @@ inline void left(float angle) // THIS ONE SHOULD BE FIXED
 
 inline void right(float angle) // THIS ONE SHOULD BE FIXED, THE 
 {
+    map_not_working = true;
     accelerometer.yaw_ = abs(angle);
     rotation = accelerometer.get_yaw();
     maze.position.direction_step = (maze.position.direction_step + 5) % 4;
