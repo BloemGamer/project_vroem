@@ -163,7 +163,7 @@ void loop(void)
         reset_speed();
     }
     // bluetooth.bluetooth_read_string();
-    else
+    if(!turning) // when not turning
     {
         if(turning) // reset the speed and direction
         {
