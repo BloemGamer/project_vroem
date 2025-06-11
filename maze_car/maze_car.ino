@@ -157,8 +157,13 @@ void loop(void)
     // the old function, will prob NOT work anymore, because the inner function will be/are rewritten
     take_measurements();
     // Serial.println(instruction);
+    rotation = accelerometer.get_yaw();
+    if(rotation < 10 && rotation > -10 && turning) // if done turning
+    {
+        reset_speed();
+    }
     // bluetooth.bluetooth_read_string();
-    if(delay_time < millis()) // if there is enough time between starting the turn and now/if not turning
+    else
     {
         if(turning) // reset the speed and direction
         {
