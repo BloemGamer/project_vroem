@@ -19,7 +19,7 @@
     #error does only work on linux
 #endif
 
-#define WAITING_TIME_MS 20 // refresh time for the print map function
+#define WAITING_TIME_MS 200 // refresh time for the print map function
 
 #define stderror_print(text) \
     std::cerr << text << '\n'; \
@@ -160,9 +160,9 @@ void print_map(void)
         }
 
         std::cout << "\033[2J\033[1;1H"; // clearing the terminal
-        for(int i = 8; i <= 0; i--)
+        for(int i = 0; i < 8; i++)
         {
-            for(int j = 0; j < 8; j++)
+            for(int j = 7; j >= 0; j--)
             {
                 if(map_l.little[i] & 1 << j)
                 {
@@ -178,7 +178,7 @@ void print_map(void)
             map_file << '\n';
             std::cout << '\n';
         }
-        std::cout << map_l.big;
+        std::cout << (uint64_t)map_l.big << '\n';
         map_file.close();
         std::this_thread::sleep_for(std::chrono::milliseconds(WAITING_TIME_MS));
     }
