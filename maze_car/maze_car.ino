@@ -124,7 +124,7 @@ void loop(void)
         else if(maze.can_go_left())
         {
             delay(50);
-            left_90());
+            left_90();
             return;
         }
         else // if all things have been tried, just go yolo, I will fix this later, but first the mapping system should work reliable
@@ -136,16 +136,16 @@ void loop(void)
                 {
                     if(measured_ultrasonic_distance_right > measured_ultrasonic_distance_left) //there is a free space next to the car
                     {
-                        right_90());
+                        right_90();
                     }
                     else
                     {
-                        left_90());
+                        left_90();
                     }
                 }
                 else
                 {
-                    right_180());
+                    right_180();
                 }
             }
 
@@ -178,16 +178,16 @@ void loop(void)
             {
                 if(measured_ultrasonic_distance_right > measured_ultrasonic_distance_left) //there is a free space next to the car
                 {
-                    right_90());
+                    right_90();
                 }
                 else
                 {
-                    left_90());
+                    left_90();
                 }
             }
             else
             {
-                right_180());
+                right_180();
             }
         }
 
