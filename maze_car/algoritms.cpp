@@ -17,14 +17,14 @@ extern unsigned int measured_ultrasonic_distance_left, measured_ultrasonic_dista
 
 void fix_position(void)
 {
-    Serial.print(accelerometer.get_forwards_movement());
+    //Serial.print(accelerometer.get_forwards_movement());
     if(accelerometer.get_forwards_movement() > BLOCK_LENGHT)
     {
         accelerometer.forward_position -= BLOCK_LENGHT;
         maze.position.step(1);
         maze.fix_maps();
     }
-    if(accelerometer.get_forwards_movement() < BLOCK_LENGHT)
+    if(accelerometer.get_forwards_movement() < -BLOCK_LENGHT)
     {
         accelerometer.forward_position += BLOCK_LENGHT;
         maze.position.step(-1);
@@ -34,6 +34,13 @@ void fix_position(void)
 
 void Maze_Map::fix_maps(void)
 {
+    Serial.print((int8_t)position.y);
+    Serial.print(", ");
+    Serial.print((int8_t)position.x);
+    Serial.print("; ");
+    Serial.print((int8_t)position.direction.y);
+    Serial.print(", ");
+    Serial.println((int8_t)position.direction.x);
     if(position.y > 7) { shift_maps(UP); position.y--; }
     if(position.y < 0) { shift_maps(DOWN); position.y++; }
     if(position.x > 7) { shift_maps(LEFT); position.x--; }
@@ -54,10 +61,10 @@ void Maze_Map::shift_maps(int8_t dir)
         case LEFT:
             position_map.big <<= 1;
             break;
-        case UP:
+        case DOWN:
             position_map.big <<= 8;
             break;
-        case DOWN:
+        case UP:
             position_map.big >>= 8;
             break;
     }
