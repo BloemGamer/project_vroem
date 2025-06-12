@@ -113,7 +113,7 @@ void loop(void)
         if(maze.can_go_right())
         {
             delay(50);
-            right_90());
+            right_90();
             return;
         }
         else if(maze.can_go_front())
