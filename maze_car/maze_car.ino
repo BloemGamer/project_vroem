@@ -77,6 +77,7 @@ void setup(void)
     }
     motor_shield.change_motor_direction(GO_FORWARD);
     motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED);
+    maze.position.direction = dir_arr[maze.position.direction_step];
 }
 
 void loop(void)
