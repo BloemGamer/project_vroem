@@ -23,8 +23,9 @@ extern Direction dir_arr[4];
 
 void fix_position(void);
 
-struct Maze_Map
+class Maze_Map
 {
+public:
     struct
     {
         int8_t y = 0, x = 0; // current position
