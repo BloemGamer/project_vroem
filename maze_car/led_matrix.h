@@ -1,3 +1,4 @@
+#pragma once
 #include "LedControl.h"
 
 class Led_Matrix
