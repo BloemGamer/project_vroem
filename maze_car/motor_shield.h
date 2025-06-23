@@ -29,14 +29,12 @@ class Motor_Shield
 {
 private:
     uint8_t motor_state = 0;
-    void store_old_motor_state(void);
+    void update_motor_directions(); // shifts the motor_state to the motor shield
 
 public:
     void go_old_speed(void);
     void set_speed(uint8_t speed_m1, uint8_t speed_m2, uint8_t speed_m3, uint8_t speed_m4);
-    void set_speed(uint8_t* speed);
     void set_speed(int8_t motor, uint8_t speed_m);
-    void update_motor_directions(); // shifts the motor_state to the motor shield
     void change_motor_direction(enum Motor_Directions dir1, enum Motor_Directions dir2, enum Motor_Directions dir3, enum Motor_Directions dir4);
 
     Motor_Shield(void);

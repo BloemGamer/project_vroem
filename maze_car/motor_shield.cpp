@@ -30,14 +30,6 @@ void Motor_Shield::set_speed(uint8_t speed_lf, uint8_t speed_rf, uint8_t speed_l
     analogWrite(RB_PIN, speed_rb);
 }
 
-void Motor_Shield::set_speed(uint8_t* speed)
-{
-    analogWrite(LF_PIN, speed[M_LF]);
-    analogWrite(RF_PIN, speed[M_RF]);
-    analogWrite(LB_PIN, speed[M_LB]);
-    analogWrite(RB_PIN, speed[M_RB]);
-}
-
 void Motor_Shield::set_speed(int8_t motor, uint8_t speed_m)
 {
     switch(motor)
