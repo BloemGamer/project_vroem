@@ -11,9 +11,12 @@
 #define M_LB 2
 #define M_RB 3
 
-#define BREAK 0b00
-#define FORWARD 0b01
-#define BACKWARD 0b10
+enum Motor_Directions
+{
+    BREAK = 0b00,
+    FORWARD = 0b01,
+    BACKWARD = 0b10
+};
 
 #define GO_FORWARD FORWARD, FORWARD, FORWARD, FORWARD
 #define GO_BACK BACKWARD, BACKWARD, BACKWARD, BACKWARD
@@ -39,8 +42,7 @@ public:
     void change_speed(int16_t speed_m1, int16_t speed_m2, int16_t speed_m3, int16_t speed_m4); // This one does not work as intended at the moment
     void change_speed(int8_t motor, int16_t speed_m); // This one does not work as intended at the moment
     void update_motor_directions(); // shifts the motor_state to the motor shield
-
-    void change_motor_direction(uint8_t dir1, uint8_t dir2, uint8_t dir3, uint8_t dir4);
+    void change_motor_direction(enum Motor_Directions dir1, enum Motor_Directions dir2, enum Motor_Directions dir3, enum Motor_Directions dir4);
 
     Motor_Shield(void);
     ~Motor_Shield(void);

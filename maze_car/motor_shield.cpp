@@ -138,7 +138,7 @@ void Motor_Shield::update_motor_directions() // shifts the motor_state to the mo
 }
 
 // changing the direction of the motor
-void Motor_Shield::change_motor_direction(uint8_t dir1, uint8_t dir2, uint8_t dir3, uint8_t dir4)
+void Motor_Shield::change_motor_direction(enum Motor_Directions dir1, enum Motor_Directions dir2, enum Motor_Directions dir3, enum Motor_Directions dir4)
 {
     change_motor_dir(LF1, LF2, dir1);
     change_motor_dir(RF1, RF2, dir2);
