@@ -1,11 +1,17 @@
+#include <cstdint>
 #include <stdint.h>
-
-#define right_place_in_map(a) a
 
 #define DOWN 0
 #define LEFT 1
 #define UP 2
 #define RIGHT 3
+
+enum Maps
+{
+    POSITION_MAP,
+    LEFT_MAP,
+    UP_MAP
+};
 
 
 
@@ -49,9 +55,11 @@ public:
     bool can_go_right(void);
     bool can_go_front(void);
     bool can_go_left(void);
+    void change_map(enum Maps map, bool state, struct Direction position);
+    bool get_at_position(enum Maps map, struct Direction position);
     Maze_Map(void)
     {
-        fix_maps();
+        //fix_maps(); // add this one again when the position works
     }
 
 };

@@ -46,9 +46,9 @@ void Maze_Map::fix_maps(void)
     if(position.x > 7) { shift_maps(LEFT); position.x--; }
     if(position.x < 0) { shift_maps(RIGHT); position.x++; }
 
-    position_map.little[right_place_in_map(position.y)] |= 1 << position.x;
-    left_map.little[right_place_in_map(position.y)] |= 1 << position.x;
-    up_map.little[right_place_in_map(position.y)] |= 1 << position.x;
+    position_map.little[position.y] |= 1 << position.x;
+    left_map.little[position.y] |= 1 << position.x;
+    up_map.little[position.y] |= 1 << position.x;
 }
 
 void Maze_Map::shift_maps(int8_t dir)
@@ -76,7 +76,7 @@ bool Maze_Map::can_go_right(void)
     return 
     (
         (measured_ultrasonic_distance_right > BLOCK_LENGHT) && 
-        (!(position_map.little[right_place_in_map(position.y - position.direction.x)] & 1 << (position.x - position.direction.y))) && // prob not to safe, but checks if we've been at the place on the right
+        (!(position_map.little[position.y - position.direction.x] & 1 << (position.x - position.direction.y))) && // prob not to safe, but checks if we've been at the place on the right
         (!ir_right_trigged)
     );
 }
@@ -86,7 +86,7 @@ bool Maze_Map::can_go_front(void)
     return 
     (
         (measured_ultrasonic_distance_front > BLOCK_LENGHT) && 
-        (!(position_map.little[right_place_in_map(position.y + position.direction.y)] & 1 << (position.x + position.direction.x))) // prob not to safe, but checks if we've been at the place on the front
+        (!(position_map.little[position.y + position.direction.y] & 1 << (position.x + position.direction.x))) // prob not to safe, but checks if we've been at the place on the front
     );
 }
 
@@ -95,7 +95,51 @@ bool Maze_Map::can_go_left(void)
     return 
     (
         (measured_ultrasonic_distance_left > BLOCK_LENGHT) && 
-        (!(position_map.little[right_place_in_map(position.y + position.direction.x)] & 1 << (position.x + position.direction.y))) && // prob not to safe, but checks if we've been at the place on the left
+        (!(position_map.little[position.y + position.direction.x] & 1 << (position.x + position.direction.y))) && // prob not to safe, but checks if we've been at the place on the left
         (!ir_left_trigged)
     );
+}
+
+
+void Maze_Map::change_map(enum Maps map, bool state, struct Direction position)
+{
+    switch(map)
+    {
+        case POSITION_MAP:
+            if(state)
+                position_map.little[position.y] |= 1 << position.x;
+            else
+                position_map.little[position.y] &= ~(1 << position.x);
+            break;
+        case UP_MAP:
+            if(state)
+                up_map.little[position.y] |= 1 << position.x;
+            else
+                up_map.little[position.y] &= ~(1 << position.x);
+            break;
+        case LEFT_MAP:
+            if(state)
+                left_map.little[position.y] |= 1 << position.x;
+            else
+                left_map.little[position.y] &= ~(1 << position.x);
+            break;
+            
+    }
+}
+
+bool Maze_Map::get_at_position(enum Maps map, struct Direction position)
+{
+    switch(map)
+    {
+        case POSITION_MAP:
+            return (position_map.little[position.y] &= 1 << position.x) != 0;
+            break;
+        case UP_MAP:
+            return (up_map.little[position.y] &= 1 << position.x) != 0;
+            break;
+        case LEFT_MAP:
+            return (left_map.little[position.y] &= 1 << position.x) != 0;
+            break;
+            
+    }
 }
