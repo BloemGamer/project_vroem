@@ -142,4 +142,5 @@ bool Maze_Map::get_at_position(enum Maps map, struct Direction position)
             break;
             
     }
+    return false;
 }
