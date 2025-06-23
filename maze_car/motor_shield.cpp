@@ -22,23 +22,6 @@
 #define LB_PIN 5
 #define RB_PIN 6
 
-// bitwise black magic
-// every motor has a forwards and backwards bit in the motor_state uint8_t, and this function fixes that
-// only one of those two bits is on, and the right one, and is break, both are off.
-#define change_motor_dir(a, b, dir) \
-switch(dir) \
-{ \
-    case(FORWARD): \
-        motor_state |= 1 << (a); \
-        motor_state &= ~(1 << (b)); break; \
-    case(BACKWARD): \
-        motor_state &= ~(1 << (a)); \
-        motor_state |= 1 << (b); break; \
-    case(BREAK): \
-        motor_state &= ~(1 << (a)); \
-        motor_state &= ~(1 << (b)); break; \
-} 
-
 inline void Motor_Shield::store_old_motor_state()
 {
     memcpy((void*)speed_motors, (void*)speed_motors_old, 4 * sizeof(uint8_t)); 
@@ -137,6 +120,23 @@ void Motor_Shield::update_motor_directions() // shifts the motor_state to the mo
     digitalWrite(MOTOR_LATCH, HIGH);
 }
 
+// bitwise black magic
+// every motor has a forwards and backwards bit in the motor_state uint8_t, and this function fixes that
+// only one of those two bits is on, and the right one, and is break, both are off.
+#define change_motor_dir(a, b, dir) \
+switch(dir) \
+{ \
+    case(FORWARD): \
+        motor_state |= 1 << (a); \
+        motor_state &= ~(1 << (b)); break; \
+    case(BACKWARD): \
+        motor_state &= ~(1 << (a)); \
+        motor_state |= 1 << (b); break; \
+    case(BREAK): \
+        motor_state &= ~(1 << (a)); \
+        motor_state &= ~(1 << (b)); break; \
+} 
+
 // changing the direction of the motor
 void Motor_Shield::change_motor_direction(enum Motor_Directions dir1, enum Motor_Directions dir2, enum Motor_Directions dir3, enum Motor_Directions dir4)
 {
@@ -146,6 +146,8 @@ void Motor_Shield::change_motor_direction(enum Motor_Directions dir1, enum Motor
     change_motor_dir(RB1, RB2, dir4);
     update_motor_directions();
 }
+
+#undef change_motor_dir
 
 // setting the pins on output and setting the speed on full
 Motor_Shield::Motor_Shield(void)
