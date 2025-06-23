@@ -301,26 +301,22 @@ inline void stop()
     motor_shield.change_motor_direction(STOP);
 }
 
-inline void left(float angle) // THIS ONE SHOULD BE FIXED
+inline void left(float angle) // this one only works when not in the maze (as preperation for the beacon)
 {
     map_not_working = true;
     accelerometer.yaw_ = -1 * abs(angle);
     rotation = accelerometer.get_yaw();
-    //maze.position.direction_step = (maze.position.direction_step + 3) % 4;
-    //maze.position.direction = dir_arr[maze.position.direction_step];
     motor_shield.set_speed(TURNING_SPEED, TURNING_SPEED, TURNING_SPEED, TURNING_SPEED);
     motor_shield.change_motor_direction(TURN_LEFT);
     turning = true;
     
 }
 
-inline void right(float angle) // THIS ONE SHOULD BE FIXED, THE 
+inline void right(float angle) // this one only works when not in the maze (as preperation for the beacon) 
 {
     map_not_working = true;
     accelerometer.yaw_ = abs(angle);
     rotation = accelerometer.get_yaw();
-    //maze.position.direction_step = (maze.position.direction_step + 5) % 4;
-    //maze.position.direction = dir_arr[maze.position.direction_step];
     motor_shield.set_speed(TURNING_SPEED, TURNING_SPEED, TURNING_SPEED, TURNING_SPEED);
     motor_shield.change_motor_direction(TURN_RIGHT);
     turning = true;
