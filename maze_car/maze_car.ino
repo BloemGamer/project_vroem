@@ -111,16 +111,16 @@ void loop(void)
         }
 
         // if there is a place right, dan go right, else go forward, else go to the left
-        if(maze.can_go_right())
-        {
-            delay(50);
-            right_90();
-            return;
-        }
-        else if(maze.can_go_front())
+        if(maze.can_go_front())
         {
             // just go forward
             return;
+        }
+        else if(maze.can_go_right())
+        {
+          delay(50);
+          right_90();
+          return;
         }
         else if(maze.can_go_left())
         {
@@ -281,7 +281,6 @@ inline void strafe_left()
     rotation = accelerometer.get_yaw();
     motor_shield.set_speed(STANDARD_FORWARD_SPEED - STRAFE_CONSTANT, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED - STRAFE_CONSTANT);
     delay(STRAFE_DELAY);
-    turning = true;
 }
 
 inline void strafe_right()
@@ -290,12 +289,13 @@ inline void strafe_right()
     rotation = accelerometer.get_yaw();
     motor_shield.set_speed(STANDARD_FORWARD_SPEED, STANDARD_FORWARD_SPEED - STRAFE_CONSTANT, STANDARD_FORWARD_SPEED - STRAFE_CONSTANT, STANDARD_FORWARD_SPEED);
     delay(STRAFE_DELAY);
-    turning = true;
 }
 
 inline void stop()
 {
     motor_shield.change_motor_direction(GO_BACK);
+    accelerometer.get_forwards_movement(); // just to reset everything
+    accelerometer.get_forwards_movement(); // just to reset everything
     accelerometer.forward_velocity = 0.0f;
     delay(50); // delete
     motor_shield.change_motor_direction(STOP);
@@ -306,8 +306,8 @@ inline void left(float angle) // THIS ONE SHOULD BE FIXED
     map_not_working = true;
     accelerometer.yaw_ = -1 * abs(angle);
     rotation = accelerometer.get_yaw();
-    maze.position.direction_step = (maze.position.direction_step + 3) % 4;
-    maze.position.direction = dir_arr[maze.position.direction_step];
+    //maze.position.direction_step = (maze.position.direction_step + 3) % 4;
+    //maze.position.direction = dir_arr[maze.position.direction_step];
     motor_shield.set_speed(TURNING_SPEED, TURNING_SPEED, TURNING_SPEED, TURNING_SPEED);
     motor_shield.change_motor_direction(TURN_LEFT);
     turning = true;
@@ -319,8 +319,8 @@ inline void right(float angle) // THIS ONE SHOULD BE FIXED, THE
     map_not_working = true;
     accelerometer.yaw_ = abs(angle);
     rotation = accelerometer.get_yaw();
-    maze.position.direction_step = (maze.position.direction_step + 5) % 4;
-    maze.position.direction = dir_arr[maze.position.direction_step];
+    //maze.position.direction_step = (maze.position.direction_step + 5) % 4;
+    //maze.position.direction = dir_arr[maze.position.direction_step];
     motor_shield.set_speed(TURNING_SPEED, TURNING_SPEED, TURNING_SPEED, TURNING_SPEED);
     motor_shield.change_motor_direction(TURN_RIGHT);
     turning = true;
