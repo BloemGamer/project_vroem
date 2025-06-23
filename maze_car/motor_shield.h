@@ -6,47 +6,20 @@
 // #define TEST_SENSORS
 #define SOLVE_MAZE
 
-
-#define LF1 1
-#define LF2 4
-#define RF1 2
-#define RF2 3
-#define LB1 7
-#define LB2 5
-#define RB1 0
-#define RB2 6
-
 #define M_LF 0
 #define M_RF 1
 #define M_LB 2
 #define M_RB 3
 
-#define MOTOR_LATCH 12
-#define CLOCK_PIN 4
-#define ENABLE_PIN 7
-#define DATA_PIN 8
-
 #define BREAK 0b00
 #define FORWARD 0b01
 #define BACKWARD 0b10
-
-#define LF_PIN 11
-#define RF_PIN 3
-#define LB_PIN 5
-#define RB_PIN 6
 
 #define GO_FORWARD FORWARD, FORWARD, FORWARD, FORWARD
 #define GO_BACK BACKWARD, BACKWARD, BACKWARD, BACKWARD
 #define TURN_LEFT BACKWARD, FORWARD, BACKWARD, FORWARD
 #define TURN_RIGHT FORWARD, BACKWARD, FORWARD, BACKWARD
 #define STOP BREAK, BREAK, BREAK, BREAK
-
-
-#define SPEED_LF OCR3C
-#define SPEED_RF OCR1A
-#define SPEED_LB OCR4A
-#define SPEED_RB OCR3A
-
 
 
 class Motor_Shield

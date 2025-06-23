@@ -3,6 +3,25 @@
 #include <string.h>
 #include "motor_shield.h"
 
+#define LF1 1
+#define LF2 4
+#define RF1 2
+#define RF2 3
+#define LB1 7
+#define LB2 5
+#define RB1 0
+#define RB2 6
+
+#define MOTOR_LATCH 12
+#define CLOCK_PIN 4
+#define ENABLE_PIN 7
+#define DATA_PIN 8
+
+#define LF_PIN 11
+#define RF_PIN 3
+#define LB_PIN 5
+#define RB_PIN 6
+
 // bitwise black magic
 // every motor has a forwards and backwards bit in the motor_state uint8_t, and this function fixes that
 // only one of those two bits is on, and the right one, and is break, both are off.
@@ -28,10 +47,6 @@ inline void Motor_Shield::store_old_motor_state()
 
 void Motor_Shield::set_speed(uint8_t speed_lf, uint8_t speed_rf, uint8_t speed_lb, uint8_t speed_rb)// changing the speed by changing the PWM speed of the pins
 {
-    //  SPEED_LF = speed_lf;
-    //  SPEED_RF = speed_rf;
-    //  SPEED_LB = speed_lb;
-    //  SPEED_RB = speed_rb;
     analogWrite(LF_PIN, speed_lf);
     speed_motors[M_LF] = speed_lf;
     analogWrite(RF_PIN, speed_rf);
@@ -152,17 +167,6 @@ Motor_Shield::Motor_Shield(void)
     analogWrite(RB_PIN, 130);
 
     digitalWrite(ENABLE_PIN, LOW);
-
-    // setting speed on full
-    OCR1A = 255;
-    OCR3C = 255;
-    OCR4A = 255;
-    OCR3A = 255;
-
-    motors_speed[0] = &OCR1A;
-    motors_speed[1] = &OCR3C;
-    motors_speed[2] = &OCR4A;
-    motors_speed[3] = &OCR3A;
 }
 
 // destructer of the class, doesn't do anything at the moment
